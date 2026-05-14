@@ -102,6 +102,8 @@ pip install -r requirements.txt
 Create a `.env` file in the root directory:
 ```env
 FRED_API_KEY=your_api_key_here
+HF_TOKEN=your_hf_token_here
+HF_REPO_ID=your_hf_repo_id_here 
 ```
 
 ---
