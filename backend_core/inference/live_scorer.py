@@ -290,7 +290,7 @@ def score_live_ticker(ticker: str, models: dict = None,
 
     # Try to get trend from history
     try:
-            from backend_core.inference.trend import predict_trend_from_history
+        from backend_core.inference.trend import predict_trend_from_history
         # Build a DataFrame from all available years
         all_years_data = []
         income   = statements.get("income",   pd.DataFrame())
