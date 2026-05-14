@@ -58,9 +58,6 @@ else:
     logger.warning("MODELS_DIR does not exist after sync!")
 logger.info(f"Classifier path: {CLASSIFIER_PATH} (Exists: {os.path.exists(CLASSIFIER_PATH)})")
 
-# Preload models and data (for Gunicorn preload performance)
-get_models()
-get_scores_df()
 
 _models = None
 _scores_df = None
@@ -84,6 +81,11 @@ def get_scores_df():
     else:
         _scores_df = score_all()
     return _scores_df
+
+
+# Preload models and data (for Gunicorn preload performance)
+get_models()
+get_scores_df()
 
 
 def safe_val(v):
