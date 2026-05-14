@@ -44,6 +44,10 @@ logger = get_logger("dashboard", "logs/dashboard.log")
 STATIC_DIR = Path(__file__).parent / "static"
 app = Flask(__name__, static_folder=str(STATIC_DIR), static_url_path="")
 
+# Sync models from Hugging Face on startup (critical for Gunicorn/Render)
+logger.info("Syncing models from Hugging Face...")
+sync_models()
+
 _models = None
 _scores_df = None
 
@@ -230,9 +234,6 @@ def api_live(ticker):
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    logger.info("Syncing models from Hugging Face...")
-    sync_models()
-    
     logger.info("Starting Financial Stress Dashboard on http://localhost:8000")
     get_models()
     get_scores_df()
