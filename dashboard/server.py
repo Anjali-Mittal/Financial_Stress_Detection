@@ -13,23 +13,28 @@ import sys
 import warnings
 from pathlib import Path
 
-# Add the project root to sys.path
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
+# Add the project root and src directory to sys.path
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
 
-warnings.filterwarnings("ignore")
-
-import numpy as np
-import pandas as pd
-from flask import Flask, jsonify, request, send_from_directory
-
-from src.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
-from src.models.scorer import (
-    compute_stress_score, load_all_models, score_all, get_ticker_history,
-)
-from src.utils.hf_sync import sync_models
-from src.utils.logger import get_logger
+# Force detection of src package
+try:
+    from src.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
+    from src.models.scorer import (
+        compute_stress_score, load_all_models, score_all, get_ticker_history,
+    )
+    from src.utils.hf_sync import sync_models
+    from src.utils.logger import get_logger
+except ImportError:
+    # Fallback for some hosting environments
+    sys.path.insert(0, os.path.join(BASE_DIR, "src"))
+    from config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
+    from models.scorer import (
+        compute_stress_score, load_all_models, score_all, get_ticker_history,
+    )
+    from utils.hf_sync import sync_models
+    from utils.logger import get_logger
 
 logger = get_logger("dashboard", "logs/dashboard.log")
 
