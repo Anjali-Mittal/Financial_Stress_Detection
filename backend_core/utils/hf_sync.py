@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from huggingface_hub import snapshot_download
 from backend_core.utils.logger import get_logger
+from backend_core.config import MODELS_DIR
 
 logger = get_logger("hf_sync", "logs/hf_sync.log")
 
@@ -22,7 +23,7 @@ def sync_models():
         logger.warning("HF_REPO_ID or HF_TOKEN not found. Skipping model sync.")
         return False
         
-    local_dir = Path("models")
+    local_dir = MODELS_DIR
     local_dir.mkdir(exist_ok=True)
     
     # Check if models already exist (heuristic: look for .pkl files)

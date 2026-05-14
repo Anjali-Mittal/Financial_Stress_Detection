@@ -45,8 +45,22 @@ STATIC_DIR = Path(__file__).parent / "static"
 app = Flask(__name__, static_folder=str(STATIC_DIR), static_url_path="")
 
 # Sync models from Hugging Face on startup (critical for Gunicorn/Render)
+logger.info(f"CWD: {os.getcwd()}")
 logger.info("Syncing models from Hugging Face...")
 sync_models()
+
+# DIAGNOSTIC: List files in models directory
+from backend_core.config import MODELS_DIR, CLASSIFIER_PATH
+logger.info(f"Checking MODELS_DIR: {MODELS_DIR}")
+if os.path.exists(MODELS_DIR):
+    logger.info(f"Models directory contents: {os.listdir(MODELS_DIR)}")
+else:
+    logger.warning("MODELS_DIR does not exist after sync!")
+logger.info(f"Classifier path: {CLASSIFIER_PATH} (Exists: {os.path.exists(CLASSIFIER_PATH)})")
+
+# Preload models and data (for Gunicorn preload performance)
+get_models()
+get_scores_df()
 
 _models = None
 _scores_df = None
@@ -235,6 +249,4 @@ def api_live(ticker):
 
 if __name__ == "__main__":
     logger.info("Starting Financial Stress Dashboard on http://localhost:8000")
-    get_models()
-    get_scores_df()
     app.run(host="0.0.0.0", port=8000, debug=False)
