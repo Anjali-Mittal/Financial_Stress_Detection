@@ -118,6 +118,10 @@ def load_all_models() -> dict:
     models = {}
     try:
         import pickle
+        # ─── HACK: Map 'src' to 'backend_core' for pickle compatibility ───────
+        import backend_core
+        sys.modules['src'] = backend_core
+        # ─────────────────────────────────────────────────────────────────────
 
         def load_pkl(path, meta_path):
             if not os.path.exists(str(path)):
