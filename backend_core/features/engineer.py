@@ -20,9 +20,9 @@ if str(ROOT_DIR) not in sys.path:
 
 warnings.filterwarnings("ignore")
 
-from src.config import (ALL_TICKERS, COMPANY_UNIVERSE, DISTRESS_EVENTS,
+from backend_core.config import (ALL_TICKERS, COMPANY_UNIVERSE, DISTRESS_EVENTS,
                     RAW_DIR, FEATURE_MATRIX_PATH, LOGS_DIR)
-from src.utils.logger import get_logger
+from backend_core.utils.logger import get_logger
 
 logger = get_logger("engineer", LOGS_DIR / "engineer.log")
 

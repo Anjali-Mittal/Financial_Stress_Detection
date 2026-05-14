@@ -6,7 +6,7 @@ import os
 import sys
 from pathlib import Path
 from huggingface_hub import snapshot_download
-from src.utils.logger import get_logger
+from backend_core.utils.logger import get_logger
 
 logger = get_logger("hf_sync", "logs/hf_sync.log")
 

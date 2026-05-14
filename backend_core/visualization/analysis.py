@@ -30,8 +30,8 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
-from src.utils.logger import get_logger
-from src.config import LOGS_DIR, REPORTS_DIR, FEATURE_MATRIX_PATH, PLOTS_DIR
+from backend_core.utils.logger import get_logger
+from backend_core.config import LOGS_DIR, REPORTS_DIR, FEATURE_MATRIX_PATH, PLOTS_DIR
 
 logger = get_logger("eda", LOGS_DIR / "eda.log")
 
@@ -371,7 +371,7 @@ def plot_distress_timeline(df: pd.DataFrame):
     For each bankrupt company: shows Altman Z trajectory leading up to bankruptcy.
     Key question: how many years before collapse does Z drop below 1.81?
     """
-    from src.config import DISTRESS_EVENTS
+    from backend_core.config import DISTRESS_EVENTS
 
     distress_tickers = [t for t in DISTRESS_EVENTS
                         if t in df["ticker"].values]

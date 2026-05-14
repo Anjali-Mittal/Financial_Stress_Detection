@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from src.config import FEATURE_MATRIX_EXPANDED_PATH, FEATURE_MATRIX_PATH
+from backend_core.config import FEATURE_MATRIX_EXPANDED_PATH, FEATURE_MATRIX_PATH
 
 def check_data_years():
     paths = [

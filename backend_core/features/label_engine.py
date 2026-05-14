@@ -29,8 +29,8 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
-from src.utils.logger import get_logger
-from src.config import LOGS_DIR, FEATURE_MATRIX_PATH, FEATURE_MATRIX_EXPANDED_PATH
+from backend_core.utils.logger import get_logger
+from backend_core.config import LOGS_DIR, FEATURE_MATRIX_PATH, FEATURE_MATRIX_EXPANDED_PATH
 
 logger = get_logger("label_engine", LOGS_DIR / "label_engine.log")
 
@@ -61,7 +61,7 @@ def attach_labels_expanded(df: pd.DataFrame) -> pd.DataFrame:
 
     Result: distress_label stays binary (0/1) but captures far more real distress.
     """
-    from src.config import DISTRESS_EVENTS
+    from backend_core.config import DISTRESS_EVENTS
 
     df = df.copy()
     df["distress_label"] = 0

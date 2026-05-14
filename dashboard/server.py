@@ -216,7 +216,7 @@ def api_history(ticker):
 def api_live(ticker):
     ticker = ticker.upper().strip()
     try:
-        from src.models.live_scorer import score_live_ticker
+        from backend_core.models.live_scorer import score_live_ticker
         report = score_live_ticker(ticker, get_models())
         return jsonify(clean_dict(report))
     except Exception as e:
