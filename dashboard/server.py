@@ -13,28 +13,49 @@ import sys
 import warnings
 from pathlib import Path
 
-# Add the project root and src directory to sys.path
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-if BASE_DIR not in sys.path:
-    sys.path.insert(0, BASE_DIR)
+# ─── THE MEGA-FIX ───────────────────────────────────────────────────────────
+import os
+import sys
+from pathlib import Path
+import importlib.util
 
-# Force detection of src package
+BASE_DIR = Path(__file__).resolve().parent.parent
+print(f"DEBUG: BASE_DIR is {BASE_DIR}")
+print(f"DEBUG: BASE_DIR contents: {os.listdir(str(BASE_DIR))}")
+
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+# Try to find 'src' directory
+SRC_DIR = BASE_DIR / "src"
+if not SRC_DIR.exists():
+    # If we are inside 'src' already (some hosts do this)
+    if (BASE_DIR / "models").exists():
+        SRC_DIR = BASE_DIR
+    else:
+        print("CRITICAL: Could not find 'src' or 'models' directory!")
+
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
 try:
+    # Attempt 1: Standard import
     from src.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
-    from src.models.scorer import (
-        compute_stress_score, load_all_models, score_all, get_ticker_history,
-    )
+    from src.models.scorer import compute_stress_score, load_all_models, score_all, get_ticker_history
     from src.utils.hf_sync import sync_models
     from src.utils.logger import get_logger
-except ImportError:
-    # Fallback for some hosting environments
-    sys.path.insert(0, os.path.join(BASE_DIR, "src"))
-    from config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
-    from models.scorer import (
-        compute_stress_score, load_all_models, score_all, get_ticker_history,
-    )
-    from utils.hf_sync import sync_models
-    from utils.logger import get_logger
+except ImportError as e:
+    print(f"DEBUG: Attempt 1 failed: {e}")
+    try:
+        # Attempt 2: Direct import from src
+        from config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
+        from models.scorer import compute_stress_score, load_all_models, score_all, get_ticker_history
+        from utils.hf_sync import sync_models
+        from utils.logger import get_logger
+    except ImportError as e2:
+        print(f"DEBUG: Attempt 2 failed: {e2}")
+        raise e2
+# ─────────────────────────────────────────────────────────────────────────────
 
 logger = get_logger("dashboard", "logs/dashboard.log")
 
