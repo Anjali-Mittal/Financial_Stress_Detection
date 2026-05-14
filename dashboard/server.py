@@ -13,48 +13,57 @@ import sys
 import warnings
 from pathlib import Path
 
-# ─── THE MEGA-FIX ───────────────────────────────────────────────────────────
-import os
-import sys
-from pathlib import Path
+# ─── THE DIRECT PATH FIX (Bypassing Import System) ──────────────────────────
 import importlib.util
 
+def load_from_path(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(f"DEBUG: BASE_DIR is {BASE_DIR}")
-print(f"DEBUG: BASE_DIR contents: {os.listdir(str(BASE_DIR))}")
-
-if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
-
-# Try to find 'src' directory
-SRC_DIR = BASE_DIR / "src"
-if not SRC_DIR.exists():
-    # If we are inside 'src' already (some hosts do this)
-    if (BASE_DIR / "models").exists():
-        SRC_DIR = BASE_DIR
-    else:
-        print("CRITICAL: Could not find 'src' or 'models' directory!")
-
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
 
 try:
-    # Attempt 1: Standard import
-    from src.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
+    # Try to find where scorer.py actually is
+    possible_paths = [
+        BASE_DIR / "src" / "models" / "scorer.py",
+        BASE_DIR / "models" / "scorer.py"
+    ]
+    scorer_path = next((p for p in possible_paths if p.exists()), None)
+    
+    if not scorer_path:
+        raise ImportError(f"Could not find scorer.py in {possible_paths}")
+
+    # Load dependencies first
+    SRC_ROOT = scorer_path.parent.parent
+    sys.path.insert(0, str(SRC_ROOT))
+    
+    # Load the modules
+    config = load_from_path("src.config", str(SRC_ROOT / "config.py"))
+    scorer = load_from_path("src.models.scorer", str(scorer_path))
+    sync   = load_from_path("src.utils.hf_sync", str(SRC_ROOT / "utils" / "hf_sync.py"))
+    logger_mod = load_from_path("src.utils.logger", str(SRC_ROOT / "utils" / "logger.py"))
+
+    # Map them to the variables the server expects
+    FEATURE_MATRIX_PATH = config.FEATURE_MATRIX_PATH
+    SCORES_CSV_PATH = config.SCORES_CSV_PATH
+    compute_stress_score = scorer.compute_stress_score
+    load_all_models = scorer.load_all_models
+    score_all = scorer.score_all
+    get_ticker_history = scorer.get_ticker_history
+    sync_models = sync.sync_models
+    get_logger = logger_mod.get_logger
+
+except Exception as e:
+    print(f"CRITICAL: Direct path loading failed: {e}")
+    # Last ditch effort: try standard import if path loading fails
     from src.models.scorer import compute_stress_score, load_all_models, score_all, get_ticker_history
+    from src.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
     from src.utils.hf_sync import sync_models
     from src.utils.logger import get_logger
-except ImportError as e:
-    print(f"DEBUG: Attempt 1 failed: {e}")
-    try:
-        # Attempt 2: Direct import from src
-        from config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
-        from models.scorer import compute_stress_score, load_all_models, score_all, get_ticker_history
-        from utils.hf_sync import sync_models
-        from utils.logger import get_logger
-    except ImportError as e2:
-        print(f"DEBUG: Attempt 2 failed: {e2}")
-        raise e2
+# ─────────────────────────────────────────────────────────────────────────────
 # ─────────────────────────────────────────────────────────────────────────────
 
 logger = get_logger("dashboard", "logs/dashboard.log")
