@@ -12,6 +12,9 @@ import os
 import sys
 import warnings
 from pathlib import Path
+import pandas as pd
+import numpy as np
+from flask import Flask, jsonify, request, send_from_directory
 
 # ─── THE RENAMING FIX ──────────────────────────────────────────────────────
 import os
