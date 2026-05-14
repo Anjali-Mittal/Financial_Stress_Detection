@@ -131,4 +131,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
-*Created with ❤️ by the Antigravity Team.*
+*Created with ❤️ by the [Anjali Mittal](https://github.com/Anjali-Mittal)*
