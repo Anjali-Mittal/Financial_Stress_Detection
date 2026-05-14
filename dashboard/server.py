@@ -30,7 +30,7 @@ if str(CORE_DIR) not in sys.path:
     sys.path.insert(0, str(CORE_DIR))
 
 from backend_core.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
-from backend_core.models.scorer import (
+from backend_core.inference.scorer import (
     compute_stress_score, load_all_models, score_all, get_ticker_history,
 )
 from backend_core.utils.hf_sync import sync_models
@@ -219,7 +219,7 @@ def api_history(ticker):
 def api_live(ticker):
     ticker = ticker.upper().strip()
     try:
-        from backend_core.models.live_scorer import score_live_ticker
+        from backend_core.inference.live_scorer import score_live_ticker
         report = score_live_ticker(ticker, get_models())
         return jsonify(clean_dict(report))
     except Exception as e:
@@ -230,6 +230,9 @@ def api_live(ticker):
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
+    logger.info("Syncing models from Hugging Face...")
+    sync_models()
+    
     logger.info("Starting Financial Stress Dashboard on http://localhost:8000")
     get_models()
     get_scores_df()
