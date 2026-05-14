@@ -13,56 +13,26 @@ import sys
 import warnings
 from pathlib import Path
 
-# ─── THE DIRECT PATH FIX (Bypassing Import System) ──────────────────────────
-import importlib.util
-
-def load_from_path(name, path):
-    spec = importlib.util.spec_from_file_location(name, path)
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    spec.loader.exec_module(module)
-    return module
+# ─── THE RENAMING FIX ──────────────────────────────────────────────────────
+import os
+import sys
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+CORE_DIR = BASE_DIR / "backend_core"
 
-try:
-    # Try to find where scorer.py actually is
-    possible_paths = [
-        BASE_DIR / "src" / "models" / "scorer.py",
-        BASE_DIR / "models" / "scorer.py"
-    ]
-    scorer_path = next((p for p in possible_paths if p.exists()), None)
-    
-    if not scorer_path:
-        raise ImportError(f"Could not find scorer.py in {possible_paths}")
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+if str(CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(CORE_DIR))
 
-    # Load dependencies first
-    SRC_ROOT = scorer_path.parent.parent
-    sys.path.insert(0, str(SRC_ROOT))
-    
-    # Load the modules
-    config = load_from_path("src.config", str(SRC_ROOT / "config.py"))
-    scorer = load_from_path("src.models.scorer", str(scorer_path))
-    sync   = load_from_path("src.utils.hf_sync", str(SRC_ROOT / "utils" / "hf_sync.py"))
-    logger_mod = load_from_path("src.utils.logger", str(SRC_ROOT / "utils" / "logger.py"))
-
-    # Map them to the variables the server expects
-    FEATURE_MATRIX_PATH = config.FEATURE_MATRIX_PATH
-    SCORES_CSV_PATH = config.SCORES_CSV_PATH
-    compute_stress_score = scorer.compute_stress_score
-    load_all_models = scorer.load_all_models
-    score_all = scorer.score_all
-    get_ticker_history = scorer.get_ticker_history
-    sync_models = sync.sync_models
-    get_logger = logger_mod.get_logger
-
-except Exception as e:
-    print(f"CRITICAL: Direct path loading failed: {e}")
-    # Last ditch effort: try standard import if path loading fails
-    from src.models.scorer import compute_stress_score, load_all_models, score_all, get_ticker_history
-    from src.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
-    from src.utils.hf_sync import sync_models
-    from src.utils.logger import get_logger
+from backend_core.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
+from backend_core.models.scorer import (
+    compute_stress_score, load_all_models, score_all, get_ticker_history,
+)
+from backend_core.utils.hf_sync import sync_models
+from backend_core.utils.logger import get_logger
+# ─────────────────────────────────────────────────────────────────────────────
 # ─────────────────────────────────────────────────────────────────────────────
 # ─────────────────────────────────────────────────────────────────────────────
 
