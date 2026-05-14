@@ -1,0 +1,45 @@
+# Environment
+.venv/
+env/
+venv/
+ENV/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# ML Models & Data (Protected)
+models/
+data/
+*.pkl
+*.h5
+*.joblib
+*.pt
+*.onnx
+
+# Datasets (Ignoring all CSVs except essential ones if any)
+*.csv
+*.xlsx
+*.parquet
+
+# Reports & Logs
+logs/
+reports/
+*.log
+
+# Agent & Workspace Specific
+.gemini/
+scratch/
+implementation_plan.md
+
+# IDEs
+.vscode/
+.idea/
+
+# System
+.DS_Store
+Thumbs.db

@@ -1,0 +1,14 @@
+flask
+pandas
+numpy
+xgboost
+scikit-learn
+python-dotenv
+gunicorn
+requests
+yfinance
+matplotlib
+seaborn
+scipy
+pathlib
+huggingface_hub
