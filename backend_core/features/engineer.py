@@ -2,8 +2,8 @@
 features/engineer.py — Compute 20+ financial health indicators from raw data
 Compatible with both yfinance AND SEC EDGAR fetched data.
 
-Run: .venv\Scripts\python.exe src/features/engineer.py --test
-     .venv\Scripts\python.exe src/features/engineer.py
+Run: .venv\Scripts\python.exe backend_core/features/engineer.py --test
+     .venv\Scripts\python.exe backend_core/features/engineer.py
 """
 
 import os

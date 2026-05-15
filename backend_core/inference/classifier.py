@@ -27,8 +27,8 @@ Other best practices:
   - SHA-256 integrity hash on saved model
   - Clip stats saved for inference-time outlier clipping
 
-Run: .venv\Scripts\python.exe src/models/classifier.py
-     .venv\Scripts\python.exe src/models/classifier.py --tune
+Run: .venv\Scripts\python.exe backend_core/models/classifier.py
+     .venv\Scripts\python.exe backend_core/models/classifier.py --tune
 """
 
 import os

@@ -161,7 +161,7 @@ FRED_SERIES = {
 import os
 from pathlib import Path
 
-# Base project directory (one level up from src/)
+# Base project directory (one level up from backend_core/)
 BASE_DIR = Path(__file__).resolve().parents[1]
 
 # Data directories

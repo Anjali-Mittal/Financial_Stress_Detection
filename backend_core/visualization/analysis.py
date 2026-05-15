@@ -8,13 +8,14 @@ Answers:
 4. Altman Z distribution: healthy vs distressed
 5. Distress signal timeline — how early do signals appear?
 
-Run: .venv\Scripts\python.exe src/visualization/analysis.py
+Run: .venv\Scripts\python.exe backend_core/visualization/analysis.py
 Outputs: reports/plots/ — all charts as PNG
 """
 
 import os
 import sys
 import warnings
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -371,6 +372,7 @@ def plot_distress_timeline(df: pd.DataFrame):
     For each bankrupt company: shows Altman Z trajectory leading up to bankruptcy.
     Key question: how many years before collapse does Z drop below 1.81?
     """
+    # pyrefly: ignore [missing-import]
     from backend_core.config import DISTRESS_EVENTS
 
     distress_tickers = [t for t in DISTRESS_EVENTS

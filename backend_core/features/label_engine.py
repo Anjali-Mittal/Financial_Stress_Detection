@@ -14,7 +14,7 @@ Two strategies:
    - Ohlson (1980): O-score components
    These are not made-up numbers — they're calibrated to real failed firms.
 
-Run standalone: .venv\Scripts\python.exe src/features/label_engine.py
+Run standalone: .venv\Scripts\python.exe backend_core/features/label_engine.py
 Or imported by engineer.py
 """
 

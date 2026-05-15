@@ -1,5 +1,5 @@
 """
-src/models/live_scorer.py — Score any ticker live, even if not in dataset
+backend_core/models/live_scorer.py — Score any ticker live, even if not in dataset
 
 Fetches fresh data from SEC EDGAR + yfinance, computes features on the fly,
 then runs all 3 models. Used by the dashboard for unknown tickers.

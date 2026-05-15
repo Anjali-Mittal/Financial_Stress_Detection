@@ -14,7 +14,7 @@ Altman Z-Score adjustments:
   - Z-Score is one input signal, not the verdict driver
   - Red flags use sector-adjusted thresholds
 
-Run: .venv\\Scripts\\python.exe src/models/scorer.py --ticker AAPL
+Run: .venv\\Scripts\\python.exe backend_core/models/scorer.py --ticker AAPL
 """
 
 import os
@@ -40,29 +40,52 @@ from backend_core.config import (
     FEATURE_MATRIX_PATH, SCORES_CSV_PATH,
 )
 
-# ─── HACK: Comprehensively map 'src.*' → 'backend_core.*' for pickle compat ──
-# The .pkl files were trained when the package was called 'src'.
-# Pickle stores the full module path of every class, so we must register
-# ALL submodules under the old 'src.*' namespace before any unpickling.
-import importlib
-import pkgutil
+# ─── HACK: Explicitly map 'backend_core.*' → 'backend_core.*' for pickle compat ─────────
+# The .pkl files were trained when the package was named 'backend_core'.
+# Pickle stores the full dotted class path, so every sub-namespace
+# that the pickled classes lived in must exist in sys.modules.
+import importlib as _il
+
+def _map_backend_core(bc_name: str, backend_core_name: str = None):
+    """Import backend_core.<bc_name> and register it as backend_core.<backend_core_name>."""
+    backend_core_name = backend_core_name or bc_name
+    full_bc  = f"backend_core.{bc_name}"  if bc_name else "backend_core"
+    full_backend_core = f"backend_core.{backend_core_name}"           if backend_core_name else "backend_core"
+    try:
+        mod = _il.import_module(full_bc)
+        sys.modules.setdefault(full_backend_core, mod)
+    except Exception as _e:
+        pass  # non-fatal — only the modules the pkl actually needs matter
+
 try:
     import backend_core as _bc
-    sys.modules.setdefault('src', _bc)
-    for _importer, _modname, _ispkg in pkgutil.walk_packages(
-        path=_bc.__path__,
-        prefix='backend_core.',
-        onerror=lambda x: None,
-    ):
-        _src_name = _modname.replace('backend_core.', 'src.', 1)
-        if _src_name not in sys.modules:
-            try:
-                sys.modules[_src_name] = importlib.import_module(_modname)
-            except Exception:
-                pass
+    sys.modules.setdefault("backend_core", _bc)
+
+    # Top-level sub-packages
+    _map_backend_core("models")
+    _map_backend_core("features")
+    _map_backend_core("inference")
+    _map_backend_core("data")
+    _map_backend_core("utils")
+    _map_backend_core("config")
+    _map_backend_core("visualization")
+
+    # backend_core.models.* → backend_core.models.*
+    for _sub in ["classifier", "clustering", "trend", "scorer",
+                 "live_scorer", "model_utils"]:
+        _map_backend_core(f"models.{_sub}")
+
+    # backend_core.features.* → backend_core.features.*
+    for _sub in ["engineering", "macro", "ratios", "pipeline"]:
+        _map_backend_core(f"features.{_sub}")
+
+    # backend_core.inference.* → backend_core.inference.*
+    for _sub in ["scorer", "live_scorer"]:
+        _map_backend_core(f"inference.{_sub}")
+
 except ImportError:
     pass
-# ─────────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 
 logger = get_logger("scorer", LOGS_DIR / "scorer.log")
 
@@ -124,16 +147,16 @@ def load_all_models() -> dict:
     models = {}
     try:
         import pickle
-        # ─── HACK: Comprehensively remap src.* → backend_core.* for pickle ──
+        # ─── HACK: Comprehensively remap backend_core.* → backend_core.* for pickle ──
         import importlib, pkgutil
         import backend_core as _bc
-        sys.modules.setdefault('src', _bc)
+        sys.modules.setdefault('backend_core', _bc)
         for _importer, _modname, _ispkg in pkgutil.walk_packages(
             path=_bc.__path__, prefix='backend_core.', onerror=lambda x: None):
-            _src = _modname.replace('backend_core.', 'src.', 1)
-            if _src not in sys.modules:
+            _backend_core = _modname.replace('backend_core.', 'backend_core.', 1)
+            if _backend_core not in sys.modules:
                 try:
-                    sys.modules[_src] = importlib.import_module(_modname)
+                    sys.modules[_backend_core] = importlib.import_module(_modname)
                 except Exception:
                     pass
         # ─────────────────────────────────────────────────────────────────────

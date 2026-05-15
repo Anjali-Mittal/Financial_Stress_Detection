@@ -17,7 +17,7 @@ Other best practices:
 - Temporal analysis: pre/post 2020 cluster distress rates
 - SHA-256 integrity hash
 
-Run: .venv\Scripts\python.exe src/models/clustering.py
+Run: .venv\Scripts\python.exe backend_core/models/clustering.py
 """
 
 import os

@@ -23,7 +23,7 @@ Other best practices:
 - Wilcoxon rank-sum validation
 - SHA-256 integrity hash
 
-Run: .venv\Scripts\python.exe src/models/trend.py
+Run: .venv\Scripts\python.exe backend_core/models/trend.py
 """
 
 import os
