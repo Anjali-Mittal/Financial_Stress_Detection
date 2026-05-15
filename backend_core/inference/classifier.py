@@ -47,7 +47,21 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
 warnings.filterwarnings("ignore")
-# 'src' compatibility handled by src/ directory
+
+# ─── Legacy Compatibility ─────────────────────────────────────────────────────
+import pickle
+class LegacyUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module.startswith('src.'):
+            module = 'backend_core' + module[3:]
+        elif module == 'src':
+            module = 'backend_core'
+        return super().find_class(module, name)
+
+def load_legacy_pkl(file_path):
+    with open(str(file_path), "rb") as f:
+        return LegacyUnpickler(f).load()
+# ──────────────────────────────────────────────────────────────────────────────
 
 from backend_core.utils.logger import get_logger
 from backend_core.models.model_utils import ModelWithImputer
@@ -513,9 +527,7 @@ def save_model(production_model, scaler, features, threshold,
 def load_model(model_path=MODEL_PATH, meta_path=META_PATH):
     if not verify_integrity(model_path, meta_path):
         raise ValueError("Classifier integrity check failed")
-    
-    with open(str(model_path), "rb") as f:
-        return pickle.load(f)
+    return load_legacy_pkl(model_path)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

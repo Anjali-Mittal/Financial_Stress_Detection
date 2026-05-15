@@ -24,6 +24,7 @@ import warnings
 from pathlib import Path
 import numpy as np
 import pandas as pd
+import pickle
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
@@ -40,8 +41,19 @@ from backend_core.config import (
     FEATURE_MATRIX_PATH, SCORES_CSV_PATH,
 )
 
-# 'src' compatibility is now handled by the 'src/' directory in the project root.
-import backend_core
+# ─── Legacy Compatibility ─────────────────────────────────────────────────────
+class LegacyUnpickler(pickle.Unpickler):
+    """Redirects 'src' to 'backend_core' for pickled models trained in the old structure."""
+    def find_class(self, module, name):
+        if module.startswith('src.'):
+            module = 'backend_core' + module[3:]
+        elif module == 'src':
+            module = 'backend_core'
+        return super().find_class(module, name)
+
+def load_legacy_pkl(file_path):
+    with open(str(file_path), "rb") as f:
+        return LegacyUnpickler(f).load()
 # ──────────────────────────────────────────────────────────────────────────────
 
 logger = get_logger("scorer", LOGS_DIR / "scorer.log")
@@ -110,8 +122,7 @@ def load_all_models() -> dict:
         def load_pkl(path, meta_path):
             if not os.path.exists(str(path)):
                 return None
-            with open(str(path), "rb") as f:
-                return pickle.load(f)
+            return load_legacy_pkl(path)
 
         models["classifier"] = load_pkl(CLASSIFIER_PATH,  CLASSIFIER_META_PATH)
         models["clustering"]  = load_pkl(CLUSTERING_PATH, CLUSTERING_META_PATH)
