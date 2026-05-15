@@ -90,7 +90,8 @@ def load_all_models() -> dict:
                     content = f_check.read()
                     has_models = b"backend_core.models" in content
                     has_engine = b"backend_core.engine" in content
-                    logger.info(f"DIAGNOSTIC: classifier.pkl has 'models': {has_models}, 'engine': {has_engine}")
+                    has_finger = b"ENGINE_V1_VERIFIED" in content
+                    logger.info(f"DIAGNOSTIC: classifier.pkl has 'models': {has_models}, 'engine': {has_engine}, 'fingerprint': {has_finger}")
             # ----------------------
             with open(str(path), "rb") as f:
                 return pickle.load(f)
