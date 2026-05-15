@@ -41,19 +41,7 @@ from backend_core.config import (
     FEATURE_MATRIX_PATH, SCORES_CSV_PATH,
 )
 
-# ─── Legacy Compatibility ─────────────────────────────────────────────────────
-class LegacyUnpickler(pickle.Unpickler):
-    """Redirects 'src' to 'backend_core' for pickled models trained in the old structure."""
-    def find_class(self, module, name):
-        if module.startswith('src.'):
-            module = 'backend_core' + module[3:]
-        elif module == 'src':
-            module = 'backend_core'
-        return super().find_class(module, name)
-
-def load_legacy_pkl(file_path):
-    with open(str(file_path), "rb") as f:
-        return LegacyUnpickler(f).load()
+# Native backend_core model loading (standard pickle)
 # ──────────────────────────────────────────────────────────────────────────────
 
 logger = get_logger("scorer", LOGS_DIR / "scorer.log")
@@ -122,7 +110,8 @@ def load_all_models() -> dict:
         def load_pkl(path, meta_path):
             if not os.path.exists(str(path)):
                 return None
-            return load_legacy_pkl(path)
+            with open(str(path), "rb") as f:
+                return pickle.load(f)
 
         models["classifier"] = load_pkl(CLASSIFIER_PATH,  CLASSIFIER_META_PATH)
         models["clustering"]  = load_pkl(CLUSTERING_PATH, CLUSTERING_META_PATH)
