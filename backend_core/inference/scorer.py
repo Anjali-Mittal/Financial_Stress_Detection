@@ -59,14 +59,28 @@ def _map_src_to_bc(sub_name: str = None):
 try:
     import backend_core as _bc
     sys.modules["src"] = _bc
+    # logger not yet defined, using print for early diagnostics
+    # print("Mapping legacy 'src' namespace to 'backend_core'...")
 
-    # Map core sub-packages
+    # Map core sub-packages explicitly
     for _sub in ["models", "features", "inference", "data", "utils", "config"]:
-        _map_src_to_bc(_sub)
+        src_name = f"src.{_sub}"
+        bc_name = f"backend_core.{_sub}"
+        try:
+            mod = _il.import_module(bc_name)
+            sys.modules[src_name] = mod
+        except Exception:
+            pass
 
-    # Map specific model modules
+    # Map specific model modules that are likely in the pickles
     for _sub in ["classifier", "clustering", "trend", "scorer", "model_utils"]:
-        _map_src_to_bc(f"models.{_sub}")
+        src_name = f"src.models.{_sub}"
+        bc_name = f"backend_core.models.{_sub}"
+        try:
+            mod = _il.import_module(bc_name)
+            sys.modules[src_name] = mod
+        except Exception:
+            pass
 
 except ImportError:
     pass
@@ -136,6 +150,8 @@ def load_all_models() -> dict:
         import importlib, pkgutil
         import backend_core as _bc
         sys.modules.setdefault('src', _bc)
+        
+        # Walk through all submodules and register them in the 'src' namespace
         for _importer, _modname, _ispkg in pkgutil.walk_packages(
             path=_bc.__path__, prefix='backend_core.', onerror=lambda x: None):
             _src_modname = _modname.replace('backend_core.', 'src.', 1)
@@ -144,6 +160,14 @@ def load_all_models() -> dict:
                     sys.modules[_src_modname] = importlib.import_module(_modname)
                 except Exception:
                     pass
+        
+        # Special case: ensure src.models is explicitly available
+        if 'src.models' not in sys.modules:
+            try:
+                import backend_core.models as _bcm
+                sys.modules['src.models'] = _bcm
+            except Exception:
+                pass
         # ─────────────────────────────────────────────────────────────────────
 
         def load_pkl(path, meta_path):

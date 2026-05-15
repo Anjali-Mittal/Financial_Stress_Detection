@@ -33,6 +33,35 @@ if str(BASE_DIR) not in sys.path:
 if str(CORE_DIR) not in sys.path:
     sys.path.insert(0, str(CORE_DIR))
 
+# ─── HACK: Explicitly map 'src.*' → 'backend_core.*' for pickle compat ─────────
+import importlib as _il
+try:
+    import backend_core as _bc
+    sys.modules["src"] = _bc
+    
+    # Map core sub-packages explicitly
+    for _sub in ["models", "features", "inference", "data", "utils", "config"]:
+        src_name = f"src.{_sub}"
+        bc_name = f"backend_core.{_sub}"
+        try:
+            mod = _il.import_module(bc_name)
+            sys.modules[src_name] = mod
+        except Exception:
+            pass
+
+    # Map specific model modules that are likely in the pickles
+    for _sub in ["classifier", "clustering", "trend", "scorer", "model_utils"]:
+        src_name = f"src.models.{_sub}"
+        bc_name = f"backend_core.models.{_sub}"
+        try:
+            mod = _il.import_module(bc_name)
+            sys.modules[src_name] = mod
+        except Exception:
+            pass
+except ImportError:
+    pass
+# ─────────────────────────────────────────────────────────────────────────────
+
 from backend_core.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
 from backend_core.inference.scorer import (
     compute_stress_score, load_all_models, score_all, get_ticker_history,
