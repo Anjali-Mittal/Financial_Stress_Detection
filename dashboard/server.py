@@ -12,9 +12,13 @@ import os
 import sys
 import warnings
 from pathlib import Path
+from dotenv import load_dotenv
 import pandas as pd
 import numpy as np
 from flask import Flask, jsonify, request, send_from_directory
+
+# Load .env FIRST — must happen before any os.getenv() calls
+load_dotenv()
 
 # ─── THE RENAMING FIX ──────────────────────────────────────────────────────
 import os
