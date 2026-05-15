@@ -13,3 +13,4 @@ scipy
 pathlib
 huggingface_hub>=1.0.0
 hf-xet
+pyarrow
