@@ -40,50 +40,8 @@ from backend_core.config import (
     FEATURE_MATRIX_PATH, SCORES_CSV_PATH,
 )
 
-# ─── HACK: Explicitly map 'src.*' → 'backend_core.*' for pickle compat ─────────
-# The .pkl files were trained when the package was named 'src'.
-# Pickle stores the full dotted class path, so every sub-namespace
-# that the pickled classes lived in must exist in sys.modules.
-import importlib as _il
-
-def _map_src_to_bc(sub_name: str = None):
-    """Map src.<sub_name> to backend_core.<sub_name> in sys.modules."""
-    src_name = f"src.{sub_name}" if sub_name else "src"
-    bc_name = f"backend_core.{sub_name}" if sub_name else "backend_core"
-    try:
-        mod = _il.import_module(bc_name)
-        sys.modules[src_name] = mod
-    except Exception:
-        pass
-
-try:
-    import backend_core as _bc
-    sys.modules["src"] = _bc
-    # logger not yet defined, using print for early diagnostics
-    # print("Mapping legacy 'src' namespace to 'backend_core'...")
-
-    # Map core sub-packages explicitly
-    for _sub in ["models", "features", "inference", "data", "utils", "config"]:
-        src_name = f"src.{_sub}"
-        bc_name = f"backend_core.{_sub}"
-        try:
-            mod = _il.import_module(bc_name)
-            sys.modules[src_name] = mod
-        except Exception:
-            pass
-
-    # Map specific model modules that are likely in the pickles
-    for _sub in ["classifier", "clustering", "trend", "scorer", "model_utils"]:
-        src_name = f"src.models.{_sub}"
-        bc_name = f"backend_core.models.{_sub}"
-        try:
-            mod = _il.import_module(bc_name)
-            sys.modules[src_name] = mod
-        except Exception:
-            pass
-
-except ImportError:
-    pass
+# 'src' compatibility is now handled by the 'src/' directory in the project root.
+import backend_core
 # ──────────────────────────────────────────────────────────────────────────────
 
 logger = get_logger("scorer", LOGS_DIR / "scorer.log")
@@ -146,29 +104,8 @@ def load_all_models() -> dict:
     models = {}
     try:
         import pickle
-        # ─── HACK: Comprehensively remap src.* → backend_core.* for pickle ──
-        import importlib, pkgutil
-        import backend_core as _bc
-        sys.modules.setdefault('src', _bc)
-        
-        # Walk through all submodules and register them in the 'src' namespace
-        for _importer, _modname, _ispkg in pkgutil.walk_packages(
-            path=_bc.__path__, prefix='backend_core.', onerror=lambda x: None):
-            _src_modname = _modname.replace('backend_core.', 'src.', 1)
-            if _src_modname not in sys.modules:
-                try:
-                    sys.modules[_src_modname] = importlib.import_module(_modname)
-                except Exception:
-                    pass
-        
-        # Special case: ensure src.models is explicitly available
-        if 'src.models' not in sys.modules:
-            try:
-                import backend_core.models as _bcm
-                sys.modules['src.models'] = _bcm
-            except Exception:
-                pass
-        # ─────────────────────────────────────────────────────────────────────
+        # ─── 'src' compatibility handled by src/ directory ──
+        # ───────────────────────────────────────────────────
 
         def load_pkl(path, meta_path):
             if not os.path.exists(str(path)):

@@ -43,26 +43,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
 warnings.filterwarnings("ignore")
-
-# ─── HACK: Explicitly map 'src.*' → 'backend_core.*' for pickle compat ─────────
-import sys
-import importlib as _il
-def _map_src_to_bc(sub_name: str = None):
-    src_name = f"src.{sub_name}" if sub_name else "src"
-    bc_name = f"backend_core.{sub_name}" if sub_name else "backend_core"
-    try:
-        mod = _il.import_module(bc_name)
-        sys.modules[src_name] = mod
-    except Exception: pass
-try:
-    import backend_core as _bc
-    sys.modules["src"] = _bc
-    for _sub in ["models", "features", "inference", "data", "utils", "config"]:
-        _map_src_to_bc(_sub)
-    for _sub in ["classifier", "clustering", "trend", "scorer", "model_utils"]:
-        _map_src_to_bc(f"models.{_sub}")
-except ImportError: pass
-# ──────────────────────────────────────────────────────────────────────────────
+# 'src' compatibility handled by src/ directory
 
 from backend_core.utils.logger import get_logger
 from backend_core.config import (
@@ -433,18 +414,6 @@ def load_model(model_path=MODEL_PATH, meta_path=META_PATH):
     if not verify_integrity(model_path, meta_path):
         raise ValueError("Trend integrity check failed")
     
-    # ─── HACK: Comprehensively remap src.* → backend_core.* for pickle ──
-    import importlib, pkgutil
-    import backend_core as _bc
-    sys.modules.setdefault('src', _bc)
-    for _importer, _modname, _ispkg in pkgutil.walk_packages(
-        path=_bc.__path__, prefix='backend_core.', onerror=lambda x: None):
-        _src_modname = _modname.replace('backend_core.', 'src.', 1)
-        if _src_modname not in sys.modules:
-            try: sys.modules[_src_modname] = importlib.import_module(_modname)
-            except Exception: pass
-    # ─────────────────────────────────────────────────────────────────────
-
     with open(str(model_path), "rb") as f:
         return pickle.load(f)
 
