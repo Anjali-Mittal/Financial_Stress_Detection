@@ -1,11 +1,11 @@
 """
-backend_core/models/live_scorer.py — Score any ticker live, even if not in dataset
+backend_core.engine/live_scorer.py — Score any ticker live, even if not in dataset
 
 Fetches fresh data from SEC EDGAR + yfinance, computes features on the fly,
 then runs all 3 models. Used by the dashboard for unknown tickers.
 
 Usage:
-    from backend_core.models.live_scorer import score_live_ticker
+    from backend_core.engine.live_scorer import score_live_ticker
     report = score_live_ticker("NVDA")
 """
 
@@ -223,7 +223,7 @@ def score_live_ticker(ticker: str, models: dict = None,
         df = pd.read_csv(str(FEATURE_MATRIX_PATH))
         if ticker in df["ticker"].values:
             progress("cache", "Found in dataset — using cached features")
-            from backend_core.inference.scorer import compute_stress_score, load_all_models
+            from backend_core.engine.scorer import compute_stress_score, load_all_models
             if models is None:
                 models = load_all_models()
             return compute_stress_score(ticker, models)
@@ -272,10 +272,10 @@ def score_live_ticker(ticker: str, models: dict = None,
     # 4. Run models
     progress("score", "Running distress models...")
     if models is None:
-        from backend_core.inference.scorer import load_all_models
+        from backend_core.engine.scorer import load_all_models
         models = load_all_models()
 
-    from backend_core.inference.scorer import (
+    from backend_core.engine.scorer import (
         get_classifier_score, get_trend_score, get_cluster_score,
         compute_red_flags, interpret_altman, interpret_piotroski,
         adjusted_altman_z, WEIGHTS, LOW_Z_SECTORS,
@@ -290,7 +290,7 @@ def score_live_ticker(ticker: str, models: dict = None,
 
     # Try to get trend from history
     try:
-        from backend_core.inference.trend import predict_trend_from_history
+        from backend_core.engine.trend import predict_trend_from_history
         # Build a DataFrame from all available years
         all_years_data = []
         income   = statements.get("income",   pd.DataFrame())

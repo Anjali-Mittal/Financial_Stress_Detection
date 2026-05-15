@@ -20,30 +20,19 @@ from flask import Flask, jsonify, request, send_from_directory
 # Load .env FIRST — must happen before any os.getenv() calls
 load_dotenv()
 
-# ─── THE RENAMING FIX ──────────────────────────────────────────────────────
-import os
-import sys
-from pathlib import Path
-
+# --- Project Root Configuration ---
 BASE_DIR = Path(__file__).resolve().parent.parent
-CORE_DIR = BASE_DIR / "backend_core"
-
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
-if str(CORE_DIR) not in sys.path:
-    sys.path.insert(0, str(CORE_DIR))
 
-# 'src' compatibility is now handled by the 'src/' directory in the project root.
 
 from backend_core.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
-from backend_core.inference.scorer import (
+from backend_core.engine.scorer import (
     compute_stress_score, load_all_models, score_all, get_ticker_history,
 )
 from backend_core.utils.hf_sync import sync_models
 from backend_core.utils.logger import get_logger
-# ─────────────────────────────────────────────────────────────────────────────
-# ─────────────────────────────────────────────────────────────────────────────
-# ─────────────────────────────────────────────────────────────────────────────
+# --- Initialization ---
 
 logger = get_logger("dashboard", "logs/dashboard.log")
 
@@ -55,14 +44,8 @@ logger.info(f"CWD: {os.getcwd()}")
 logger.info("Syncing models from Hugging Face...")
 sync_models()
 
-# DIAGNOSTIC: List files in models directory
-from backend_core.config import MODELS_DIR, CLASSIFIER_PATH
-logger.info(f"Checking MODELS_DIR: {MODELS_DIR}")
-if os.path.exists(MODELS_DIR):
-    logger.info(f"Models directory contents: {os.listdir(MODELS_DIR)}")
-else:
-    logger.warning("MODELS_DIR does not exist after sync!")
-logger.info(f"Classifier path: {CLASSIFIER_PATH} (Exists: {os.path.exists(CLASSIFIER_PATH)})")
+# Initial model load
+logger.info("Loading ML models...")
 
 
 _models = None

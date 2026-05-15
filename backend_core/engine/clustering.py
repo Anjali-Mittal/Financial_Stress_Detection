@@ -1,8 +1,7 @@
 """
-models/clustering.py — K-Means Peer Similarity Engine
+engine/clustering.py — K-Means Peer Similarity Engine
 
 Split awareness:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 - Loads train/val/test ticker split from classifier_meta.json
 - Cluster GEOMETRY (PCA, KMeans fit) uses train companies only
 - Cluster PROFILES (distress rates, risk scores) use train companies only
@@ -17,7 +16,7 @@ Other best practices:
 - Temporal analysis: pre/post 2020 cluster distress rates
 - SHA-256 integrity hash
 
-Run: .venv\Scripts\python.exe backend_core/models/clustering.py
+Run: .venv\Scripts\python.exe backend_core/engine/clustering.py
 """
 
 import os
@@ -37,7 +36,6 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
 warnings.filterwarnings("ignore")
-import pickle
 
 from backend_core.utils.logger import get_logger
 from backend_core.config import (

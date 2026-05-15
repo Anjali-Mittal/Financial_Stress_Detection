@@ -23,7 +23,7 @@ Other best practices:
 - Wilcoxon rank-sum validation
 - SHA-256 integrity hash
 
-Run: .venv\Scripts\python.exe backend_core/models/trend.py
+Run: .venv\Scripts\python.exe backend_core.engine/trend.py
 """
 
 import os
@@ -43,7 +43,6 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
 warnings.filterwarnings("ignore")
-import pickle
 
 from backend_core.utils.logger import get_logger
 from backend_core.config import (

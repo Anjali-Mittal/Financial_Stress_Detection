@@ -1,34 +1,11 @@
 """
-models/classifier.py — XGBoost Distress Classifier (Production Grade v3.2)
+engine/classifier.py — XGBoost Distress Classifier (Production Grade v3.2)
 
-Split strategy:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NO COMPANY APPEARS IN MORE THAN ONE SPLIT.
+Split strategy: NO COMPANY APPEARS IN MORE THAN ONE SPLIT (Company-level stratified).
+Eliminates all cross-split leakage and temporal leakage.
 
-Step 1 — Company-level partition (done FIRST, before any year logic):
-  - All years of a company go to exactly one of: train / val / test
-  - 70% of companies → train
-  - 15% of companies → val
-  - 15% of companies → test
-  - Stratified by distress label so each split has distressed companies
-
-Step 2 — Synthetic data appended to train only (no ticker)
-
-This eliminates ALL cross-split leakage:
-  - No same-company leakage across years
-  - No future data leakage (temporal ordering preserved within each split)
-  - Val used for: early stopping, threshold tuning
-  - Test touched exactly ONCE for final evaluation
-
-Other best practices:
-  - SMOTE on train only
-  - Walk-forward CV on train companies only
-  - Imputer/scaler fit on train only
-  - SHA-256 integrity hash on saved model
-  - Clip stats saved for inference-time outlier clipping
-
-Run: .venv\Scripts\python.exe backend_core/models/classifier.py
-     .venv\Scripts\python.exe backend_core/models/classifier.py --tune
+Run: .venv\Scripts\python.exe backend_core/engine/classifier.py
+     .venv\Scripts\python.exe backend_core/engine/classifier.py --tune
 """
 
 import os
@@ -47,10 +24,9 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
 warnings.filterwarnings("ignore")
-import pickle
 
 from backend_core.utils.logger import get_logger
-from backend_core.models.model_utils import ModelWithImputer
+from backend_core.engine.model_utils import ModelWithImputer
 from backend_core.config import (
     LOGS_DIR, MODELS_DIR,
     CLASSIFIER_PATH, CLASSIFIER_META_PATH,
