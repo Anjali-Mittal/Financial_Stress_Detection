@@ -456,8 +456,7 @@ def save_model(production_model, scaler, features, threshold,
 
     obj = {"model": production_model, "scaler": scaler,
            "features": features, "threshold": threshold,
-           "clip_stats": clip_stats, "version": "3.2",
-           "fingerprint": "ENGINE_V1_VERIFIED"}
+           "clip_stats": clip_stats, "version": "3.2"}
 
     with open(str(MODEL_PATH), "wb") as f:
         pickle.dump(obj, f)

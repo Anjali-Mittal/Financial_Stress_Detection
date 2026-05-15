@@ -84,15 +84,6 @@ def load_all_models() -> dict:
         def load_pkl(path, meta_path):
             if not os.path.exists(str(path)):
                 return None
-            # --- DIAGNOSTIC SPY ---
-            if "classifier.pkl" in str(path):
-                with open(str(path), "rb") as f_check:
-                    content = f_check.read()
-                    has_models = b"backend_core.models" in content
-                    has_engine = b"backend_core.engine" in content
-                    has_finger = b"ENGINE_V1_VERIFIED" in content
-                    logger.info(f"DIAGNOSTIC: classifier.pkl has 'models': {has_models}, 'engine': {has_engine}, 'fingerprint': {has_finger}")
-            # ----------------------
             with open(str(path), "rb") as f:
                 return pickle.load(f)
         models["classifier"] = load_pkl(CLASSIFIER_PATH,  CLASSIFIER_META_PATH)
