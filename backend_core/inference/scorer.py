@@ -40,48 +40,33 @@ from backend_core.config import (
     FEATURE_MATRIX_PATH, SCORES_CSV_PATH,
 )
 
-# ─── HACK: Explicitly map 'backend_core.*' → 'backend_core.*' for pickle compat ─────────
-# The .pkl files were trained when the package was named 'backend_core'.
+# ─── HACK: Explicitly map 'src.*' → 'backend_core.*' for pickle compat ─────────
+# The .pkl files were trained when the package was named 'src'.
 # Pickle stores the full dotted class path, so every sub-namespace
 # that the pickled classes lived in must exist in sys.modules.
 import importlib as _il
 
-def _map_backend_core(bc_name: str, backend_core_name: str = None):
-    """Import backend_core.<bc_name> and register it as backend_core.<backend_core_name>."""
-    backend_core_name = backend_core_name or bc_name
-    full_bc  = f"backend_core.{bc_name}"  if bc_name else "backend_core"
-    full_backend_core = f"backend_core.{backend_core_name}"           if backend_core_name else "backend_core"
+def _map_src_to_bc(sub_name: str = None):
+    """Map src.<sub_name> to backend_core.<sub_name> in sys.modules."""
+    src_name = f"src.{sub_name}" if sub_name else "src"
+    bc_name = f"backend_core.{sub_name}" if sub_name else "backend_core"
     try:
-        mod = _il.import_module(full_bc)
-        sys.modules.setdefault(full_backend_core, mod)
-    except Exception as _e:
-        pass  # non-fatal — only the modules the pkl actually needs matter
+        mod = _il.import_module(bc_name)
+        sys.modules[src_name] = mod
+    except Exception:
+        pass
 
 try:
     import backend_core as _bc
-    sys.modules.setdefault("backend_core", _bc)
+    sys.modules["src"] = _bc
 
-    # Top-level sub-packages
-    _map_backend_core("models")
-    _map_backend_core("features")
-    _map_backend_core("inference")
-    _map_backend_core("data")
-    _map_backend_core("utils")
-    _map_backend_core("config")
-    _map_backend_core("visualization")
+    # Map core sub-packages
+    for _sub in ["models", "features", "inference", "data", "utils", "config"]:
+        _map_src_to_bc(_sub)
 
-    # backend_core.models.* → backend_core.models.*
-    for _sub in ["classifier", "clustering", "trend", "scorer",
-                 "live_scorer", "model_utils"]:
-        _map_backend_core(f"models.{_sub}")
-
-    # backend_core.features.* → backend_core.features.*
-    for _sub in ["engineering", "macro", "ratios", "pipeline"]:
-        _map_backend_core(f"features.{_sub}")
-
-    # backend_core.inference.* → backend_core.inference.*
-    for _sub in ["scorer", "live_scorer"]:
-        _map_backend_core(f"inference.{_sub}")
+    # Map specific model modules
+    for _sub in ["classifier", "clustering", "trend", "scorer", "model_utils"]:
+        _map_src_to_bc(f"models.{_sub}")
 
 except ImportError:
     pass
@@ -147,16 +132,16 @@ def load_all_models() -> dict:
     models = {}
     try:
         import pickle
-        # ─── HACK: Comprehensively remap backend_core.* → backend_core.* for pickle ──
+        # ─── HACK: Comprehensively remap src.* → backend_core.* for pickle ──
         import importlib, pkgutil
         import backend_core as _bc
-        sys.modules.setdefault('backend_core', _bc)
+        sys.modules.setdefault('src', _bc)
         for _importer, _modname, _ispkg in pkgutil.walk_packages(
             path=_bc.__path__, prefix='backend_core.', onerror=lambda x: None):
-            _backend_core = _modname.replace('backend_core.', 'backend_core.', 1)
-            if _backend_core not in sys.modules:
+            _src_modname = _modname.replace('backend_core.', 'src.', 1)
+            if _src_modname not in sys.modules:
                 try:
-                    sys.modules[_backend_core] = importlib.import_module(_modname)
+                    sys.modules[_src_modname] = importlib.import_module(_modname)
                 except Exception:
                     pass
         # ─────────────────────────────────────────────────────────────────────
