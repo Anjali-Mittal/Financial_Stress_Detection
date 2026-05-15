@@ -26,19 +26,19 @@ import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-CORE_DIR = BASE_DIR / "src"
+CORE_DIR = BASE_DIR / "backend_core"
 
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 if str(CORE_DIR) not in sys.path:
     sys.path.insert(0, str(CORE_DIR))
 
-from src.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
-from src.inference.scorer import (
+from backend_core.config import FEATURE_MATRIX_PATH, SCORES_CSV_PATH
+from backend_core.inference.scorer import (
     compute_stress_score, load_all_models, score_all, get_ticker_history,
 )
-from src.utils.hf_sync import sync_models
-from src.utils.logger import get_logger
+from backend_core.utils.hf_sync import sync_models
+from backend_core.utils.logger import get_logger
 # ─────────────────────────────────────────────────────────────────────────────
 # ─────────────────────────────────────────────────────────────────────────────
 # ─────────────────────────────────────────────────────────────────────────────
@@ -54,7 +54,7 @@ logger.info("Syncing models from Hugging Face...")
 sync_models()
 
 # DIAGNOSTIC: List files in models directory
-from src.config import MODELS_DIR, CLASSIFIER_PATH
+from backend_core.config import MODELS_DIR, CLASSIFIER_PATH
 logger.info(f"Checking MODELS_DIR: {MODELS_DIR}")
 if os.path.exists(MODELS_DIR):
     logger.info(f"Models directory contents: {os.listdir(MODELS_DIR)}")
@@ -243,7 +243,7 @@ def api_history(ticker):
 def api_live(ticker):
     ticker = ticker.upper().strip()
     try:
-        from src.inference.live_scorer import score_live_ticker
+        from backend_core.inference.live_scorer import score_live_ticker
         report = score_live_ticker(ticker, get_models())
         return jsonify(clean_dict(report))
     except Exception as e:
