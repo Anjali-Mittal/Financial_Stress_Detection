@@ -40,10 +40,26 @@ from backend_core.config import (
     FEATURE_MATRIX_PATH, SCORES_CSV_PATH,
 )
 
-# ─── HACK: Map 'src' to 'backend_core' globally for pickle compatibility ──────
+# ─── HACK: Comprehensively map 'src.*' → 'backend_core.*' for pickle compat ──
+# The .pkl files were trained when the package was called 'src'.
+# Pickle stores the full module path of every class, so we must register
+# ALL submodules under the old 'src.*' namespace before any unpickling.
+import importlib
+import pkgutil
 try:
-    import backend_core
-    sys.modules['src'] = backend_core
+    import backend_core as _bc
+    sys.modules.setdefault('src', _bc)
+    for _importer, _modname, _ispkg in pkgutil.walk_packages(
+        path=_bc.__path__,
+        prefix='backend_core.',
+        onerror=lambda x: None,
+    ):
+        _src_name = _modname.replace('backend_core.', 'src.', 1)
+        if _src_name not in sys.modules:
+            try:
+                sys.modules[_src_name] = importlib.import_module(_modname)
+            except Exception:
+                pass
 except ImportError:
     pass
 # ─────────────────────────────────────────────────────────────────────────────
@@ -108,9 +124,18 @@ def load_all_models() -> dict:
     models = {}
     try:
         import pickle
-        # ─── HACK: Map 'src' to 'backend_core' for pickle compatibility ───────
-        import backend_core
-        sys.modules['src'] = backend_core
+        # ─── HACK: Comprehensively remap src.* → backend_core.* for pickle ──
+        import importlib, pkgutil
+        import backend_core as _bc
+        sys.modules.setdefault('src', _bc)
+        for _importer, _modname, _ispkg in pkgutil.walk_packages(
+            path=_bc.__path__, prefix='backend_core.', onerror=lambda x: None):
+            _src = _modname.replace('backend_core.', 'src.', 1)
+            if _src not in sys.modules:
+                try:
+                    sys.modules[_src] = importlib.import_module(_modname)
+                except Exception:
+                    pass
         # ─────────────────────────────────────────────────────────────────────
 
         def load_pkl(path, meta_path):
