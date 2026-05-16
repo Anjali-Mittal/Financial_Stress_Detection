@@ -20,9 +20,10 @@
             <div class="sidebar__brand">
                 <div class="sidebar__logo">F</div>
                 <div>
-                    <div class="sidebar__title">Fintellix
+                    <div class="sidebar__title">
+                        Fintellix
                         <span
-                            style="font-size:9px;background:var(--accent-gold);color:#0c0d0f;padding:1px 5px;border-radius:3px;vertical-align:middle;margin-left:5px;font-weight:600;letter-spacing:0.04em">PRO</span>
+                            style="font-size:9px;background:var(--teal);color:#060e12;padding:1px 5px;border-radius:2px;font-weight:700;letter-spacing:0.06em;font-family:var(--font-mono)">PRO</span>
                     </div>
                     <div class="sidebar__subtitle">Risk Intelligence Suite</div>
                 </div>
@@ -33,7 +34,7 @@
 
                 <button class="nav-item active" data-view="overview">
                     <span class="nav-item__icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="7" height="7" rx="1" />
                             <rect x="14" y="3" width="7" height="7" rx="1" />
@@ -46,7 +47,7 @@
 
                 <button class="nav-item" data-view="companies">
                     <span class="nav-item__icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 21h18" />
                             <path d="M5 21V7l8-4v18" />
@@ -61,7 +62,7 @@
 
                 <button class="nav-item" data-view="sectors">
                     <span class="nav-item__icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="20" x2="18" y2="10" />
                             <line x1="12" y1="20" x2="12" y2="4" />
@@ -75,7 +76,7 @@
 
                 <button class="nav-item" data-view="live">
                     <span class="nav-item__icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8" />
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -105,18 +106,18 @@
                 <div class="header__right">
                     <div class="search-box">
                         <span class="search-box__icon">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8" />
                                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
                             </svg>
                         </span>
                         <input type="text" id="header-search" class="search-box__input"
-                            placeholder="Search ticker, e.g. AAPL">
+                            placeholder="Search ticker e.g. AAPL">
                     </div>
                     <div class="status-indicator">
                         <div class="status-dot"></div>
-                        <span class="status-text">Live</span>
+                        <span class="status-text">Terminal Online</span>
                     </div>
                 </div>
             </header>
@@ -124,7 +125,7 @@
             <!-- Content -->
             <div class="content">
 
-                <!-- ═══ Overview View ═══ -->
+                <!-- ═══ Overview ═══ -->
                 <div class="view active" id="view-overview">
                     <div class="section-header">
                         <div>
@@ -134,42 +135,43 @@
                         </div>
                     </div>
 
-                    <div class="kpi-grid" id="overview-kpis">
-                        <!-- Filled by JS -->
-                    </div>
+                    <div class="kpi-grid" id="overview-kpis"></div>
 
                     <div class="charts-grid">
                         <div class="card">
-                            <h3
-                                style="font-size:var(--text-sm);color:var(--text-muted);font-weight:500;margin-bottom:var(--space-5);letter-spacing:0.02em">
-                                Score Distribution</h3>
+                            <div
+                                style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp6)">
+                                <span
+                                    style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono)">Score
+                                    Distribution</span>
+                            </div>
                             <div class="chart-container"><canvas id="chart-score-dist"></canvas></div>
                         </div>
                         <div class="card">
-                            <h3
-                                style="font-size:var(--text-sm);color:var(--text-muted);font-weight:500;margin-bottom:var(--space-5);letter-spacing:0.02em">
-                                Risk Breakdown</h3>
+                            <div
+                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
+                                Risk Breakdown</div>
                             <div class="chart-container"><canvas id="chart-risk-donut"></canvas></div>
                         </div>
                     </div>
 
                     <div class="charts-grid">
                         <div class="card">
-                            <h3
-                                style="font-size:var(--text-sm);color:var(--text-muted);font-weight:500;margin-bottom:var(--space-5);letter-spacing:0.02em">
-                                Sector Average Stress</h3>
+                            <div
+                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
+                                Sector Avg Stress</div>
                             <div class="chart-container"><canvas id="chart-sector-bars"></canvas></div>
                         </div>
                         <div class="card">
-                            <h3
-                                style="font-size:var(--text-sm);color:var(--text-muted);font-weight:500;margin-bottom:var(--space-5);letter-spacing:0.02em">
-                                Top 10 Most Stressed</h3>
+                            <div
+                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
+                                Top 10 Most Stressed</div>
                             <div id="overview-top-stressed"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ═══ Companies View ═══ -->
+                <!-- ═══ Companies ═══ -->
                 <div class="view" id="view-companies">
                     <div class="section-header">
                         <div>
@@ -196,12 +198,10 @@
                         </select>
                     </div>
 
-                    <div id="companies-list">
-                        <!-- Filled by JS -->
-                    </div>
+                    <div id="companies-list"></div>
                 </div>
 
-                <!-- ═══ Sectors View ═══ -->
+                <!-- ═══ Sectors ═══ -->
                 <div class="view" id="view-sectors">
                     <div class="section-header">
                         <div>
@@ -212,39 +212,39 @@
                     <div id="sectors-content"></div>
                 </div>
 
-                <!-- ═══ Detail View ═══ -->
+                <!-- ═══ Detail ═══ -->
                 <div class="view" id="view-detail">
                     <div id="detail-header"></div>
                     <div class="charts-grid mt-4">
                         <div class="card">
-                            <h3
-                                style="font-size:var(--text-sm);color:var(--text-muted);font-weight:500;margin-bottom:var(--space-5)">
-                                Financial Ratios</h3>
+                            <div
+                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
+                                Financial Ratios</div>
                             <div id="detail-ratios"></div>
                         </div>
                         <div class="card">
                             <div id="detail-gauge"></div>
-                            <h3
-                                style="font-size:var(--text-sm);color:var(--text-muted);font-weight:500;margin:var(--space-5) 0 var(--space-4)">
-                                Model Components</h3>
+                            <div
+                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin:var(--sp7) 0 var(--sp5)">
+                                Model Components</div>
                             <div id="detail-models"></div>
                         </div>
                     </div>
                     <div class="card mt-6">
-                        <h3
-                            style="font-size:var(--text-sm);color:var(--text-muted);font-weight:500;margin-bottom:var(--space-5)">
-                            Historical Trends</h3>
+                        <div
+                            style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
+                            Historical Trends</div>
                         <div class="chart-container chart-container--lg"><canvas id="chart-history"></canvas></div>
                     </div>
                     <div class="card mt-6">
-                        <h3
-                            style="font-size:var(--text-sm);color:var(--text-muted);font-weight:500;margin-bottom:var(--space-5)">
-                            Red Flags</h3>
+                        <div
+                            style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
+                            Red Flags</div>
                         <div id="detail-flags"></div>
                     </div>
                 </div>
 
-                <!-- ═══ Live Scorer View ═══ -->
+                <!-- ═══ Live Scorer ═══ -->
                 <div class="view" id="view-live">
                     <div class="live-search">
                         <h1 class="live-search__title">Live Ticker Scorer</h1>
@@ -261,7 +261,7 @@
                     <div id="live-result"></div>
                 </div>
 
-            </div><!-- /content -->
+            </div>
         </main>
     </div>
 
@@ -274,7 +274,6 @@
     <script src="js/charts.js"></script>
     <script src="js/components.js"></script>
     <script src="js/app.js"></script>
-
 </body>
 
 </html>

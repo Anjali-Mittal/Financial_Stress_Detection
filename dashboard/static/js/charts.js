@@ -6,18 +6,18 @@
 const Charts = {
     instances: {},
     colors: {
-        blue: '#00f2ff', /* Cyber Cyan */
-        cyan: '#22d3ee',
+        blue: '#6fa3d0', 
+        cyan: '#3ecfb2',
         indigo: '#818cf8',
-        green: '#00ff9f', /* Matrix Green */
-        yellow: '#faff00', /* Neon Yellow */
-        orange: '#ff9d00',
-        red: '#ff0055', /* Cyber Red */
-        purple: '#bc13fe',
-        muted: '#5e707a',
-        border: 'rgba(0, 242, 255, 0.2)',
-        card: 'rgba(10, 18, 26, 0.8)',
-        bg: '#05080a',
+        green: '#3ecfb2', /* Mint/Teal */
+        yellow: '#c9a84c', /* Gold */
+        orange: '#e0823c',
+        red: '#e05260', /* Ruby/Red */
+        purple: '#a78bfa',
+        muted: '#5a5753',
+        border: 'rgba(255, 255, 255, 0.07)',
+        card: '#161719',
+        bg: '#0c0d0f',
     },
 
     _destroy(id) {
@@ -61,15 +61,15 @@ const Charts = {
                         }
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(10, 18, 26, 0.95)',
-                        titleColor: '#00f2ff',
-                        bodyColor: '#e2f3f5',
-                        borderColor: '#00f2ff',
+                        backgroundColor: '#161719',
+                        titleColor: '#c9a84c',
+                        bodyColor: '#f0ece4',
+                        borderColor: 'rgba(255, 255, 255, 0.08)',
                         borderWidth: 1,
-                        cornerRadius: 2,
-                        padding: 12,
-                        titleFont: { family: 'JetBrains Mono', size: 13, weight: '800' },
-                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        cornerRadius: 4,
+                        padding: 10,
+                        titleFont: { family: 'DM Sans', size: 12, weight: '600' },
+                        bodyFont: { family: 'DM Sans', size: 11 },
                     }
                 }
             }
@@ -107,26 +107,26 @@ const Charts = {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(10, 18, 26, 0.95)',
-                        titleColor: '#00f2ff',
-                        bodyColor: '#e2f3f5',
-                        borderColor: '#00f2ff',
+                        backgroundColor: '#161719',
+                        titleColor: '#c9a84c',
+                        bodyColor: '#f0ece4',
+                        borderColor: 'rgba(255, 255, 255, 0.08)',
                         borderWidth: 1,
-                        cornerRadius: 2,
-                        padding: 12,
-                        titleFont: { family: 'JetBrains Mono', size: 13, weight: '800' },
-                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        cornerRadius: 4,
+                        padding: 10,
+                        titleFont: { family: 'DM Sans', size: 12, weight: '600' },
+                        bodyFont: { family: 'DM Sans', size: 11 },
                     }
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(0, 242, 255, 0.05)', drawBorder: false },
-                        ticks: { color: '#5e707a', font: { family: 'JetBrains Mono', size: 10 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.03)', drawBorder: false },
+                        ticks: { color: '#8c8882', font: { family: 'DM Mono', size: 10 } },
                         min: 20,
                     },
                     y: {
                         grid: { display: false },
-                        ticks: { color: '#00f2ff', font: { family: 'JetBrains Mono', size: 11, weight: '700' } },
+                        ticks: { color: '#8c8882', font: { family: 'DM Sans', size: 11, weight: '500' } },
                     }
                 }
             }
@@ -173,27 +173,25 @@ const Charts = {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(10, 18, 26, 0.95)',
-                        titleColor: '#00f2ff',
-                        bodyColor: '#e2f3f5',
-                        borderColor: '#00f2ff',
+                        backgroundColor: '#161719',
+                        titleColor: '#c9a84c',
+                        bodyColor: '#f0ece4',
+                        borderColor: 'rgba(255, 255, 255, 0.08)',
                         borderWidth: 1,
-                        cornerRadius: 2,
-                        padding: 12,
-                        titleFont: { family: 'JetBrains Mono', size: 13, weight: '800' },
-                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        cornerRadius: 4,
+                        padding: 10,
+                        titleFont: { family: 'DM Sans', size: 12, weight: '600' },
+                        bodyFont: { family: 'DM Sans', size: 11 },
                     }
                 },
                 scales: {
                     x: {
                         grid: { display: false },
-                        ticks: { color: '#64748b', font: { family: 'Inter', size: 11 } },
-                        title: { display: true, text: 'Stress Score Range', color: '#64748b', font: { family: 'Inter', size: 12 } }
+                        ticks: { color: '#8c8882', font: { family: 'DM Mono', size: 10 } },
                     },
                     y: {
-                        grid: { color: '#1e293b', drawBorder: false },
-                        ticks: { color: '#64748b', font: { family: 'Inter', size: 11 }, stepSize: 1 },
-                        title: { display: true, text: 'Count', color: '#64748b', font: { family: 'Inter', size: 12 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.03)', drawBorder: false },
+                        ticks: { color: '#8c8882', font: { family: 'DM Mono', size: 10 } },
                         beginAtZero: true,
                     }
                 }
@@ -257,25 +255,25 @@ const Charts = {
                         }
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(10, 18, 26, 0.95)',
-                        titleColor: '#00f2ff',
-                        bodyColor: '#e2f3f5',
-                        borderColor: '#00f2ff',
+                        backgroundColor: '#161719',
+                        titleColor: '#c9a84c',
+                        bodyColor: '#f0ece4',
+                        borderColor: 'rgba(255, 255, 255, 0.08)',
                         borderWidth: 1,
-                        cornerRadius: 2,
-                        padding: 12,
-                        titleFont: { family: 'JetBrains Mono', size: 13, weight: '800' },
-                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        cornerRadius: 4,
+                        padding: 10,
+                        titleFont: { family: 'DM Sans', size: 12, weight: '600' },
+                        bodyFont: { family: 'DM Sans', size: 11 },
                     }
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(0, 242, 255, 0.05)', drawBorder: false },
-                        ticks: { color: '#5e707a', font: { family: 'JetBrains Mono', size: 10 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.03)', drawBorder: false },
+                        ticks: { color: '#8c8882', font: { family: 'DM Mono', size: 10 } },
                     },
                     y: {
-                        grid: { color: 'rgba(0, 242, 255, 0.05)', drawBorder: false },
-                        ticks: { color: '#5e707a', font: { family: 'JetBrains Mono', size: 10 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.03)', drawBorder: false },
+                        ticks: { color: '#8c8882', font: { family: 'DM Mono', size: 10 } },
                     }
                 }
             }
@@ -313,8 +311,8 @@ const Charts = {
                           stroke="${color}" stroke-width="3" stroke-linecap="round"/>
                     <circle cx="110" cy="120" r="6" fill="${color}"/>
                     <!-- Score text -->
-                    <text x="110" y="105" text-anchor="middle" fill="${color}" font-size="36" font-weight="800" font-family="Inter">${s}</text>
-                    <text x="110" y="125" text-anchor="middle" fill="#64748b" font-size="11" font-family="Inter">/ 100</text>
+                    <text x="110" y="105" text-anchor="middle" fill="${color}" font-size="32" font-weight="300" font-family="Playfair Display">${s}</text>
+                    <text x="110" y="125" text-anchor="middle" fill="#5a5753" font-size="10" font-family="DM Sans">/ 100</text>
                 </svg>
                 <div class="gauge__label" style="color: ${color}">${verdict || ''}</div>
             </div>`;
