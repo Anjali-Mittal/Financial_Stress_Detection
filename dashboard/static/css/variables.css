@@ -3,30 +3,30 @@
    Premium Financial Intelligence Terminal
    ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.bunny.net/css?family=space-grotesk:400,500,600,700|jetbrains-mono:400,500,600&display=swap');
 
 :root {
     /* ── Core Backgrounds ─────────────────────────────────────────────── */
-    --bg-base: #050709;
-    --bg-primary: #080b0f;
-    --bg-secondary: #0c1018;
-    --bg-panel: #0f141c;
-    --bg-card: #111820;
-    --bg-card-hover: #141d28;
-    --bg-elevated: #19222e;
-    --bg-input: #0c1320;
-    --bg-subtle: rgba(255, 255, 255, 0.02);
+    --bg-base: #02040a;
+    --bg-primary: #03060e;
+    --bg-secondary: #060c18;
+    --bg-panel: #091220;
+    --bg-card: #0c1828;
+    --bg-card-hover: #101e30;
+    --bg-elevated: #152234;
+    --bg-input: #07101e;
+    --bg-subtle: rgba(255, 255, 255, 0.015);
 
-    /* ── Accent — Single Cyan System ──────────────────────────────────── */
-    --accent: #22d3ee;
-    --accent-bright: #67e8f9;
-    --accent-dim: rgba(34, 211, 238, 0.07);
-    --accent-glow: rgba(34, 211, 238, 0.14);
-    --accent-border: rgba(34, 211, 238, 0.22);
-    --accent-mid: rgba(34, 211, 238, 0.45);
-    --accent-deep: #0891b2;
+    /* ── Accent — Cyan only ───────────────────────────────────────────── */
+    --accent: #06b6d4;
+    --accent-bright: #22d3ee;
+    --accent-dim: rgba(6, 182, 212, 0.07);
+    --accent-glow: rgba(6, 182, 212, 0.15);
+    --accent-border: rgba(6, 182, 212, 0.2);
+    --accent-mid: rgba(6, 182, 212, 0.4);
+    --accent-deep: #0e7490;
 
-    /* Legacy teal aliases (keep JS working) */
+    /* Legacy teal aliases */
     --teal: var(--accent);
     --teal-bright: var(--accent-bright);
     --teal-dim: var(--accent-dim);
@@ -34,34 +34,34 @@
     --teal-border: var(--accent-border);
     --teal-mid: var(--accent-mid);
 
-    /* ── Semantic Colors ──────────────────────────────────────────────── */
+    /* ── Semantic ─────────────────────────────────────────────────────── */
     --success: #10b981;
-    --success-bg: rgba(16, 185, 129, 0.07);
-    --warning: #f59e0b;
-    --warning-bg: rgba(245, 158, 11, 0.07);
-    --danger: #ef4444;
-    --danger-bg: rgba(239, 68, 68, 0.07);
+    --success-bg: rgba(16, 185, 129, 0.08);
+    --warning: #eab308;
+    --warning-bg: rgba(234, 179, 8, 0.08);
+    --danger: #f43f5e;
+    --danger-bg: rgba(244, 63, 94, 0.08);
     --orange: #f97316;
-    --orange-bg: rgba(249, 115, 22, 0.07);
-    --info: #38bdf8;
+    --orange-bg: rgba(249, 115, 22, 0.08);
+    --info: var(--accent);
 
-    /* ── Text Scale ───────────────────────────────────────────────────── */
-    --text-primary: #e8f1f8;
-    --text-secondary: #7a94ab;
-    --text-muted: #3d5468;
-    --text-dim: #243040;
+    /* ── Text ─────────────────────────────────────────────────────────── */
+    --text-primary: #e2eef7;
+    --text-secondary: #6b8fa8;
+    --text-muted: #334d62;
+    --text-dim: #1e3044;
 
     /* ── Borders ──────────────────────────────────────────────────────── */
-    --border: rgba(34, 211, 238, 0.08);
-    --border-mid: rgba(34, 211, 238, 0.16);
-    --border-bright: rgba(34, 211, 238, 0.3);
+    --border: rgba(6, 182, 212, 0.09);
+    --border-mid: rgba(6, 182, 212, 0.17);
+    --border-bright: rgba(6, 182, 212, 0.32);
     --border-panel: rgba(255, 255, 255, 0.03);
-    --border-subtle: rgba(255, 255, 255, 0.05);
+    --border-subtle: rgba(255, 255, 255, 0.04);
 
     /* ── Typography ───────────────────────────────────────────────────── */
-    --font-sans: 'Syne', -apple-system, sans-serif;
+    --font-sans: 'Space Grotesk', -apple-system, system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --font-display: 'Syne', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
 
     --text-xs: 0.6875rem;
     --text-sm: 0.8125rem;
@@ -74,7 +74,7 @@
 
     /* ── Layout ───────────────────────────────────────────────────────── */
     --topbar-height: 56px;
-    --sidebar-width: 220px;
+    --sidebar-width: 216px;
     --header-height: 56px;
     --radius-sm: 4px;
     --radius: 6px;
@@ -82,10 +82,10 @@
     --radius-xl: 14px;
 
     /* ── Effects ──────────────────────────────────────────────────────── */
-    --shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
-    --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.8);
-    --glow-accent: 0 0 28px rgba(34, 211, 238, 0.16);
-    --glow-sm: 0 0 12px rgba(34, 211, 238, 0.1);
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.85);
+    --glow-accent: 0 0 28px rgba(6, 182, 212, 0.18);
+    --glow-sm: 0 0 12px rgba(6, 182, 212, 0.12);
     --glass: blur(12px);
     --ease: 160ms cubic-bezier(0.4, 0, 0.2, 1);
     --ease-slow: 320ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -126,8 +126,8 @@
     --accent-blue-muted: var(--accent-dim);
     --accent-blue-hover: var(--accent-bright);
     --accent-purple: #7c6af0;
-    --bg-secondary: #0c1018;
-    --grid-line: rgba(34, 211, 238, 0.02);
+    --bg-secondary: #060c18;
+    --grid-line: rgba(6, 182, 212, 0.025);
 }
 
 *,
@@ -150,10 +150,9 @@ body {
     color: var(--text-primary);
     background: var(--bg-base);
     overflow-x: hidden;
-    /* Subtle grid texture */
     background-image:
-        linear-gradient(rgba(34, 211, 238, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.015) 1px, transparent 1px);
+        linear-gradient(rgba(6, 182, 212, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.018) 1px, transparent 1px);
     background-size: 48px 48px;
     line-height: 1.5;
 }

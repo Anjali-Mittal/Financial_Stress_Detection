@@ -29,22 +29,18 @@ const App = {
 
     navigate(view) {
         this.currentView = view;
-        // Update nav active state
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         const active = document.querySelector(`.nav-item[data-view="${view}"]`);
         if (active) active.classList.add('active');
 
-        // Show/hide views
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         const target = document.getElementById(`view-${view}`);
         if (target) target.classList.add('active');
 
-        // Update breadcrumb
         const names = { overview: 'Overview', companies: 'All Companies', sectors: 'Sectors', live: 'Live Scorer', detail: 'Company Detail' };
         const bc = document.getElementById('breadcrumb-page');
         if (bc) bc.textContent = names[view] || view;
 
-        // Load data for view
         if (view === 'overview') this.loadOverview();
         if (view === 'companies') this.loadCompanies();
         if (view === 'sectors') this.loadSectors();
@@ -97,7 +93,6 @@ const App = {
 
         if (overview.error) return;
 
-        // KPI cards
         const kpiGrid = document.getElementById('overview-kpis');
         if (kpiGrid) {
             kpiGrid.innerHTML = [
@@ -108,18 +103,13 @@ const App = {
             ].join('');
         }
 
-        // Risk donut
         Charts.renderRiskDonut('chart-risk-donut', overview.risk_distribution);
-
-        // Sector bars
         Charts.renderSectorBars('chart-sector-bars', overview.sector_avg_stress);
 
-        // Score distribution
         if (scoresData.companies) {
             Charts.renderScoreDistribution('chart-score-dist', scoresData.companies);
         }
 
-        // Top stressed table
         const topEl = document.getElementById('overview-top-stressed');
         if (topEl) {
             topEl.innerHTML = Components.topStressedTable(overview.top_stressed);
@@ -143,7 +133,6 @@ const App = {
         const container = document.getElementById('companies-list');
         if (container) {
             container.innerHTML = Components.companyTable(data.companies);
-            // Count
             const countEl = document.getElementById('companies-count');
             if (countEl) countEl.textContent = `${data.count} companies`;
         }
@@ -199,7 +188,8 @@ const App = {
 
         this.showLoading(false);
         if (report.error) {
-            document.getElementById('detail-content').innerHTML = `
+            const dc = document.getElementById('detail-content');
+            if (dc) dc.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-state__icon">${Components.Icons.error}</div>
                     <div class="empty-state__title">${report.error}</div>
@@ -207,36 +197,30 @@ const App = {
             return;
         }
 
-        // Header
         const hdr = document.getElementById('detail-header');
         if (hdr) {
             hdr.innerHTML = `
                 <button class="back-btn" onclick="App.navigate('companies')">← Back to Companies</button>
                 <div class="section-header">
                     <div>
-                        <h1 class="section-header__title">${report.ticker} <span style="color:var(--text-muted);font-weight:400">${(report.sector || '').replace('_',' ')}</span></h1>
+                        <h1 class="section-header__title">${report.ticker} <span style="color:var(--text-muted);font-weight:400">${(report.sector || '').replace('_', ' ')}</span></h1>
                         <div class="section-header__subtitle">Stress Report · Year ${report.year || ''}</div>
                     </div>
                     <div>${Components.badge(report.stress_score)}</div>
                 </div>`;
         }
 
-        // Gauge
         Charts.renderGauge('detail-gauge', report.stress_score, report.verdict?.replace(/\[.*?\]\s*/, ''));
 
-        // Model components
         const modelsEl = document.getElementById('detail-models');
         if (modelsEl) modelsEl.innerHTML = Components.modelBars(report.components);
 
-        // Ratios
         const ratiosEl = document.getElementById('detail-ratios');
         if (ratiosEl) ratiosEl.innerHTML = Components.ratioCards(report.ratios);
 
-        // Red flags
         const flagsEl = document.getElementById('detail-flags');
         if (flagsEl) flagsEl.innerHTML = Components.flagsList(report.red_flags);
 
-        // History chart
         if (histData && histData.history && histData.history.length > 0) {
             Charts.renderHistoryChart('chart-history', histData.history, ['altman_z', 'net_margin', 'current_ratio']);
         }
@@ -279,36 +263,35 @@ const App = {
                     return;
                 }
 
-                // Render same as company detail
                 result.innerHTML = `
                     <div class="card mt-6">
                         <div class="section-header">
                             <div>
-                                <h2 class="section-header__title">${report.ticker} <span style="color:var(--text-muted);font-weight:400">${(report.sector||'').replace('_',' ')}</span></h2>
-                                <div class="section-header__subtitle">${report.live ? 'Live fetch from SEC EDGAR' : 'From dataset'} · Year ${report.year||''}</div>
+                                <h2 class="section-header__title">${report.ticker} <span style="color:var(--text-muted);font-weight:400">${(report.sector || '').replace('_', ' ')}</span></h2>
+                                <div class="section-header__subtitle">${report.live ? 'Live fetch from SEC EDGAR' : 'From dataset'} · Year ${report.year || ''}</div>
                             </div>
                             <div>${Components.badge(report.stress_score)}</div>
                         </div>
                     </div>
                     <div class="charts-grid mt-6">
                         <div class="card">
-                            <h3 style="margin-bottom:var(--space-4);color:var(--text-secondary)">Financial Ratios</h3>
+                            <div class="card-label">Financial Ratios</div>
                             ${Components.ratioCards(report.ratios)}
                         </div>
                         <div class="card">
                             <div id="live-gauge"></div>
-                            <h3 style="margin:var(--space-4) 0;color:var(--text-secondary)">Model Components</h3>
+                            <div class="card-label" style="margin-top:var(--sp7)">Model Components</div>
                             ${Components.modelBars(report.components)}
                         </div>
                     </div>
                     ${report.history && report.history.length > 0 ? `
                     <div class="card mt-6">
-                        <h3 style="margin-bottom:var(--space-4);color:var(--text-secondary)">Historical Trends (Live Fetch)</h3>
+                        <div class="card-label">Historical Trends (Live Fetch)</div>
                         <div class="chart-container" style="height:300px"><canvas id="live-chart-history"></canvas></div>
                     </div>
                     ` : ''}
                     <div class="card mt-6">
-                        <h3 style="margin-bottom:var(--space-4);color:var(--text-secondary)">Red Flags (${report.n_red_flags || 0})</h3>
+                        <div class="card-label">Red Flags (${report.n_red_flags || 0})</div>
                         ${Components.flagsList(report.red_flags)}
                     </div>`;
 
@@ -321,5 +304,4 @@ const App = {
     },
 };
 
-// Boot
 document.addEventListener('DOMContentLoaded', () => App.init());

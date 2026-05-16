@@ -7,12 +7,13 @@
 
 .app {
     display: grid;
-    grid-template-rows: var(--topbar-height) 1fr;
+    grid-template-rows: minmax(var(--topbar-height), auto) 1fr;
     grid-template-columns: var(--sidebar-width) 1fr;
     grid-template-areas:
         "topbar topbar"
         "sidebar main";
     min-height: 100vh;
+    align-items: start;
 }
 
 /* ── Top Bar ───────────────────────────────────────────────────────────────── */
@@ -33,17 +34,21 @@
 .header {
     grid-area: topbar;
     height: var(--topbar-height);
-    background: rgba(8, 11, 15, 0.95);
+    min-height: var(--topbar-height);
+    background: rgba(8, 11, 15, 0.97);
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 var(--sp9);
-    position: sticky;
-    top: 0;
     z-index: 200;
     backdrop-filter: var(--glass);
     gap: var(--sp7);
+    align-self: start;
+    /* Sticky within the grid row */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 }
 
 .header__brand {

@@ -1,9 +1,9 @@
 /**
- * charts.js — Chart.js rendering for Fintellix Risk Suite
- * All chart creation and update logic.
+ * charts.js — Premium Financial Intelligence Terminal
+ * Dynamic Chart.js integration for Fintellix Risk Suite
  */
 
-// Read CSS variables at runtime so charts always match the theme
+// Helper to read CSS theme variables
 function cssVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
@@ -11,47 +11,69 @@ function cssVar(name) {
 const Charts = {
     instances: {},
 
+    /**
+     * Theme-aware colors derived from variables.css
+     */
     get colors() {
         return {
-            blue: '#6fa3d0',
-            cyan: cssVar('--accent'),
-            indigo: '#818cf8',
-            green: cssVar('--success'),
-            yellow: cssVar('--warning'),
+            accent: cssVar('--accent'),
+            accentBright: cssVar('--accent-bright'),
+            success: cssVar('--success'),
+            warning: cssVar('--warning'),
+            danger: cssVar('--danger'),
             orange: cssVar('--orange'),
-            red: cssVar('--danger'),
-            purple: '#a78bfa',
-            muted: cssVar('--text-muted'),
+            textPrimary: cssVar('--text-primary'),
+            textSecondary: cssVar('--text-secondary'),
+            textMuted: cssVar('--text-muted'),
             border: cssVar('--border'),
-            card: cssVar('--bg-card'),
-            bg: cssVar('--bg-base'),
+            bgElevated: cssVar('--bg-elevated'),
+            bgCard: cssVar('--bg-card'),
+            bgBase: cssVar('--bg-base'),
+            // Extended palette
+            blue: '#3b82f6',
+            indigo: '#6366f1',
+            purple: '#8b5cf6',
         };
     },
 
-    // Shared tooltip style — reads CSS vars live
+    /**
+     * Map a stress score to its semantic color
+     * Optimized: Scores 25-45 use Cyan (Accent) instead of Yellow
+     */
+    getScoreColor(score) {
+        const c = this.colors;
+        if (score >= 75) return c.danger;
+        if (score >= 45) return c.orange;
+        if (score >= 25) return c.accent; // Cyan dominant "safe-moderate" range
+        return c.success;
+    },
+
     _tooltip() {
+        const mono = cssVar('--font-mono').split(',')[0].replace(/['"]/g, '').trim();
         return {
-            backgroundColor: cssVar('--bg-elevated'),
+            backgroundColor: 'rgba(9, 18, 32, 0.95)',
             titleColor: cssVar('--accent'),
             bodyColor: cssVar('--text-primary'),
-            borderColor: cssVar('--border-mid'),
+            borderColor: cssVar('--border-bright'),
             borderWidth: 1,
             cornerRadius: 4,
-            padding: 10,
-            titleFont: { family: cssVar('--font-mono').split(',')[0].replace(/['"]/g, '').trim(), size: 11, weight: '600' },
-            bodyFont: { family: cssVar('--font-mono').split(',')[0].replace(/['"]/g, '').trim(), size: 11 },
+            padding: 12,
+            titleFont: { family: mono, size: 11, weight: '700' },
+            bodyFont: { family: mono, size: 11 },
+            displayColors: false,
         };
     },
 
-    _tickStyle() {
+    _tickStyle(isMono = true) {
+        const font = isMono ? cssVar('--font-mono') : cssVar('--font-sans');
         return {
             color: cssVar('--text-muted'),
-            font: { family: cssVar('--font-mono').split(',')[0].replace(/['"]/g, '').trim(), size: 10 },
+            font: { 
+                family: font.split(',')[0].replace(/['"]/g, '').trim(), 
+                size: 10,
+                weight: '500'
+            },
         };
-    },
-
-    _gridColor() {
-        return cssVar('--border');
     },
 
     _destroy(id) {
@@ -64,35 +86,35 @@ const Charts = {
     /** Donut chart for risk distribution */
     renderRiskDonut(canvasId, data) {
         this._destroy(canvasId);
-        const ctx = document.getElementById(canvasId);
-        if (!ctx) return;
+        const el = document.getElementById(canvasId);
+        if (!el) return;
+
         const c = this.colors;
-        this.instances[canvasId] = new Chart(ctx, {
+        this.instances[canvasId] = new Chart(el, {
             type: 'doughnut',
             data: {
                 labels: ['Critical', 'High', 'Moderate', 'Low'],
                 datasets: [{
                     data: [data.critical || 0, data.high || 0, data.moderate || 0, data.low || 0],
-                    backgroundColor: [c.red, c.orange, c.yellow, c.green],
-                    borderColor: c.card,
-                    borderWidth: 3,
-                    hoverBorderColor: c.bg,
-                    hoverOffset: 6,
+                    backgroundColor: [c.danger, c.orange, c.accent, c.success],
+                    borderColor: c.bgCard,
+                    borderWidth: 4,
+                    hoverOffset: 8,
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '72%',
+                cutout: '75%',
                 plugins: {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: cssVar('--text-secondary'),
-                            font: { family: cssVar('--font-sans').split(',')[0].replace(/['"]/g, '').trim(), size: 11 },
-                            padding: 16,
+                            color: c.textSecondary,
+                            font: { family: cssVar('--font-mono').split(',')[0].replace(/['"]/g, ''), size: 9 },
+                            padding: 20,
                             usePointStyle: true,
-                            pointStyleWidth: 7,
+                            pointStyleWidth: 6,
                         }
                     },
                     tooltip: this._tooltip(),
@@ -104,25 +126,23 @@ const Charts = {
     /** Horizontal bar chart for sector stress */
     renderSectorBars(canvasId, sectors) {
         this._destroy(canvasId);
-        const ctx = document.getElementById(canvasId);
-        if (!ctx) return;
-        const c = this.colors;
+        const el = document.getElementById(canvasId);
+        if (!el) return;
+
         const labels = Object.keys(sectors);
         const values = Object.values(sectors);
-        const barColors = values.map(v =>
-            v >= 40 ? c.red : v >= 30 ? c.orange : v >= 27 ? c.yellow : c.green
-        );
+        const barColors = values.map(v => this.getScoreColor(v));
 
-        this.instances[canvasId] = new Chart(ctx, {
+        this.instances[canvasId] = new Chart(el, {
             type: 'bar',
             data: {
                 labels,
                 datasets: [{
                     data: values,
                     backgroundColor: barColors,
-                    borderRadius: 4,
+                    borderRadius: 3,
                     borderSkipped: false,
-                    barThickness: 24,
+                    barThickness: 20,
                 }]
             },
             options: {
@@ -135,7 +155,7 @@ const Charts = {
                 },
                 scales: {
                     x: {
-                        grid: { color: this._gridColor(), drawBorder: false },
+                        grid: { color: cssVar('--border-panel'), drawBorder: false },
                         ticks: this._tickStyle(),
                         min: 20,
                     },
@@ -143,7 +163,7 @@ const Charts = {
                         grid: { display: false },
                         ticks: {
                             color: cssVar('--text-secondary'),
-                            font: { family: cssVar('--font-sans').split(',')[0].replace(/['"]/g, '').trim(), size: 11, weight: '500' },
+                            font: { family: cssVar('--font-sans').split(',')[0].replace(/['"]/g, ''), size: 11, weight: '600' },
                         },
                     }
                 }
@@ -154,11 +174,12 @@ const Charts = {
     /** Bar chart for score distribution */
     renderScoreDistribution(canvasId, companies) {
         this._destroy(canvasId);
-        const ctx = document.getElementById(canvasId);
-        if (!ctx) return;
-        const c = this.colors;
-        const bins = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        const el = document.getElementById(canvasId);
+        if (!el) return;
+
+        const bins = Array(10).fill(0);
         const binLabels = ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'];
+        
         companies.forEach(co => {
             const s = co.stress_score;
             if (s == null) return;
@@ -166,14 +187,10 @@ const Charts = {
             bins[idx]++;
         });
 
-        const barColors = binLabels.map((_, i) => {
-            if (i < 3) return c.green;
-            if (i < 5) return c.yellow;
-            if (i < 7) return c.orange;
-            return c.red;
-        });
+        // Use getScoreColor for each bin center
+        const barColors = binLabels.map((_, i) => this.getScoreColor(i * 10 + 5));
 
-        this.instances[canvasId] = new Chart(ctx, {
+        this.instances[canvasId] = new Chart(el, {
             type: 'bar',
             data: {
                 labels: binLabels,
@@ -181,7 +198,7 @@ const Charts = {
                     label: 'Companies',
                     data: bins,
                     backgroundColor: barColors,
-                    borderRadius: 3,
+                    borderRadius: 2,
                     borderSkipped: false,
                 }]
             },
@@ -198,7 +215,7 @@ const Charts = {
                         ticks: this._tickStyle(),
                     },
                     y: {
-                        grid: { color: this._gridColor(), drawBorder: false },
+                        grid: { color: cssVar('--border-panel'), drawBorder: false },
                         ticks: this._tickStyle(),
                         beginAtZero: true,
                     }
@@ -210,41 +227,41 @@ const Charts = {
     /** Line chart for historical trends */
     renderHistoryChart(canvasId, history, metrics) {
         this._destroy(canvasId);
-        const ctx = document.getElementById(canvasId);
-        if (!ctx || !history || history.length === 0) return;
-        const c = this.colors;
+        const el = document.getElementById(canvasId);
+        if (!el || !history || history.length === 0) return;
 
+        const c = this.colors;
         const metricConfig = {
-            altman_z: { label: 'Altman Z', color: c.blue },
-            net_margin: { label: 'Net Margin', color: c.cyan },
-            current_ratio: { label: 'Current Ratio', color: c.green },
-            debt_to_equity: { label: 'Debt/Equity', color: c.orange },
-            roa: { label: 'ROA', color: c.purple },
-            interest_coverage: { label: 'Interest Coverage', color: c.yellow },
-            piotroski_f: { label: 'Piotroski F', color: c.indigo },
+            altman_z: { label: 'Altman Z', color: c.accentBright },
+            net_margin: { label: 'Net Margin', color: '#10b981' },
+            current_ratio: { label: 'Current Ratio', color: '#8b5cf6' },
+            debt_to_equity: { label: 'Debt/Equity', color: '#f59e0b' },
+            roa: { label: 'ROA', color: '#ec4899' },
+            interest_coverage: { label: 'Interest Coverage', color: '#6366f1' },
+            piotroski_f: { label: 'Piotroski F', color: '#14b8a6' },
         };
 
         const labels = history.map(h => h.year);
-        const datasets = (metrics || ['altman_z', 'net_margin']).map(m => {
-            const cfg = metricConfig[m] || { label: m, color: c.muted };
+        const datasets = (metrics || ['altman_z', 'net_margin', 'current_ratio']).map(m => {
+            const cfg = metricConfig[m] || { label: m, color: c.textMuted };
             return {
                 label: cfg.label,
                 data: history.map(h => h[m] != null ? h[m] : null),
                 borderColor: cfg.color,
-                backgroundColor: cfg.color + '18',
+                backgroundColor: cfg.color + '10',
                 pointBackgroundColor: cfg.color,
-                pointBorderColor: c.card,
+                pointBorderColor: c.bgCard,
                 pointBorderWidth: 2,
                 pointRadius: 4,
                 pointHoverRadius: 6,
                 borderWidth: 2,
-                tension: 0.3,
-                fill: false,
+                tension: 0.35,
+                fill: true,
                 spanGaps: true,
             };
         });
 
-        this.instances[canvasId] = new Chart(ctx, {
+        this.instances[canvasId] = new Chart(el, {
             type: 'line',
             data: { labels, datasets },
             options: {
@@ -256,22 +273,22 @@ const Charts = {
                         position: 'top',
                         align: 'end',
                         labels: {
-                            color: cssVar('--text-secondary'),
-                            font: { family: cssVar('--font-sans').split(',')[0].replace(/['"]/g, '').trim(), size: 11 },
+                            color: c.textSecondary,
+                            font: { family: cssVar('--font-mono').split(',')[0].replace(/['"]/g, ''), size: 9 },
                             usePointStyle: true,
-                            pointStyleWidth: 7,
-                            padding: 14,
+                            pointStyleWidth: 5,
+                            padding: 15,
                         }
                     },
                     tooltip: this._tooltip(),
                 },
                 scales: {
                     x: {
-                        grid: { color: this._gridColor(), drawBorder: false },
+                        grid: { color: cssVar('--border-panel'), drawBorder: false },
                         ticks: this._tickStyle(),
                     },
                     y: {
-                        grid: { color: this._gridColor(), drawBorder: false },
+                        grid: { color: cssVar('--border-panel'), drawBorder: false },
                         ticks: this._tickStyle(),
                     }
                 }
@@ -283,34 +300,34 @@ const Charts = {
     renderGauge(containerId, score, verdict) {
         const el = document.getElementById(containerId);
         if (!el) return;
-        const c = this.colors;
+        
         const s = score != null ? score : 0;
-        const color = s >= 75 ? c.red : s >= 50 ? c.orange : s >= 25 ? c.yellow : c.green;
+        const color = this.getScoreColor(s);
         const angle = (s / 100) * 180;
-        const monoFont = cssVar('--font-mono').split(',')[0].replace(/['"]/g, '').trim();
+        const mono = cssVar('--font-mono').split(',')[0].replace(/['"]/g, '').trim();
 
         el.innerHTML = `
             <div class="gauge-container">
                 <svg width="220" height="130" viewBox="0 0 220 130">
                     <defs>
                         <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%"   stop-color="${c.green}"/>
-                            <stop offset="33%"  stop-color="${c.yellow}"/>
-                            <stop offset="66%"  stop-color="${c.orange}"/>
-                            <stop offset="100%" stop-color="${c.red}"/>
+                            <stop offset="0%"   stop-color="${this.colors.success}"/>
+                            <stop offset="35%"  stop-color="${this.colors.accent}"/>
+                            <stop offset="65%"  stop-color="${this.colors.orange}"/>
+                            <stop offset="100%" stop-color="${this.colors.danger}"/>
                         </linearGradient>
                     </defs>
-                    <path d="M 20 120 A 90 90 0 0 1 200 120" fill="none" stroke="${cssVar('--bg-elevated')}" stroke-width="14" stroke-linecap="round"/>
-                    <path d="M 20 120 A 90 90 0 0 1 200 120" fill="none" stroke="url(#gaugeGrad)" stroke-width="14" stroke-linecap="round"
+                    <path d="M 20 120 A 90 90 0 0 1 200 120" fill="none" stroke="${cssVar('--bg-subtle')}" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M 20 120 A 90 90 0 0 1 200 120" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round"
                           stroke-dasharray="${angle / 180 * 283} 283"
-                          style="transition: stroke-dasharray 1s ease"/>
+                          style="transition: stroke-dasharray 1.2s cubic-bezier(0.4, 0, 0.2, 1)"/>
                     <line x1="110" y1="120"
-                          x2="${110 + 70 * Math.cos((180 - angle) * Math.PI / 180)}"
-                          y2="${120 - 70 * Math.sin((180 - angle) * Math.PI / 180)}"
+                          x2="${110 + 72 * Math.cos((180 - angle) * Math.PI / 180)}"
+                          y2="${120 - 72 * Math.sin((180 - angle) * Math.PI / 180)}"
                           stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
-                    <circle cx="110" cy="120" r="5" fill="${color}"/>
-                    <text x="110" y="104" text-anchor="middle" fill="${color}" font-size="30" font-weight="600" font-family="${monoFont}">${s}</text>
-                    <text x="110" y="124" text-anchor="middle" fill="${cssVar('--text-muted')}" font-size="9" font-family="${monoFont}">/ 100</text>
+                    <circle cx="110" cy="120" r="4" fill="${color}"/>
+                    <text x="110" y="102" text-anchor="middle" fill="${color}" font-size="28" font-weight="700" font-family="${mono}">${s}</text>
+                    <text x="110" y="122" text-anchor="middle" fill="${cssVar('--text-muted')}" font-size="8" font-weight="600" font-family="${mono}">SCORE / 100</text>
                 </svg>
                 <div class="gauge__label" style="color:${color}">${verdict || ''}</div>
             </div>`;
