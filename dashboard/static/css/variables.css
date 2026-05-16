@@ -1,91 +1,100 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    variables.css — Design System Tokens
-   Fintellix Risk Suite Dashboard
+   Fintellix Risk Suite — Refined Dark Luxury Edition
    ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600&display=swap');
 
 :root {
-    /* ── Color Palette (Sci-Fi / Cyberpunk) ────────────────────────── */
-    --bg-primary:     #05080a; /* Deepest Void */
-    --bg-secondary:   #0a0f14; /* Sidebar Dark */
-    --bg-card:        rgba(10, 18, 26, 0.7); /* Translucent Glass */
-    --bg-card-hover:  rgba(15, 27, 38, 0.9);
-    --bg-elevated:    #111921;
-    --bg-input:       #020405;
+    /* ── Palette ──────────────────────────────────────────────────────── */
+    --bg-primary: #0c0d0f;
+    --bg-secondary: #0f1012;
+    --bg-card: rgba(255, 255, 255, 0.028);
+    --bg-card-hover: rgba(255, 255, 255, 0.045);
+    --bg-elevated: #161719;
+    --bg-input: rgba(255, 255, 255, 0.04);
 
-    /* Accent Neon */
-    --accent-blue:    #00f2ff; /* Cyber Cyan */
-    --accent-blue-hover: #00d8e6;
-    --accent-blue-glow: rgba(0, 242, 255, 0.15);
-    --accent-blue-muted: rgba(0, 242, 255, 0.05);
-    
-    --accent-purple:  #bc13fe;
-    --accent-pink:    #ff00ff;
-    
+    /* Accent — warm gold + cool mint */
+    --accent-gold: #c9a84c;
+    --accent-gold-light: #dfc070;
+    --accent-gold-dim: rgba(201, 168, 76, 0.12);
+    --accent-gold-glow: rgba(201, 168, 76, 0.18);
+    --accent-teal: #3ecfb2;
+    --accent-teal-dim: rgba(62, 207, 178, 0.1);
+
+    /* Semantic */
+    --success: #3ecfb2;
+    --success-bg: rgba(62, 207, 178, 0.08);
+    --warning: #c9a84c;
+    --warning-bg: rgba(201, 168, 76, 0.08);
+    --danger: #e05260;
+    --danger-bg: rgba(224, 82, 96, 0.1);
+    --info: #6fa3d0;
+
     /* Text */
-    --text-primary:   #e2f3f5;
-    --text-secondary: #94aab3;
-    --text-muted:     #5e707a;
-    --text-dim:       #3d4a54;
+    --text-primary: #f0ece4;
+    --text-secondary: #8c8882;
+    --text-muted: #5a5753;
+    --text-dim: #35332f;
 
-    /* Semantic Neon */
-    --success:        #00ff9f; /* Matrix Green */
-    --success-bg:     rgba(0, 255, 159, 0.1);
-    --warning:        #faff00; /* Neon Yellow */
-    --warning-bg:     rgba(250, 255, 0, 0.1);
-    --danger:         #ff0055; /* Cyber Red */
-    --danger-bg:      rgba(255, 0, 85, 0.1);
-    --info:           #00f2ff;
+    /* Borders */
+    --border: rgba(255, 255, 255, 0.07);
+    --border-bright: rgba(255, 255, 255, 0.13);
+    --border-focus: var(--accent-gold);
+    --grid-line: rgba(255, 255, 255, 0.02);
 
-    /* Borders & Grids */
-    --border:         rgba(0, 242, 255, 0.1);
-    --border-bright:  rgba(0, 242, 255, 0.3);
-    --border-focus:   var(--accent-blue);
-    --grid-line:      rgba(0, 242, 255, 0.03);
+    /* ── Typography ───────────────────────────────────────────────────── */
+    --font-sans: 'DM Sans', -apple-system, sans-serif;
+    --font-mono: 'DM Mono', 'Fira Code', monospace;
+    --font-display: 'Playfair Display', Georgia, serif;
 
-    /* ── Typography (Futuristic) ─────────────────────────────────────── */
-    --font-sans:      'Inter', -apple-system, sans-serif;
-    --font-mono:      'JetBrains Mono', 'Fira Code', monospace;
-
-    --text-xs:        0.75rem;
-    --text-sm:        0.875rem;
-    --text-base:      1rem;
-    --text-md:        1.125rem;
-    --text-lg:        1.25rem;
-    --text-xl:        1.5rem;
-    --text-2xl:       2rem;
+    --text-xs: 0.6875rem;
+    --text-sm: 0.8125rem;
+    --text-base: 0.9375rem;
+    --text-md: 1.0625rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.5rem;
+    --text-2xl: 2.25rem;
 
     /* ── Layout ───────────────────────────────────────────────────────── */
-    --sidebar-width:       260px;
-    --header-height:       64px;
-    --border-radius-sm:    2px;
-    --border-radius:       4px;
-    --border-radius-lg:    8px;
-    
-    /* ── Effects ───────────────────────────────────────────────────────── */
-    --shadow-glow:   0 0 15px var(--accent-blue-glow);
-    --shadow-neon:   0 0 20px rgba(0, 242, 255, 0.2);
-    --glass-blur:    blur(10px);
-    
-    --transition:    300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --sidebar-width: 240px;
+    --header-height: 60px;
+    --border-radius-sm: 6px;
+    --border-radius: 10px;
+    --border-radius-lg: 16px;
 
-    /* ── Shadows ───────────────────────────────────────────────────────── */
-    --shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow:      0 4px 12px rgba(0, 0, 0, 0.4);
-    --shadow-lg:   0 8px 30px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 20px var(--accent-blue-glow);
+    /* ── Effects ──────────────────────────────────────────────────────── */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+    --shadow-glow: 0 0 24px var(--accent-gold-glow);
+    --shadow-neon: 0 0 20px rgba(201, 168, 76, 0.15);
+    --glass-blur: blur(12px);
 
-    /* ── Transitions ───────────────────────────────────────────────────── */
-    --transition-fast:   150ms ease;
-    --transition:        250ms ease;
-    --transition-slow:   400ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-fast: 120ms ease;
+    --transition: 220ms ease;
+    --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Spacing */
+    --space-1: 4px;
+    --space-2: 6px;
+    --space-3: 8px;
+    --space-4: 10px;
+    --space-5: 12px;
+    --space-6: 16px;
+    --space-7: 20px;
+    --space-8: 24px;
+    --space-9: 28px;
+    --space-10: 32px;
+    --space-12: 48px;
 }
 
-/* ── Base Reset ────────────────────────────────────────────────────────────── */
+/* ── Base Reset ────────────────────────────────────────────────────────── */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -101,38 +110,40 @@ html {
 body {
     font-family: var(--font-sans);
     font-size: var(--text-base);
-    font-weight: var(--weight-normal);
-    line-height: var(--leading-normal);
     color: var(--text-primary);
     background-color: var(--bg-primary);
     overflow-x: hidden;
 }
 
 a {
-    color: var(--accent-blue);
+    color: var(--accent-gold);
     text-decoration: none;
     transition: color var(--transition-fast);
 }
+
 a:hover {
-    color: var(--accent-blue-hover);
+    color: var(--accent-gold-light);
 }
 
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
 }
+
 ::-webkit-scrollbar-track {
-    background: var(--bg-primary);
+    background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-    background: var(--border-light);
-    border-radius: var(--border-radius-full);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 ::selection {
-    background: var(--accent-blue-muted);
+    background: var(--accent-gold-dim);
     color: var(--text-primary);
 }
