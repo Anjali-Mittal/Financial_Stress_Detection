@@ -6,18 +6,18 @@
 const Charts = {
     instances: {},
     colors: {
-        blue: '#3b82f6',
+        blue: '#00f2ff', /* Cyber Cyan */
         cyan: '#22d3ee',
         indigo: '#818cf8',
-        green: '#10b981', /* Professional Emerald */
-        yellow: '#f59e0b', /* Amber */
-        orange: '#f97316',
-        red: '#f43f5e', /* Rose-Red */
-        purple: '#a855f7',
-        muted: '#64748b',
-        border: '#2a303c',
-        card: '#1c212c',
-        bg: '#0f1117',
+        green: '#00ff9f', /* Matrix Green */
+        yellow: '#faff00', /* Neon Yellow */
+        orange: '#ff9d00',
+        red: '#ff0055', /* Cyber Red */
+        purple: '#bc13fe',
+        muted: '#5e707a',
+        border: 'rgba(0, 242, 255, 0.2)',
+        card: 'rgba(10, 18, 26, 0.8)',
+        bg: '#05080a',
     },
 
     _destroy(id) {
@@ -61,15 +61,15 @@ const Charts = {
                         }
                     },
                     tooltip: {
-                        backgroundColor: '#1c212c',
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#cbd5e1',
-                        borderColor: '#3f4756',
+                        backgroundColor: 'rgba(10, 18, 26, 0.95)',
+                        titleColor: '#00f2ff',
+                        bodyColor: '#e2f3f5',
+                        borderColor: '#00f2ff',
                         borderWidth: 1,
-                        cornerRadius: 4,
-                        padding: 10,
-                        titleFont: { family: 'Inter', size: 13, weight: '600' },
-                        bodyFont: { family: 'Inter', size: 12 },
+                        cornerRadius: 2,
+                        padding: 12,
+                        titleFont: { family: 'JetBrains Mono', size: 13, weight: '800' },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
                     }
                 }
             }
@@ -107,27 +107,26 @@ const Charts = {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#1c212c',
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#cbd5e1',
-                        borderColor: '#3f4756',
+                        backgroundColor: 'rgba(10, 18, 26, 0.95)',
+                        titleColor: '#00f2ff',
+                        bodyColor: '#e2f3f5',
+                        borderColor: '#00f2ff',
                         borderWidth: 1,
-                        cornerRadius: 4,
-                        padding: 10,
-                        callbacks: {
-                            label: ctx => `Avg Stress: ${ctx.parsed.x.toFixed(1)}`
-                        }
+                        cornerRadius: 2,
+                        padding: 12,
+                        titleFont: { family: 'JetBrains Mono', size: 13, weight: '800' },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
                     }
                 },
                 scales: {
                     x: {
-                        grid: { color: '#1e293b', drawBorder: false },
-                        ticks: { color: '#64748b', font: { family: 'Inter', size: 11 } },
+                        grid: { color: 'rgba(0, 242, 255, 0.05)', drawBorder: false },
+                        ticks: { color: '#5e707a', font: { family: 'JetBrains Mono', size: 10 } },
                         min: 20,
                     },
                     y: {
                         grid: { display: false },
-                        ticks: { color: '#94a3b8', font: { family: 'Inter', size: 12, weight: '500' } },
+                        ticks: { color: '#00f2ff', font: { family: 'JetBrains Mono', size: 11, weight: '700' } },
                     }
                 }
             }
@@ -174,13 +173,15 @@ const Charts = {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#1c212c',
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#cbd5e1',
-                        borderColor: '#3f4756',
+                        backgroundColor: 'rgba(10, 18, 26, 0.95)',
+                        titleColor: '#00f2ff',
+                        bodyColor: '#e2f3f5',
+                        borderColor: '#00f2ff',
                         borderWidth: 1,
-                        cornerRadius: 4,
-                        padding: 10,
+                        cornerRadius: 2,
+                        padding: 12,
+                        titleFont: { family: 'JetBrains Mono', size: 13, weight: '800' },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
                     }
                 },
                 scales: {
@@ -256,25 +257,25 @@ const Charts = {
                         }
                     },
                     tooltip: {
-                        backgroundColor: '#1c212c',
-                        titleColor: '#f1f5f9',
-                        bodyColor: '#cbd5e1',
-                        borderColor: '#3f4756',
+                        backgroundColor: 'rgba(10, 18, 26, 0.95)',
+                        titleColor: '#00f2ff',
+                        bodyColor: '#e2f3f5',
+                        borderColor: '#00f2ff',
                         borderWidth: 1,
-                        cornerRadius: 4,
-                        padding: 10,
-                        titleFont: { family: 'Inter', size: 13, weight: '600' },
-                        bodyFont: { family: 'Inter', size: 12 },
+                        cornerRadius: 2,
+                        padding: 12,
+                        titleFont: { family: 'JetBrains Mono', size: 13, weight: '800' },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
                     }
                 },
                 scales: {
                     x: {
-                        grid: { color: '#1e293b', drawBorder: false },
-                        ticks: { color: '#64748b', font: { family: 'Inter', size: 11 } },
+                        grid: { color: 'rgba(0, 242, 255, 0.05)', drawBorder: false },
+                        ticks: { color: '#5e707a', font: { family: 'JetBrains Mono', size: 10 } },
                     },
                     y: {
-                        grid: { color: '#1e293b', drawBorder: false },
-                        ticks: { color: '#64748b', font: { family: 'Inter', size: 11 } },
+                        grid: { color: 'rgba(0, 242, 255, 0.05)', drawBorder: false },
+                        ticks: { color: '#5e707a', font: { family: 'JetBrains Mono', size: 10 } },
                     }
                 }
             }
