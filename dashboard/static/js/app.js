@@ -101,10 +101,10 @@ const App = {
         const kpiGrid = document.getElementById('overview-kpis');
         if (kpiGrid) {
             kpiGrid.innerHTML = [
-                Components.kpiCard('Total Companies', overview.total_companies, '📊', 'blue', 'Tracked in system'),
-                Components.kpiCard('Avg Stress Score', overview.avg_stress_score, '⚡', 'yellow', 'Across all companies'),
-                Components.kpiCard('High / Critical Risk', (overview.risk_distribution.high + overview.risk_distribution.critical), '🔴', 'red', `${overview.risk_distribution.critical} critical, ${overview.risk_distribution.high} high`),
-                Components.kpiCard('Companies Flagged', overview.flagged_companies, '⚠️', 'yellow', 'With red flags'),
+                Components.kpiCard('Total Companies', overview.total_companies, Components.Icons.companies, 'blue', 'Tracked in system'),
+                Components.kpiCard('Avg Stress Score', overview.avg_stress_score, Components.Icons.stress, 'yellow', 'Across all companies'),
+                Components.kpiCard('High / Critical Risk', (overview.risk_distribution.high + overview.risk_distribution.critical), Components.Icons.risk, 'red', `${overview.risk_distribution.critical} critical, ${overview.risk_distribution.high} high`),
+                Components.kpiCard('Companies Flagged', overview.flagged_companies, Components.Icons.flag, 'yellow', 'With red flags'),
             ].join('');
         }
 
@@ -201,7 +201,7 @@ const App = {
         if (report.error) {
             document.getElementById('detail-content').innerHTML = `
                 <div class="empty-state">
-                    <div class="empty-state__icon">❌</div>
+                    <div class="empty-state__icon">${Components.Icons.error}</div>
                     <div class="empty-state__title">${report.error}</div>
                 </div>`;
             return;
@@ -275,7 +275,7 @@ const App = {
                 progress.classList.add('hidden');
 
                 if (report.error) {
-                    result.innerHTML = `<div class="card mt-6"><div class="empty-state"><div class="empty-state__icon">❌</div><div class="empty-state__title">${report.error}</div></div></div>`;
+                    result.innerHTML = `<div class="card mt-6"><div class="empty-state"><div class="empty-state__icon">${Components.Icons.error}</div><div class="empty-state__title">${report.error}</div></div></div>`;
                     return;
                 }
 

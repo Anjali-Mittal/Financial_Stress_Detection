@@ -1,5 +1,5 @@
 """
-eda/analysis.py — Exploratory Data Analysis for Financial Stress Early Warning System
+eda/analysis.py — Exploratory Data Analysis for Fintellix Risk Suite
 
 Answers:
 1. Which ratios deteriorated fastest before bankruptcy?
@@ -502,7 +502,7 @@ def plot_feature_importance(df: pd.DataFrame):
 
 def print_summary(df: pd.DataFrame):
     print(f"\n{'='*60}")
-    print("FINANCIAL STRESS EDA SUMMARY")
+    print("FINTELLIX RISK EDA SUMMARY")
     print(f"{'='*60}")
     print(f"Total company-years:  {len(df)}")
     print(f"Unique tickers:       {df['ticker'].nunique()}")

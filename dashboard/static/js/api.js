@@ -1,5 +1,5 @@
 /**
- * api.js — API Client for Financial Stress Dashboard
+ * api.js — API Client for Fintellix Risk Suite
  * All fetch calls to the Flask backend with error handling.
  */
 

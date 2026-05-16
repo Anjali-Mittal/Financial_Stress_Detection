@@ -3,6 +3,14 @@
  */
 
 const Components = {
+    Icons: {
+        companies: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg>`,
+        stress: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+        risk: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+        flag: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`,
+        error: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+        check: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+    },
 
     /** Get risk level from score */
     riskLevel(score) {
@@ -58,7 +66,7 @@ const Components = {
     /** Full company table */
     companyTable(companies) {
         if (!companies || companies.length === 0) {
-            return '<div class="empty-state"><div class="empty-state__icon">📊</div><div class="empty-state__title">No companies found</div></div>';
+            return `<div class="empty-state"><div class="empty-state__icon">${this.Icons.companies}</div><div class="empty-state__title">No companies found</div></div>`;
         }
         return `
         <div class="data-table-wrapper">
@@ -83,7 +91,7 @@ const Components = {
     /** Red flags list */
     flagsList(flags) {
         if (!flags || flags.length === 0) {
-            return '<div style="color:var(--success);font-size:var(--text-sm)">✓ No red flags triggered</div>';
+            return `<div style="color:var(--success);font-size:var(--text-sm);display:flex;align-items:center;gap:var(--space-2)">${this.Icons.check} No red flags triggered</div>`;
         }
         return `<ul class="flag-list">${flags.map(f => `
             <li class="flag-item ${f.severity === 'MODERATE' ? 'flag-item--moderate' : ''}">
@@ -177,12 +185,12 @@ const Components = {
             <div class="sector-card">
                 <div class="sector-card__name">${(s.sector || '').replace('_', ' ')}</div>
                 <div class="sector-card__stats">
-                    <div><div class="sector-card__stat-label">Companies</div><div class="sector-card__stat-value">${s.count || 0}</div></div>
-                    <div><div class="sector-card__stat-label">Avg Stress</div><div class="sector-card__stat-value">${this.fmt(s.avg_stress, 1)}</div></div>
-                    <div><div class="sector-card__stat-label">Altman Z (med)</div><div class="sector-card__stat-value">${this.fmt(s.altman_z_median)}</div></div>
-                    <div><div class="sector-card__stat-label">Net Margin (med)</div><div class="sector-card__stat-value">${this.fmt(s.net_margin_median, 3)}</div></div>
-                    <div><div class="sector-card__stat-label">Current Ratio</div><div class="sector-card__stat-value">${this.fmt(s.current_ratio_median)}</div></div>
-                    <div><div class="sector-card__stat-label">D/E (med)</div><div class="sector-card__stat-value">${this.fmt(s.debt_to_equity_median)}</div></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Companies</span><span class="sector-card__stat-value">${s.count || 0}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Avg Stress</span><span class="sector-card__stat-value">${this.fmt(s.avg_stress, 1)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Altman Z (med)</span><span class="sector-card__stat-value">${this.fmt(s.altman_z_median)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Net Margin</span><span class="sector-card__stat-value">${this.fmt(s.net_margin_median, 3)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Current Ratio</span><span class="sector-card__stat-value">${this.fmt(s.current_ratio_median)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">D/E (med)</span><span class="sector-card__stat-value">${this.fmt(s.debt_to_equity_median)}</span></div>
                 </div>
             </div>`).join('')}</div>`;
     },

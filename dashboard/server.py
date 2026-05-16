@@ -1,5 +1,5 @@
 """
-dashboard/server.py — Flask REST API for Financial Stress Dashboard
+dashboard/server.py — Flask REST API for Fintellix Risk Suite
 
 Serves the static frontend and exposes JSON endpoints that connect
 to the existing scorer, live_scorer, and feature matrix modules.
@@ -239,5 +239,5 @@ def api_live(ticker):
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    logger.info("Starting Financial Stress Dashboard on http://localhost:8000")
+    logger.info("Starting Fintellix Risk Suite on http://localhost:8000")
     app.run(host="0.0.0.0", port=8000, debug=False)

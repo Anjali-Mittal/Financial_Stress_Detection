@@ -61,7 +61,7 @@ def _fetch_edgar(ticker: str) -> dict:
     try:
         import requests
 
-        HEADERS = {"User-Agent": "FinancialStressResearch research@finstress.com"}
+        HEADERS = {"User-Agent": "FintellixRiskAnalytics research@fintellix-risk.com"}
 
         # Get CIK
         r = requests.get(

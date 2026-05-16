@@ -3,7 +3,7 @@ backend_core/utils/hf_sync.py — Download model artifacts from a private HF mod
 
 Required env vars (set in .env locally, or in Render dashboard):
   HF_TOKEN    — your Hugging Face access token (read permission)
-  HF_REPO_ID  — e.g. "Anjali3Mittal/Finstress-models"
+  HF_REPO_ID  — e.g. "Anjali3Mittal/Fintellix-Risk-Models"
 
 Note: load_dotenv() must be called BEFORE this module is imported.
       server.py handles that at the very top.

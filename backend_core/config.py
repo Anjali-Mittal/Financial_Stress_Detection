@@ -1,5 +1,5 @@
 """
-config.py — Central configuration for Financial Stress Early Warning System
+config.py — Central configuration for Fintellix Risk Suite
 """
 
 # ── Company Universe ──────────────────────────────────────────────────────────

@@ -1,75 +1,68 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    variables.css — Design System Tokens
-   Financial Stress Early Warning Dashboard
+   Fintellix Risk Suite Dashboard
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    /* ── Color Palette ─────────────────────────────────────────────────── */
-    --bg-primary:     #060b14;
-    --bg-secondary:   #0c1322;
-    --bg-card:        #111a2e;
-    --bg-card-hover:  #162038;
-    --bg-elevated:    #1a2744;
-    --bg-input:       #0d1526;
+    /* ── Color Palette (Institutional Slate) ────────────────────────── */
+    --bg-primary:     #0b111b;
+    --bg-secondary:   #0f172a;
+    --bg-card:        #131c31;
+    --bg-card-hover:  #1e293b;
+    --bg-elevated:    #1e293b;
+    --bg-input:       #0f172a;
 
     /* Accent */
-    --accent-blue:    #3b82f6;
-    --accent-blue-hover: #2563eb;
-    --accent-blue-glow: rgba(59, 130, 246, 0.15);
-    --accent-blue-muted: rgba(59, 130, 246, 0.25);
-    --accent-cyan:    #06b6d4;
-    --accent-indigo:  #6366f1;
-    --accent-purple:  #8b5cf6;
+    --accent-blue:    #38bdf8; /* Brighter, clearer cyan-blue */
+    --accent-blue-hover: #0ea5e9;
+    --accent-blue-glow: rgba(56, 189, 248, 0.1);
+    --accent-blue-muted: rgba(56, 189, 248, 0.2);
+    --accent-cyan:    #22d3ee;
+    --accent-indigo:  #818cf8;
 
     /* Text */
-    --text-primary:   #f1f5f9;
-    --text-secondary: #94a3b8;
-    --text-muted:     #64748b;
-    --text-dim:       #475569;
+    --text-primary:   #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted:     #94a3b8;
+    --text-dim:       #64748b;
 
     /* Semantic */
-    --success:        #22c55e;
-    --success-bg:     rgba(34, 197, 94, 0.1);
-    --warning:        #eab308;
-    --warning-bg:     rgba(234, 179, 8, 0.1);
-    --danger:         #ef4444;
-    --danger-bg:      rgba(239, 68, 68, 0.1);
-    --info:           #3b82f6;
-    --info-bg:        rgba(59, 130, 246, 0.1);
+    --success:        #4ade80;
+    --success-bg:     rgba(74, 222, 128, 0.1);
+    --warning:        #fbbf24;
+    --warning-bg:     rgba(251, 191, 36, 0.1);
+    --danger:         #f87171;
+    --danger-bg:      rgba(248, 113, 113, 0.1);
+    --info:           #38bdf8;
 
     /* Borders */
     --border:         #1e293b;
-    --border-light:   #2a3a52;
+    --border-light:   #334155;
     --border-focus:   var(--accent-blue);
 
-    /* ── Typography ────────────────────────────────────────────────────── */
-    --font-sans:      'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-mono:      'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    /* ── Typography (Precise & Dense) ─────────────────────────────────── */
+    --font-sans:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono:      'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
 
     --text-xs:        0.75rem;    /* 12px */
     --text-sm:        0.8125rem;  /* 13px */
     --text-base:      0.875rem;   /* 14px */
-    --text-md:        1rem;       /* 16px */
-    --text-lg:        1.125rem;   /* 18px */
+    --text-md:        0.9375rem;  /* 15px */
+    --text-lg:        1.0625rem;  /* 17px */
     --text-xl:        1.25rem;    /* 20px */
-    --text-2xl:       1.5rem;     /* 24px */
-    --text-3xl:       1.875rem;   /* 30px */
-    --text-4xl:       2.25rem;    /* 36px */
 
-    --weight-light:   300;
-    --weight-normal:  400;
-    --weight-medium:  500;
-    --weight-semi:    600;
-    --weight-bold:    700;
-    --weight-extra:   800;
+    /* ── Layout (Sharper) ──────────────────────────────────────────────── */
+    --sidebar-width:       240px;
+    --header-height:       56px;
+    --border-radius-sm:    3px;
+    --border-radius:       4px;
+    --border-radius-lg:    6px;
+    --border-radius-xl:    8px;
+    --border-radius-full:  9999px;
 
-    --leading-tight:  1.25;
-    --leading-normal: 1.5;
-    --leading-relaxed:1.625;
-
-    /* ── Spacing ───────────────────────────────────────────────────────── */
+    /* ── Spacing (Compressed) ─────────────────────────────────────────── */
     --space-1:   0.25rem;
     --space-2:   0.5rem;
     --space-3:   0.75rem;
@@ -77,19 +70,6 @@
     --space-5:   1.25rem;
     --space-6:   1.5rem;
     --space-8:   2rem;
-    --space-10:  2.5rem;
-    --space-12:  3rem;
-    --space-16:  4rem;
-
-    /* ── Layout ────────────────────────────────────────────────────────── */
-    --sidebar-width:       260px;
-    --sidebar-collapsed:   72px;
-    --header-height:       64px;
-    --border-radius-sm:    6px;
-    --border-radius:       10px;
-    --border-radius-lg:    14px;
-    --border-radius-xl:    20px;
-    --border-radius-full:  9999px;
 
     /* ── Shadows ───────────────────────────────────────────────────────── */
     --shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.3);

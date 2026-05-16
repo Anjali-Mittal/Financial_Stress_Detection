@@ -1,5 +1,5 @@
 /**
- * charts.js — Chart.js rendering for Financial Stress Dashboard
+ * charts.js — Chart.js rendering for Fintellix Risk Suite
  * All chart creation and update logic.
  */
 
