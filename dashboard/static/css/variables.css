@@ -1,80 +1,94 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    variables.css — Fintellix Risk Suite
-   Corporate Dark Intelligence Terminal
+   Premium Financial Intelligence Terminal
    ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
 :root {
-    /* ── Backgrounds ──────────────────────────────────────────────────── */
-    --bg-primary: #080c10;
-    --bg-secondary: #0b1018;
-    --bg-panel: #0e1520;
-    --bg-card: #111b26;
-    --bg-card-hover: #152030;
-    --bg-elevated: #1a2535;
-    --bg-input: #0b1320;
+    /* ── Core Backgrounds ─────────────────────────────────────────────── */
+    --bg-base: #050709;
+    --bg-primary: #080b0f;
+    --bg-secondary: #0c1018;
+    --bg-panel: #0f141c;
+    --bg-card: #111820;
+    --bg-card-hover: #141d28;
+    --bg-elevated: #19222e;
+    --bg-input: #0c1320;
+    --bg-subtle: rgba(255, 255, 255, 0.02);
 
-    /* ── Teal Accent System ───────────────────────────────────────────── */
-    --teal: #00c2b3;
-    --teal-bright: #00ddd0;
-    --teal-dim: rgba(0, 194, 179, 0.08);
-    --teal-glow: rgba(0, 194, 179, 0.15);
-    --teal-border: rgba(0, 194, 179, 0.25);
-    --teal-mid: rgba(0, 194, 179, 0.5);
+    /* ── Accent — Single Cyan System ──────────────────────────────────── */
+    --accent: #22d3ee;
+    --accent-bright: #67e8f9;
+    --accent-dim: rgba(34, 211, 238, 0.07);
+    --accent-glow: rgba(34, 211, 238, 0.14);
+    --accent-border: rgba(34, 211, 238, 0.22);
+    --accent-mid: rgba(34, 211, 238, 0.45);
+    --accent-deep: #0891b2;
 
-    /* ── Semantic ─────────────────────────────────────────────────────── */
-    --success: #00c896;
-    --success-bg: rgba(0, 200, 150, 0.08);
-    --warning: #f0a500;
-    --warning-bg: rgba(240, 165, 0, 0.08);
-    --danger: #e5404a;
-    --danger-bg: rgba(229, 64, 74, 0.08);
-    --orange: #e07830;
-    --orange-bg: rgba(224, 120, 48, 0.08);
-    --info: #4a9edd;
+    /* Legacy teal aliases (keep JS working) */
+    --teal: var(--accent);
+    --teal-bright: var(--accent-bright);
+    --teal-dim: var(--accent-dim);
+    --teal-glow: var(--accent-glow);
+    --teal-border: var(--accent-border);
+    --teal-mid: var(--accent-mid);
 
-    /* ── Text ─────────────────────────────────────────────────────────── */
-    --text-primary: #d0e4ef;
-    --text-secondary: #6e90a8;
-    --text-muted: #405060;
-    --text-dim: #253040;
+    /* ── Semantic Colors ──────────────────────────────────────────────── */
+    --success: #10b981;
+    --success-bg: rgba(16, 185, 129, 0.07);
+    --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.07);
+    --danger: #ef4444;
+    --danger-bg: rgba(239, 68, 68, 0.07);
+    --orange: #f97316;
+    --orange-bg: rgba(249, 115, 22, 0.07);
+    --info: #38bdf8;
+
+    /* ── Text Scale ───────────────────────────────────────────────────── */
+    --text-primary: #e8f1f8;
+    --text-secondary: #7a94ab;
+    --text-muted: #3d5468;
+    --text-dim: #243040;
 
     /* ── Borders ──────────────────────────────────────────────────────── */
-    --border: rgba(0, 194, 179, 0.1);
-    --border-mid: rgba(0, 194, 179, 0.2);
-    --border-bright: rgba(0, 194, 179, 0.35);
-    --border-panel: rgba(255, 255, 255, 0.04);
+    --border: rgba(34, 211, 238, 0.08);
+    --border-mid: rgba(34, 211, 238, 0.16);
+    --border-bright: rgba(34, 211, 238, 0.3);
+    --border-panel: rgba(255, 255, 255, 0.03);
+    --border-subtle: rgba(255, 255, 255, 0.05);
 
     /* ── Typography ───────────────────────────────────────────────────── */
-    --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
-    --font-mono: 'IBM Plex Mono', monospace;
-    --font-display: 'IBM Plex Sans', sans-serif;
+    --font-sans: 'Syne', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Syne', sans-serif;
 
     --text-xs: 0.6875rem;
     --text-sm: 0.8125rem;
-    --text-base: 0.9rem;
+    --text-base: 0.875rem;
     --text-md: 1rem;
     --text-lg: 1.125rem;
     --text-xl: 1.375rem;
-    --text-2xl: 1.875rem;
-    --text-3xl: 2.5rem;
+    --text-2xl: 1.75rem;
+    --text-3xl: 2.25rem;
 
     /* ── Layout ───────────────────────────────────────────────────────── */
-    --sidebar-width: 210px;
-    --header-height: 52px;
-    --radius-sm: 3px;
-    --radius: 5px;
-    --radius-lg: 8px;
+    --topbar-height: 56px;
+    --sidebar-width: 220px;
+    --header-height: 56px;
+    --radius-sm: 4px;
+    --radius: 6px;
+    --radius-lg: 10px;
+    --radius-xl: 14px;
 
     /* ── Effects ──────────────────────────────────────────────────────── */
-    --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.7);
-    --glow-teal: 0 0 24px rgba(0, 194, 179, 0.18);
-    --glow-sm: 0 0 10px rgba(0, 194, 179, 0.12);
-    --glass: blur(10px);
-    --ease: 180ms cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.8);
+    --glow-accent: 0 0 28px rgba(34, 211, 238, 0.16);
+    --glow-sm: 0 0 12px rgba(34, 211, 238, 0.1);
+    --glass: blur(12px);
+    --ease: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-slow: 320ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* ── Spacing ──────────────────────────────────────────────────────── */
     --sp1: 2px;
@@ -86,10 +100,10 @@
     --sp7: 16px;
     --sp8: 20px;
     --sp9: 24px;
-    --sp10: 28px;
-    --sp12: 40px;
+    --sp10: 32px;
+    --sp12: 48px;
 
-    /* ── Legacy aliases for JS ────────────────────────────────────────── */
+    /* ── Legacy aliases ───────────────────────────────────────────────── */
     --space-1: 2px;
     --space-2: 4px;
     --space-3: 6px;
@@ -99,21 +113,21 @@
     --space-7: 16px;
     --space-8: 20px;
     --space-9: 24px;
-    --space-10: 28px;
-    --space-12: 40px;
+    --space-10: 32px;
+    --space-12: 48px;
     --border-radius-sm: var(--radius-sm);
     --border-radius: var(--radius);
     --transition: var(--ease);
-    --shadow-glow: var(--glow-teal);
-    --shadow-neon: var(--glow-teal);
+    --shadow-glow: var(--glow-accent);
+    --shadow-neon: var(--glow-accent);
     --glass-blur: var(--glass);
-    --accent-blue: var(--teal);
-    --accent-blue-glow: var(--teal-glow);
-    --accent-blue-muted: var(--teal-dim);
-    --accent-blue-hover: var(--teal-bright);
+    --accent-blue: var(--accent);
+    --accent-blue-glow: var(--accent-glow);
+    --accent-blue-muted: var(--accent-dim);
+    --accent-blue-hover: var(--accent-bright);
     --accent-purple: #7c6af0;
-    --bg-secondary: #0b1018;
-    --grid-line: rgba(0, 194, 179, 0.025);
+    --bg-secondary: #0c1018;
+    --grid-line: rgba(34, 211, 238, 0.02);
 }
 
 *,
@@ -134,21 +148,23 @@ body {
     font-family: var(--font-sans);
     font-size: var(--text-base);
     color: var(--text-primary);
-    background: var(--bg-primary);
+    background: var(--bg-base);
     overflow-x: hidden;
+    /* Subtle grid texture */
     background-image:
-        linear-gradient(rgba(0, 194, 179, 0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 194, 179, 0.018) 1px, transparent 1px);
-    background-size: 44px 44px;
+        linear-gradient(rgba(34, 211, 238, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    line-height: 1.5;
 }
 
 a {
-    color: var(--teal);
+    color: var(--accent);
     text-decoration: none;
 }
 
 a:hover {
-    color: var(--teal-bright);
+    color: var(--accent-bright);
 }
 
 ::-webkit-scrollbar {
@@ -166,10 +182,10 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--teal-mid);
+    background: var(--accent-mid);
 }
 
 ::selection {
-    background: var(--teal-dim);
+    background: var(--accent-dim);
     color: var(--text-primary);
 }

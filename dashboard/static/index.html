@@ -15,26 +15,54 @@
 <body>
     <div class="app">
 
-        <!-- ═══ Sidebar ═══ -->
-        <aside class="sidebar">
-            <div class="sidebar__brand">
-                <div class="sidebar__logo">F</div>
-                <div>
-                    <div class="sidebar__title">
-                        Fintellix
-                        <span
-                            style="font-size:9px;background:var(--teal);color:#060e12;padding:1px 5px;border-radius:2px;font-weight:700;letter-spacing:0.06em;font-family:var(--font-mono)">PRO</span>
-                    </div>
-                    <div class="sidebar__subtitle">Risk Intelligence Suite</div>
+        <!-- ═══ Top Bar (brand + breadcrumb + status + search) ═══ -->
+        <header class="header">
+            <div class="header__brand">
+                <div class="header__logo">F</div>
+                <div class="header__wordmark">
+                    Fintellix
+                    <span class="header__tag">PRO</span>
                 </div>
             </div>
 
+            <div class="header__left">
+                <div class="header__breadcrumb">
+                    <span class="breadcrumb__root">Dashboard</span>
+                    <span class="breadcrumb__separator">›</span>
+                    <span id="breadcrumb-page" class="breadcrumb__current">Overview</span>
+                </div>
+            </div>
+
+            <div class="header__right">
+                <div class="search-box">
+                    <span class="search-box__icon">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </span>
+                    <input type="text" id="header-search" class="search-box__input"
+                        placeholder="Search ticker — e.g. AAPL">
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span class="status-text">Terminal Online</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ═══ Sidebar ═══ -->
+        <aside class="sidebar">
+            <!-- brand hidden on desktop (in header), shown none -->
+            <div class="sidebar__brand"></div>
+
             <nav class="sidebar__nav">
-                <div class="sidebar__section-label">Dashboard</div>
+                <div class="sidebar__section-label">Monitor</div>
 
                 <button class="nav-item active" data-view="overview">
                     <span class="nav-item__icon">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="7" height="7" rx="1" />
                             <rect x="14" y="3" width="7" height="7" rx="1" />
@@ -47,7 +75,7 @@
 
                 <button class="nav-item" data-view="companies">
                     <span class="nav-item__icon">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 21h18" />
                             <path d="M5 21V7l8-4v18" />
@@ -62,7 +90,7 @@
 
                 <button class="nav-item" data-view="sectors">
                     <span class="nav-item__icon">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="20" x2="18" y2="10" />
                             <line x1="12" y1="20" x2="12" y2="4" />
@@ -76,7 +104,7 @@
 
                 <button class="nav-item" data-view="live">
                     <span class="nav-item__icon">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8" />
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -93,36 +121,6 @@
 
         <!-- ═══ Main ═══ -->
         <main class="main">
-
-            <!-- Header -->
-            <header class="header">
-                <div class="header__left">
-                    <div class="header__breadcrumb">
-                        <span class="breadcrumb__root">Dashboard</span>
-                        <span class="breadcrumb__separator">›</span>
-                        <span id="breadcrumb-page" class="breadcrumb__current">Overview</span>
-                    </div>
-                </div>
-                <div class="header__right">
-                    <div class="search-box">
-                        <span class="search-box__icon">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                            </svg>
-                        </span>
-                        <input type="text" id="header-search" class="search-box__input"
-                            placeholder="Search ticker e.g. AAPL">
-                    </div>
-                    <div class="status-indicator">
-                        <div class="status-dot"></div>
-                        <span class="status-text">Terminal Online</span>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Content -->
             <div class="content">
 
                 <!-- ═══ Overview ═══ -->
@@ -139,33 +137,22 @@
 
                     <div class="charts-grid">
                         <div class="card">
-                            <div
-                                style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp6)">
-                                <span
-                                    style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono)">Score
-                                    Distribution</span>
-                            </div>
+                            <div class="card-label">Score Distribution</div>
                             <div class="chart-container"><canvas id="chart-score-dist"></canvas></div>
                         </div>
                         <div class="card">
-                            <div
-                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
-                                Risk Breakdown</div>
+                            <div class="card-label">Risk Breakdown</div>
                             <div class="chart-container"><canvas id="chart-risk-donut"></canvas></div>
                         </div>
                     </div>
 
                     <div class="charts-grid">
                         <div class="card">
-                            <div
-                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
-                                Sector Avg Stress</div>
+                            <div class="card-label">Sector Average Stress</div>
                             <div class="chart-container"><canvas id="chart-sector-bars"></canvas></div>
                         </div>
                         <div class="card">
-                            <div
-                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
-                                Top 10 Most Stressed</div>
+                            <div class="card-label">Top 10 Most Stressed</div>
                             <div id="overview-top-stressed"></div>
                         </div>
                     </div>
@@ -212,43 +199,42 @@
                     <div id="sectors-content"></div>
                 </div>
 
-                <!-- ═══ Detail ═══ -->
+                <!-- ═══ Company Detail ═══ -->
                 <div class="view" id="view-detail">
                     <div id="detail-header"></div>
                     <div class="charts-grid mt-4">
                         <div class="card">
-                            <div
-                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
-                                Financial Ratios</div>
+                            <div class="card-label">Financial Ratios</div>
                             <div id="detail-ratios"></div>
                         </div>
                         <div class="card">
                             <div id="detail-gauge"></div>
-                            <div
-                                style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin:var(--sp7) 0 var(--sp5)">
-                                Model Components</div>
+                            <div class="card-label" style="margin-top:var(--sp7)">Model Components</div>
                             <div id="detail-models"></div>
                         </div>
                     </div>
                     <div class="card mt-6">
-                        <div
-                            style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
-                            Historical Trends</div>
+                        <div class="card-label">Historical Trends</div>
                         <div class="chart-container chart-container--lg"><canvas id="chart-history"></canvas></div>
                     </div>
                     <div class="card mt-6">
-                        <div
-                            style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;font-family:var(--font-mono);margin-bottom:var(--sp6)">
-                            Red Flags</div>
+                        <div class="card-label">Red Flags</div>
                         <div id="detail-flags"></div>
                     </div>
                 </div>
 
                 <!-- ═══ Live Scorer ═══ -->
                 <div class="view" id="view-live">
+                    <div class="section-header">
+                        <div>
+                            <h1 class="section-header__title">Live Scorer</h1>
+                            <div class="section-header__subtitle">Real-time analysis via SEC EDGAR Data Connector</div>
+                        </div>
+                    </div>
+
                     <div class="live-search">
-                        <h1 class="live-search__title">Live Ticker Scorer</h1>
-                        <p class="live-search__desc">Real-time analysis via SEC EDGAR Data Connector</p>
+                        <h2 class="live-search__title">Live Ticker Scorer</h2>
+                        <p class="live-search__desc">Enter a ticker symbol for real-time risk analysis</p>
                         <form class="live-search__form" id="live-form">
                             <input type="text" id="live-ticker-input" class="live-search__input" placeholder="NVDA"
                                 maxlength="6">
@@ -261,7 +247,7 @@
                     <div id="live-result"></div>
                 </div>
 
-            </div>
+            </div><!-- /content -->
         </main>
     </div>
 
