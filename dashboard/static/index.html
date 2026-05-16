@@ -53,15 +53,20 @@
         <header class="header">
             <div class="header__left">
                 <div class="header__breadcrumb">
-                    Dashboard &rsaquo; <span id="breadcrumb-page">Overview</span>
+                    <span class="breadcrumb__root">Dashboard</span>
+                    <span class="breadcrumb__separator">&rsaquo;</span>
+                    <span id="breadcrumb-page" class="breadcrumb__current">Overview</span>
                 </div>
             </div>
             <div class="header__right">
                 <div class="search-box">
-                    <span class="search-box__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-                    <input type="text" id="header-search" class="search-box__input" placeholder="Search ticker... (e.g. AAPL)">
+                    <span class="search-box__icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+                    <input type="text" id="header-search" class="search-box__input" placeholder="Quick Search (e.g. AAPL)">
                 </div>
-                <div class="status-dot" title="System Online"></div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span class="status-text">Terminal Online</span>
+                </div>
             </div>
         </header>
 

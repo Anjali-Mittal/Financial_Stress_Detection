@@ -7,17 +7,17 @@ const Charts = {
     instances: {},
     colors: {
         blue: '#3b82f6',
-        cyan: '#06b6d4',
-        indigo: '#6366f1',
-        green: '#22c55e',
-        yellow: '#eab308',
+        cyan: '#22d3ee',
+        indigo: '#818cf8',
+        green: '#10b981', /* Professional Emerald */
+        yellow: '#f59e0b', /* Amber */
         orange: '#f97316',
-        red: '#ef4444',
-        purple: '#8b5cf6',
+        red: '#f43f5e', /* Rose-Red */
+        purple: '#a855f7',
         muted: '#64748b',
-        border: '#1e293b',
-        card: '#111a2e',
-        bg: '#060b14',
+        border: '#2a303c',
+        card: '#1c212c',
+        bg: '#0f1117',
     },
 
     _destroy(id) {
@@ -61,15 +61,15 @@ const Charts = {
                         }
                     },
                     tooltip: {
-                        backgroundColor: '#1a2744',
+                        backgroundColor: '#1c212c',
                         titleColor: '#f1f5f9',
-                        bodyColor: '#94a3b8',
-                        borderColor: '#1e293b',
+                        bodyColor: '#cbd5e1',
+                        borderColor: '#3f4756',
                         borderWidth: 1,
-                        cornerRadius: 8,
-                        padding: 12,
-                        titleFont: { family: 'Inter', weight: '600' },
-                        bodyFont: { family: 'Inter' },
+                        cornerRadius: 4,
+                        padding: 10,
+                        titleFont: { family: 'Inter', size: 13, weight: '600' },
+                        bodyFont: { family: 'Inter', size: 12 },
                     }
                 }
             }
@@ -107,13 +107,13 @@ const Charts = {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#1a2744',
+                        backgroundColor: '#1c212c',
                         titleColor: '#f1f5f9',
-                        bodyColor: '#94a3b8',
-                        borderColor: '#1e293b',
+                        bodyColor: '#cbd5e1',
+                        borderColor: '#3f4756',
                         borderWidth: 1,
-                        cornerRadius: 8,
-                        padding: 12,
+                        cornerRadius: 4,
+                        padding: 10,
                         callbacks: {
                             label: ctx => `Avg Stress: ${ctx.parsed.x.toFixed(1)}`
                         }
@@ -174,13 +174,13 @@ const Charts = {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#1a2744',
+                        backgroundColor: '#1c212c',
                         titleColor: '#f1f5f9',
-                        bodyColor: '#94a3b8',
-                        borderColor: '#1e293b',
+                        bodyColor: '#cbd5e1',
+                        borderColor: '#3f4756',
                         borderWidth: 1,
-                        cornerRadius: 8,
-                        padding: 12,
+                        cornerRadius: 4,
+                        padding: 10,
                     }
                 },
                 scales: {
@@ -256,15 +256,15 @@ const Charts = {
                         }
                     },
                     tooltip: {
-                        backgroundColor: '#1a2744',
+                        backgroundColor: '#1c212c',
                         titleColor: '#f1f5f9',
-                        bodyColor: '#94a3b8',
-                        borderColor: '#1e293b',
+                        bodyColor: '#cbd5e1',
+                        borderColor: '#3f4756',
                         borderWidth: 1,
-                        cornerRadius: 8,
-                        padding: 12,
-                        titleFont: { family: 'Inter', weight: '600' },
-                        bodyFont: { family: 'Inter' },
+                        cornerRadius: 4,
+                        padding: 10,
+                        titleFont: { family: 'Inter', size: 13, weight: '600' },
+                        bodyFont: { family: 'Inter', size: 12 },
                     }
                 },
                 scales: {
