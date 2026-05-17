@@ -1,67 +1,58 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    variables.css — Fintellix Risk Suite
-   Premium Financial Intelligence Terminal
    ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.bunny.net/css?family=space-grotesk:400,500,600,700|jetbrains-mono:400,500,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-    /* ── Core Backgrounds ─────────────────────────────────────────────── */
-    --bg-base: #02040a;
-    --bg-primary: #03060e;
-    --bg-secondary: #060c18;
-    --bg-panel: #091220;
-    --bg-card: #0c1828;
-    --bg-card-hover: #101e30;
-    --bg-elevated: #152234;
-    --bg-input: #07101e;
-    --bg-subtle: rgba(255, 255, 255, 0.015);
+    /* ── Backgrounds ─────────────────────────────────────────────────── */
+    --bg-base: #080b10;
+    --bg-primary: #090c12;
+    --bg-secondary: #0c1018;
+    --bg-panel: #0f141e;
+    --bg-card: #121720;
+    --bg-card-hover: #161c28;
+    --bg-elevated: #1c2332;
+    --bg-input: #0a0e16;
+    --bg-subtle: rgba(148, 163, 215, 0.02);
 
-    /* ── Accent — Cyan only ───────────────────────────────────────────── */
-    --accent: #06b6d4;
-    --accent-bright: #22d3ee;
-    --accent-dim: rgba(6, 182, 212, 0.07);
-    --accent-glow: rgba(6, 182, 212, 0.15);
-    --accent-border: rgba(6, 182, 212, 0.2);
-    --accent-mid: rgba(6, 182, 212, 0.4);
-    --accent-deep: #0e7490;
-
-    /* Legacy teal aliases */
-    --teal: var(--accent);
-    --teal-bright: var(--accent-bright);
-    --teal-dim: var(--accent-dim);
-    --teal-glow: var(--accent-glow);
-    --teal-border: var(--accent-border);
-    --teal-mid: var(--accent-mid);
+    /* ── Accent — cold electric indigo ───────────────────────────────── */
+    --accent: #7b8cde;
+    --accent-bright: #99a8f0;
+    --accent-dim: rgba(123, 140, 222, 0.07);
+    --accent-glow: rgba(123, 140, 222, 0.16);
+    --accent-border: rgba(123, 140, 222, 0.2);
+    --accent-mid: rgba(123, 140, 222, 0.4);
+    --accent-deep: #4a5ab0;
 
     /* ── Semantic ─────────────────────────────────────────────────────── */
-    --success: #10b981;
-    --success-bg: rgba(16, 185, 129, 0.08);
-    --warning: #eab308;
-    --warning-bg: rgba(234, 179, 8, 0.08);
-    --danger: #f43f5e;
-    --danger-bg: rgba(244, 63, 94, 0.08);
-    --orange: #f97316;
-    --orange-bg: rgba(249, 115, 22, 0.08);
+    --success: #3ea882;
+    --success-bg: rgba(62, 168, 130, 0.07);
+    --warning: #8a8aaa;
+    --warning-bg: rgba(138, 138, 170, 0.07);
+    --danger: #c45c6a;
+    --danger-bg: rgba(196, 92, 106, 0.08);
+    --orange: #a06080;
+    --orange-bg: rgba(160, 96, 128, 0.08);
     --info: var(--accent);
 
     /* ── Text ─────────────────────────────────────────────────────────── */
-    --text-primary: #e2eef7;
-    --text-secondary: #6b8fa8;
-    --text-muted: #334d62;
-    --text-dim: #1e3044;
+    --text-primary: #d8dff0;
+    --text-secondary: #6a7490;
+    --text-muted: #374060;
+    --text-dim: #1e2438;
 
     /* ── Borders ──────────────────────────────────────────────────────── */
-    --border: rgba(6, 182, 212, 0.09);
-    --border-mid: rgba(6, 182, 212, 0.17);
-    --border-bright: rgba(6, 182, 212, 0.32);
-    --border-panel: rgba(255, 255, 255, 0.03);
-    --border-subtle: rgba(255, 255, 255, 0.04);
+    --border: rgba(123, 140, 222, 0.08);
+    --border-mid: rgba(123, 140, 222, 0.15);
+    --border-bright: rgba(123, 140, 222, 0.3);
+    --border-panel: rgba(255, 255, 255, 0.025);
+    --border-subtle: rgba(255, 255, 255, 0.03);
 
     /* ── Typography ───────────────────────────────────────────────────── */
-    --font-sans: 'Space Grotesk', -apple-system, system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    --font-display: 'Space Grotesk', sans-serif;
+    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-display: 'Syne', sans-serif;
 
     --text-xs: 0.6875rem;
     --text-sm: 0.8125rem;
@@ -73,22 +64,22 @@
     --text-3xl: 2.25rem;
 
     /* ── Layout ───────────────────────────────────────────────────────── */
-    --topbar-height: 56px;
-    --sidebar-width: 216px;
-    --header-height: 56px;
-    --radius-sm: 4px;
+    --topbar-height: 54px;
+    --sidebar-width: 210px;
+    --header-height: 54px;
+    --radius-sm: 3px;
     --radius: 6px;
     --radius-lg: 10px;
-    --radius-xl: 14px;
+    --radius-xl: 16px;
 
     /* ── Effects ──────────────────────────────────────────────────────── */
     --shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
     --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.85);
-    --glow-accent: 0 0 28px rgba(6, 182, 212, 0.18);
-    --glow-sm: 0 0 12px rgba(6, 182, 212, 0.12);
+    --glow-accent: 0 0 24px rgba(123, 140, 222, 0.18);
+    --glow-sm: 0 0 10px rgba(123, 140, 222, 0.12);
     --glass: blur(12px);
-    --ease: 160ms cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-slow: 320ms cubic-bezier(0.4, 0, 0.2, 1);
+    --ease: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* ── Spacing ──────────────────────────────────────────────────────── */
     --sp1: 2px;
@@ -125,9 +116,14 @@
     --accent-blue-glow: var(--accent-glow);
     --accent-blue-muted: var(--accent-dim);
     --accent-blue-hover: var(--accent-bright);
-    --accent-purple: #7c6af0;
-    --bg-secondary: #060c18;
-    --grid-line: rgba(6, 182, 212, 0.025);
+    --accent-purple: #7b8cde;
+    --teal: var(--accent);
+    --teal-bright: var(--accent-bright);
+    --teal-dim: var(--accent-dim);
+    --teal-glow: var(--accent-glow);
+    --teal-border: var(--accent-border);
+    --teal-mid: var(--accent-mid);
+    --grid-line: rgba(123, 140, 222, 0.02);
 }
 
 *,
@@ -151,9 +147,9 @@ body {
     background: var(--bg-base);
     overflow-x: hidden;
     background-image:
-        linear-gradient(rgba(6, 182, 212, 0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(6, 182, 212, 0.018) 1px, transparent 1px);
-    background-size: 48px 48px;
+        linear-gradient(rgba(123, 140, 222, 0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(123, 140, 222, 0.012) 1px, transparent 1px);
+    background-size: 52px 52px;
     line-height: 1.5;
 }
 

@@ -1,9 +1,8 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    components.css — Fintellix Risk Suite
-   Premium Financial Intelligence Terminal
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Cards ─────────────────────────────────────────────────────────────────── */
+/* ── Cards ──────────────────────────────────────────────────────────────── */
 
 .card {
     background: var(--bg-card);
@@ -19,121 +18,108 @@
     border-color: var(--border-mid);
 }
 
-/* Hairline accent top */
+/* Subtle top accent line */
 .card::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 15%;
-    right: 15%;
+    left: 0;
+    right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.18), transparent);
+    background: linear-gradient(90deg, transparent 10%, var(--accent-border) 50%, transparent 90%);
     pointer-events: none;
 }
 
-/* ── KPI Cards ──────────────────────────────────────────────────────────────── */
+/* ── KPI Cards ──────────────────────────────────────────────────────────── */
 
 .kpi-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: var(--sp8);
+    padding: var(--sp7) var(--sp8);
     display: flex;
     flex-direction: column;
-    gap: var(--sp3);
+    gap: var(--sp2);
     transition: all var(--ease);
     position: relative;
     overflow: hidden;
     cursor: default;
 }
 
-/* Corner orb */
-.kpi-card::after {
-    content: '';
-    position: absolute;
-    right: -24px;
-    bottom: -24px;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 18px solid rgba(34, 211, 238, 0.04);
-    pointer-events: none;
-}
-
 .kpi-card:hover {
     border-color: var(--accent-border);
     background: var(--bg-card-hover);
-    box-shadow: var(--glow-sm);
 }
 
 .kpi-card__label {
     font-size: 9px;
     color: var(--text-muted);
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     font-family: var(--font-mono);
 }
 
 .kpi-card__value {
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.03em;
     line-height: 1;
-    font-family: var(--font-mono);
+    font-family: var(--font-display);
 }
 
 .kpi-card__meta {
-    font-size: 9px;
+    font-size: 9.5px;
     color: var(--text-muted);
     font-weight: 400;
     font-family: var(--font-mono);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
+    margin-top: var(--sp1);
 }
 
 .kpi-card__icon {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: var(--sp7);
+    top: var(--sp6);
     right: var(--sp7);
-    opacity: 0.3;
+    opacity: 0.2;
 }
 
 .kpi-card__icon--blue {
     color: var(--accent);
-    opacity: 0.45;
+    opacity: 0.35;
 }
 
 .kpi-card__icon--yellow {
     color: var(--warning);
-    opacity: 0.45;
+    opacity: 0.35;
 }
 
 .kpi-card__icon--red {
     color: var(--danger);
-    opacity: 0.45;
+    opacity: 0.35;
 }
 
 .kpi-card__icon--green {
     color: var(--success);
-    opacity: 0.45;
+    opacity: 0.35;
 }
 
-/* ── Badges ────────────────────────────────────────────────────────────────── */
+/* ── Badges ─────────────────────────────────────────────────────────────── */
 
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 2px 8px;
-    border-radius: 3px;
+    padding: 2px 7px;
+    border-radius: 2px;
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -144,31 +130,31 @@
 .badge--critical {
     background: var(--danger-bg);
     color: var(--danger);
-    border-color: rgba(239, 68, 68, 0.28);
+    border-color: rgba(196, 92, 106, 0.25);
 }
 
 .badge--high {
     background: var(--orange-bg);
     color: var(--orange);
-    border-color: rgba(249, 115, 22, 0.28);
+    border-color: rgba(160, 96, 128, 0.25);
 }
 
 .badge--moderate {
     background: var(--warning-bg);
     color: var(--warning);
-    border-color: rgba(245, 158, 11, 0.28);
+    border-color: rgba(138, 138, 170, 0.25);
 }
 
 .badge--low {
     background: var(--success-bg);
     color: var(--success);
-    border-color: rgba(16, 185, 129, 0.22);
+    border-color: rgba(62, 168, 130, 0.2);
 }
 
 .badge--info {
-    background: rgba(34, 211, 238, 0.06);
+    background: var(--accent-dim);
     color: var(--accent);
-    border-color: rgba(34, 211, 238, 0.22);
+    border-color: var(--accent-border);
 }
 
 .badge__dot {
@@ -179,7 +165,7 @@
     flex-shrink: 0;
 }
 
-/* ── Data Table ────────────────────────────────────────────────────────────── */
+/* ── Data Table ─────────────────────────────────────────────────────────── */
 
 .data-table-wrapper {
     overflow-x: auto;
@@ -195,14 +181,14 @@
 }
 
 .data-table thead th {
-    background: rgba(34, 211, 238, 0.025);
+    background: rgba(123, 140, 222, 0.03);
     padding: var(--sp5) var(--sp7);
     text-align: left;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 9px;
-    color: var(--accent);
+    color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.13em;
     border-bottom: 1px solid var(--border);
     cursor: pointer;
     white-space: nowrap;
@@ -212,12 +198,12 @@
 }
 
 .data-table thead th:hover {
-    color: var(--accent-bright);
+    color: var(--accent);
 }
 
 .data-table td {
     padding: var(--sp4) var(--sp7);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.025);
     color: var(--text-secondary);
     font-weight: 400;
     white-space: nowrap;
@@ -233,7 +219,7 @@
 }
 
 .data-table tbody tr:hover {
-    background: rgba(34, 211, 238, 0.035);
+    background: rgba(123, 140, 222, 0.03);
 }
 
 .data-table tbody tr:hover td {
@@ -241,11 +227,11 @@
 }
 
 .data-table .ticker-cell {
-    font-weight: 700;
+    font-weight: 600;
     color: var(--accent);
     font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
 }
 
 .data-table .score-cell {
@@ -260,7 +246,7 @@
     font-size: 11px;
 }
 
-/* ── Gauge ─────────────────────────────────────────────────────────────────── */
+/* ── Gauge ──────────────────────────────────────────────────────────────── */
 
 .gauge-container {
     display: flex;
@@ -272,13 +258,13 @@
 
 .gauge__label {
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.18em;
     font-family: var(--font-mono);
 }
 
-/* ── Flag List ─────────────────────────────────────────────────────────────── */
+/* ── Flag List ──────────────────────────────────────────────────────────── */
 
 .flag-list {
     list-style: none;
@@ -291,21 +277,21 @@
     display: flex;
     align-items: flex-start;
     gap: var(--sp6);
-    padding: var(--sp6) var(--sp7);
-    background: rgba(239, 68, 68, 0.025);
-    border: 1px solid rgba(239, 68, 68, 0.1);
+    padding: var(--sp5) var(--sp7);
+    background: rgba(196, 92, 106, 0.03);
+    border: 1px solid rgba(196, 92, 106, 0.1);
     border-radius: var(--radius-sm);
     border-left: 2px solid var(--danger);
 }
 
 .flag-item--moderate {
-    background: rgba(245, 158, 11, 0.025);
-    border-color: rgba(245, 158, 11, 0.1);
+    background: rgba(138, 138, 170, 0.03);
+    border-color: rgba(138, 138, 170, 0.1);
     border-left-color: var(--warning);
 }
 
 .flag-item__severity {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 8px;
     padding: 2px 5px;
     border: 1px solid currentColor;
@@ -339,11 +325,11 @@
     margin-top: 3px;
 }
 
-/* ── Ratio Cards ───────────────────────────────────────────────────────────── */
+/* ── Ratio Cards ────────────────────────────────────────────────────────── */
 
 .ratio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
     gap: var(--sp3);
 }
 
@@ -351,7 +337,7 @@
     background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: var(--sp6) var(--sp7);
+    padding: var(--sp5) var(--sp6);
     text-align: center;
     transition: all var(--ease);
 }
@@ -364,10 +350,10 @@
 .ratio-card__label {
     font-size: 8px;
     color: var(--text-muted);
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: var(--sp3);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.13em;
     font-family: var(--font-mono);
 }
 
@@ -388,7 +374,7 @@
     font-family: var(--font-mono);
 }
 
-/* ── Buttons ───────────────────────────────────────────────────────────────── */
+/* ── Buttons ────────────────────────────────────────────────────────────── */
 
 .btn {
     display: inline-flex;
@@ -398,7 +384,7 @@
     border: 1px solid var(--border-mid);
     background: transparent;
     color: var(--text-secondary);
-    font-weight: 600;
+    font-weight: 500;
     font-size: var(--text-sm);
     cursor: pointer;
     transition: all var(--ease);
@@ -417,7 +403,7 @@
     background: var(--accent);
     color: var(--bg-base);
     border-color: var(--accent);
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .btn--primary:hover {
@@ -425,12 +411,12 @@
     border-color: var(--accent-bright);
 }
 
-/* ── Sector Cards ──────────────────────────────────────────────────────────── */
+/* ── Sector Cards ───────────────────────────────────────────────────────── */
 
 .sector-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: var(--sp5);
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--sp4);
 }
 
 .sector-card {
@@ -449,11 +435,11 @@
 .sector-card__name {
     font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--accent);
-    margin-bottom: var(--sp7);
+    color: var(--text-primary);
+    margin-bottom: var(--sp6);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-family: var(--font-mono);
+    font-family: var(--font-display);
 }
 
 .sector-card__stats {
@@ -481,18 +467,18 @@
 
 .sector-card__stat-value {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 500;
     font-family: var(--font-mono);
     color: var(--text-primary);
 }
 
-/* ── Live Search / Scorer ──────────────────────────────────────────────────── */
+/* ── Live Scorer ────────────────────────────────────────────────────────── */
 
 .live-search {
-    max-width: 460px;
+    max-width: 440px;
     margin: 0 auto var(--sp10);
     text-align: center;
-    padding: var(--sp10) var(--sp10);
+    padding: var(--sp10);
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -507,16 +493,17 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.4;
+    background: linear-gradient(90deg, transparent, var(--accent-mid), transparent);
+    opacity: 0.5;
 }
 
 .live-search__title {
     font-size: var(--text-xl);
     font-weight: 700;
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     margin-bottom: var(--sp3);
+    font-family: var(--font-display);
 }
 
 .live-search__desc {
@@ -542,9 +529,9 @@
     padding: var(--sp5) var(--sp6);
     border-radius: var(--radius-sm);
     outline: none;
-    width: 160px;
+    width: 150px;
     text-align: center;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     transition: border-color var(--ease);
 }
@@ -561,7 +548,7 @@
     padding: var(--sp5) var(--sp9);
     border-radius: var(--radius-sm);
     font-size: var(--text-sm);
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     transition: all var(--ease);
     font-family: var(--font-mono);
@@ -571,7 +558,6 @@
 
 .live-search__btn:hover {
     background: var(--accent-bright);
-    box-shadow: var(--glow-accent);
 }
 
 .progress-bar {
@@ -603,7 +589,7 @@
     }
 }
 
-/* ── Utility Colors ────────────────────────────────────────────────────────── */
+/* ── Utility Colors ─────────────────────────────────────────────────────── */
 
 .text-success {
     color: var(--success) !important;
@@ -621,22 +607,22 @@
     color: var(--accent) !important;
 }
 
-/* ── Sort Arrow ────────────────────────────────────────────────────────────── */
+/* ── Sort Arrow ─────────────────────────────────────────────────────────── */
 
 .sort-arrow {
-    opacity: 0.35;
+    opacity: 0.3;
     font-size: 8px;
     margin-left: 3px;
 }
 
-/* ── Card Section Label ────────────────────────────────────────────────────── */
+/* ── Card Label ─────────────────────────────────────────────────────────── */
 
 .card-label {
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 500;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.15em;
     font-family: var(--font-mono);
     margin-bottom: var(--sp6);
     display: flex;
@@ -644,7 +630,7 @@
     justify-content: space-between;
 }
 
-/* ── Divider ───────────────────────────────────────────────────────────────── */
+/* ── Divider ────────────────────────────────────────────────────────────── */
 
 .divider {
     height: 1px;

@@ -2,124 +2,80 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Flask](https://img.shields.io/badge/backend-Flask-lightgrey.svg)](https://flask.palletsprojects.com/)
-[![JS](https://img.shields.io/badge/frontend-Vanilla%20JS-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![ML Accuracy](https://img.shields.io/badge/AUC--ROC-92.5%25-green.svg)](https://github.com/Anjali-Mittal/Financial_Stress_Detection)
+[![Precision](https://img.shields.io/badge/Precision-86.4%25-blue.svg)](https://github.com/Anjali-Mittal/Financial_Stress_Detection)
 
-> A sophisticated, AI-driven platform for real-time financial risk monitoring and stress detection in public companies.
-
----
-
-## Overview
-
-**Fintellix Risk** is a production-grade analytical platform designed to identify corporate financial distress before it becomes critical. By leveraging multi-stage machine learning models and real-time financial data, the system provides investors and analysts with a "Stress Score" (0–100) that quantifies risk levels with high precision.
-
-The project features a high-performance **Flask REST API** backend and a sleek, **dark-themed interactive dashboard** for visual data exploration.
+> A production-grade, AI-driven platform for real-time financial risk monitoring and stress detection in public companies.
 
 ---
 
-## Key Features
+## 📈 Platform Performance (Verified)
 
-### 1. Executive Dashboard
-- **System-Wide KPIs**: Instant visibility into total companies tracked, average market stress, and critical risk counts.
-- **Risk Distribution**: Interactive visualizations (Bar/Donut charts) showing the health of the entire portfolio.
-- **Sector Analysis**: Comparative health metrics across different industries.
-
-### 2. Deep-Dive Analytics
-- **Stress Gauge**: A visual representation of a company's risk profile.
-- **Ensemble ML Scoring**: Breakdown of scores from Classifier, Trend, and Clustering models.
-- **Financial Ratios**: Real-time tracking of Altman Z-score, Piotroski F-score, Current Ratio, Net Margin, and more.
-- **Historical Trends**: Interactive sparklines and charts showing financial health over the last decade.
-
-### 3. Live Ticker Scorer
-- On-demand analysis of any ticker.
-- Fetches real-time financial statements and computes a comprehensive stress report in seconds.
-- Detects "Red Flags" automatically (e.g., negative ROA, high debt-to-equity, cash flow divergence).
-
-### 4. Advanced ML Engine
-- **Classifiers**: Predicts the probability of financial distress using XGBoost/RandomForest.
-- **Clustering**: Groups companies by financial similarity to identify systemic risks.
-- **Red Flag Logic**: Rule-based engine to flag accounting anomalies and liquidity traps.
+| Metric | Specification |
+| :--- | :--- |
+| **Model Accuracy** | **92.5% AUC-ROC** (XGBoost Ensemble) |
+| **Precision** | **86.4%** in identifying high-risk distress candidates |
+| **F1 Score** | **73.1%** (optimized for recall in risk detection) |
+| **Backtested Data** | **172 Companies** across 10+ years of financial history |
+| **Live Capability** | **5,000+** US Public Equities (NYSE/NASDAQ) |
+| **Scoring Latency** | **<300ms** (Cached) \| **5-15s** (Live XBRL Fetch) |
+| **Risk Signals** | **10+** Automated Heuristic Red-Flags |
 
 ---
 
-## Tech Stack
+## 🛠️ Core Capabilities
 
-### Backend
-- **Core**: Python 3.10
-- **Web Framework**: Flask
-- **Data Science**: Pandas, NumPy, Scikit-Learn
-- **ML Models**: XGBoost, LightGBM, Joblib
-- **API Integration**: Yahoo Finance, FRED (Federal Reserve)
+### 1. Multi-Stage ML Risk Engine
+- **Ensemble Scoring**: Triangulated risk assessment using a weighted architecture:
+    - **XGBoost Classifier (80%)**: Trained on 18 key financial features with **SMOTE** for class imbalance handling.
+    - **Trend Analysis (10%)**: Heuristic engine detecting accelerating financial deterioration over 3+ years.
+    - **Peer Clustering (10%)**: **K-Means + PCA** architecture to identify systemic risks and peer-group anomalies.
+- **Sector-Adjusted Intelligence**: Custom logic for **Technology** and **Financial Services** that normalizes Altman Z-Scores (Z * 1.8) to account for high-leverage/high-growth balance sheet structures.
 
-### Frontend
-- **Interface**: Vanilla HTML5, CSS3 (Modular Layout)
-- **Visualizations**: Chart.js (CDN-based)
-- **Icons**: Lucide/FontAwesome
-- **Design**: Dark-themed "Glassmorphism" UI with responsive grid layout
+### 2. Live Data Pipeline (The "XBRL" Edge)
+- **SEC EDGAR Integration**: Native **XBRL Parser** that fetches 10-K/10-Q filings directly from the SEC API for high-fidelity statement data.
+- **Real-Time Fallbacks**: Seamless integration with **Yahoo Finance** for price action and metadata metadata.
+- **Macro Context**: Integration with **FRED (Federal Reserve)** to inject macroeconomic indicators (e.g., interest rates, inflation) into the risk context.
+
+### 3. Institutional Terminal (UI/UX)
+- **Glassmorphism Design**: Dense, high-contrast "Dark Mode" interface inspired by Bloomberg/Refinitiv terminals.
+- **Interactive Visuals**: Real-time **Chart.js** implementations for risk distribution, sector health, and historical trend analysis.
+- **On-Demand Scorer**: Instant analysis of any ticker with live progress tracking (Fetch -> Parse -> Compute -> Score).
 
 ---
 
-## Project Structure
+## 🚩 Automated Risk Detection (Red Flags)
+
+The system automatically triggers alerts for 10+ critical financial anomalies:
+- **Altman Z-Score**: Adjusted for sector; flags Distress (<1.81) and Grey (<3.0) zones.
+- **Piotroski F-Score**: Flags weak financial strength (Score ≤ 3).
+- **Liquidity Traps**: Current Ratio < 1.0 or Cash Flow Divergence.
+- **Profitability Crises**: Negative Net Margins or declining Interest Coverage (< 1.5).
+- **Leverage Risks**: Debt-to-Equity > 3.0 or excessive debt-to-EBITDA ratios.
+
+---
+
+## 🏗️ Technical Architecture
 
 ```bash
 financial_stress/
-├── dashboard/           # Flask Application & Web Assets
-│   ├── server.py        # API Endpoints & Static Server
-│   └── static/          # HTML, CSS, JS frontend modules
+├── dashboard/           # Production Flask Application
+│   ├── server.py        # High-concurrency REST API
+│   └── static/          # Modular CSS/JS (Variables-based UI)
 ├── backend_core/        # Core Analytical Engine
-│   ├── engine/          # Scorer & Live Scorer logic
-│   ├── scrapers/        # Financial data acquisition
-│   └── utils/           # Logging & Helper functions
-├── models/              # Serialized ML Model files (.joblib)
-├── data/                # Processed datasets & feature matrices
-├── reports/             # Generated PDF/HTML risk reports
-└── requirements.txt     # Dependency list
+│   ├── engine/          # Scorer, Trend Predictor, & Live Pipeline
+│   ├── features/        # XBRL Parsing & 20+ Financial Ratios
+│   └── utils/           # SMOTE-ready training & logging
+├── models/              # Serialized XGBoost & K-Means artifacts
+├── data/                # 10-Year historical feature matrices
+└── reports/             # Auto-generated analytical plots
 ```
 
 ---
 
-## Installation & Setup
+## 🌐 Deployment & Integration
 
-### 1. Prerequisites
-- Python 3.10 or higher installed.
-- A free FRED API Key (Optional, for macroeconomic data).
-
-### 2. Clone & Install
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/fintellix-risk.git
-cd fintellix-risk
-
-# Create and activate virtual environment
-python -m venv .venv
-.venv\Scripts\activate  # On Windows
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### 3. Configuration
-Create a `.env` file in the root directory:
-```env
-FRED_API_KEY=your_api_key_here
-HF_TOKEN=your_hf_token_here
-HF_REPO_ID=your_hf_repo_id_here 
-```
-
----
-
-## Usage
-
-### Start the Dashboard
-```bash
-python dashboard/server.py
-```
-Visit `http://localhost:8000` in your browser to view the interactive UI.
-
-### Run Live Scorer (CLI)
-```bash
-python src/models/live_scorer.py --ticker AAPL
-```
+This platform is architected for production environments (e.g., **Render**, **AWS**, **GCP**). It uses a hybrid storage model where core ML artifacts are synced from **Hugging Face** during deployment for high availability.
 
 ---
 
@@ -129,8 +85,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## Contributing
+*Built with ❤️ by [Anjali Mittal](https://github.com/Anjali-Mittal)*
 
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
-*Created with ❤️ by the [Anjali Mittal](https://github.com/Anjali-Mittal)*

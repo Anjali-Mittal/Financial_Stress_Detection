@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fintellix Risk Suite — Real-time financial intelligence and risk monitoring">
-    <title>Fintellix Risk — Financial Intelligence Dashboard</title>
+    <meta name="description" content="Fintellix Risk Suite — Financial intelligence and risk monitoring">
+    <title>Fintellix — Risk Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
@@ -15,7 +17,7 @@
 <body>
     <div class="app">
 
-        <!-- ═══ Top Bar (brand + breadcrumb + status + search) ═══ -->
+        <!-- ═══ Header ═══ -->
         <header class="header">
             <div class="header__brand">
                 <div class="header__logo">F</div>
@@ -54,7 +56,6 @@
 
         <!-- ═══ Sidebar ═══ -->
         <aside class="sidebar">
-            <!-- brand hidden on desktop (in header), shown none -->
             <div class="sidebar__brand"></div>
 
             <nav class="sidebar__nav">
@@ -123,7 +124,7 @@
         <main class="main">
             <div class="content">
 
-                <!-- ═══ Overview ═══ -->
+                <!-- Overview -->
                 <div class="view active" id="view-overview">
                     <div class="section-header">
                         <div>
@@ -158,7 +159,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ Companies ═══ -->
+                <!-- Companies -->
                 <div class="view" id="view-companies">
                     <div class="section-header">
                         <div>
@@ -188,7 +189,7 @@
                     <div id="companies-list"></div>
                 </div>
 
-                <!-- ═══ Sectors ═══ -->
+                <!-- Sectors -->
                 <div class="view" id="view-sectors">
                     <div class="section-header">
                         <div>
@@ -199,7 +200,7 @@
                     <div id="sectors-content"></div>
                 </div>
 
-                <!-- ═══ Company Detail ═══ -->
+                <!-- Company Detail -->
                 <div class="view" id="view-detail">
                     <div id="detail-header"></div>
                     <div class="charts-grid mt-4">
@@ -223,7 +224,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ Live Scorer ═══ -->
+                <!-- Live Scorer -->
                 <div class="view" id="view-live">
                     <div class="section-header">
                         <div>
