@@ -2,27 +2,27 @@
    variables.css — Fintellix Risk Suite
    ═══════════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
     /* ── Backgrounds ─────────────────────────────────────────────────── */
-    --bg-base: #080b10;
-    --bg-primary: #090c12;
-    --bg-secondary: #0c1018;
-    --bg-panel: #0f141e;
-    --bg-card: #121720;
-    --bg-card-hover: #161c28;
-    --bg-elevated: #1c2332;
-    --bg-input: #0a0e16;
-    --bg-subtle: rgba(148, 163, 215, 0.02);
+    --bg-base: #06080e;
+    --bg-primary: #080b12;
+    --bg-secondary: #0b0f18;
+    --bg-panel: #0e1320;
+    --bg-card: #111622;
+    --bg-card-hover: #151b28;
+    --bg-elevated: #1a2030;
+    --bg-input: #090d16;
+    --bg-subtle: rgba(130, 148, 210, 0.02);
 
-    /* ── Accent — cold electric indigo ───────────────────────────────── */
+    /* ── Accent — cold indigo ─────────────────────────────────────────── */
     --accent: #7b8cde;
     --accent-bright: #99a8f0;
     --accent-dim: rgba(123, 140, 222, 0.07);
-    --accent-glow: rgba(123, 140, 222, 0.16);
-    --accent-border: rgba(123, 140, 222, 0.2);
-    --accent-mid: rgba(123, 140, 222, 0.4);
+    --accent-glow: rgba(123, 140, 222, 0.14);
+    --accent-border: rgba(123, 140, 222, 0.18);
+    --accent-mid: rgba(123, 140, 222, 0.38);
     --accent-deep: #4a5ab0;
 
     /* ── Semantic ─────────────────────────────────────────────────────── */
@@ -37,22 +37,22 @@
     --info: var(--accent);
 
     /* ── Text ─────────────────────────────────────────────────────────── */
-    --text-primary: #d8dff0;
-    --text-secondary: #6a7490;
-    --text-muted: #374060;
-    --text-dim: #1e2438;
+    --text-primary: #d4dcee;
+    --text-secondary: #60708a;
+    --text-muted: #323d54;
+    --text-dim: #1c2336;
 
     /* ── Borders ──────────────────────────────────────────────────────── */
-    --border: rgba(123, 140, 222, 0.08);
-    --border-mid: rgba(123, 140, 222, 0.15);
-    --border-bright: rgba(123, 140, 222, 0.3);
-    --border-panel: rgba(255, 255, 255, 0.025);
+    --border: rgba(123, 140, 222, 0.07);
+    --border-mid: rgba(123, 140, 222, 0.13);
+    --border-bright: rgba(123, 140, 222, 0.28);
+    --border-panel: rgba(255, 255, 255, 0.02);
     --border-subtle: rgba(255, 255, 255, 0.03);
 
     /* ── Typography ───────────────────────────────────────────────────── */
-    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
-    --font-mono: 'IBM Plex Mono', monospace;
-    --font-display: 'Syne', sans-serif;
+    --font-sans: 'Outfit', system-ui, sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-display: 'Outfit', system-ui, sans-serif;
 
     --text-xs: 0.6875rem;
     --text-sm: 0.8125rem;
@@ -64,9 +64,9 @@
     --text-3xl: 2.25rem;
 
     /* ── Layout ───────────────────────────────────────────────────────── */
-    --topbar-height: 54px;
-    --sidebar-width: 210px;
-    --header-height: 54px;
+    --topbar-height: 56px;
+    --sidebar-width: 0px;
+    --header-height: 56px;
     --radius-sm: 3px;
     --radius: 6px;
     --radius-lg: 10px;
@@ -75,11 +75,11 @@
     /* ── Effects ──────────────────────────────────────────────────────── */
     --shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
     --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.85);
-    --glow-accent: 0 0 24px rgba(123, 140, 222, 0.18);
-    --glow-sm: 0 0 10px rgba(123, 140, 222, 0.12);
-    --glass: blur(12px);
-    --ease: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --glow-accent: 0 0 24px rgba(123, 140, 222, 0.16);
+    --glow-sm: 0 0 10px rgba(123, 140, 222, 0.1);
+    --glass: blur(16px);
+    --ease: 140ms cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-slow: 280ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* ── Spacing ──────────────────────────────────────────────────────── */
     --sp1: 2px;
@@ -123,7 +123,7 @@
     --teal-glow: var(--accent-glow);
     --teal-border: var(--accent-border);
     --teal-mid: var(--accent-mid);
-    --grid-line: rgba(123, 140, 222, 0.02);
+    --grid-line: rgba(123, 140, 222, 0.018);
 }
 
 *,
@@ -146,10 +146,6 @@ body {
     color: var(--text-primary);
     background: var(--bg-base);
     overflow-x: hidden;
-    background-image:
-        linear-gradient(rgba(123, 140, 222, 0.012) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(123, 140, 222, 0.012) 1px, transparent 1px);
-    background-size: 52px 52px;
     line-height: 1.5;
 }
 
