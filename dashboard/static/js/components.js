@@ -23,9 +23,9 @@ const Components = {
 
     /** Format number safely */
     fmt(v, decimals = 2) {
-        if (v == null || v === '') return '—';
+        if (v == null || v === '') return 'N/A';
         const n = Number(v);
-        if (isNaN(n)) return '—';
+        if (isNaN(n)) return 'N/A';
         return n.toFixed(decimals);
     },
 
@@ -41,9 +41,9 @@ const Components = {
     },
 
     /** Badge HTML */
-    badge(score) {
+    badge(score, isLarge = false) {
         const r = this.riskLevel(score);
-        return `<span class="badge badge--${r.css}"><span class="badge__dot"></span>${r.label}</span>`;
+        return `<span class="badge badge--${r.css} ${isLarge ? 'badge--large' : ''}"><span class="badge__dot"></span>${r.label}</span>`;
     },
 
     /** Company table row */
@@ -54,11 +54,11 @@ const Components = {
         <tr data-ticker="${c.ticker}" onclick="App.showCompany('${c.ticker}')">
             <td class="ticker-cell">${c.ticker}</td>
             <td>${(c.sector || '').replace('_', ' ')}</td>
-            <td class="score-cell ${scoreColor}">${this.fmt(c.stress_score, 1)}</td>
+            <td class="score-cell ${scoreColor}">${this.fmt(c.stress_score, 2)}</td>
             <td>${this.badge(c.stress_score)}</td>
             <td>${c.n_red_flags || 0}</td>
-            <td class="text-mono">${this.fmt(c.altman_z)}</td>
-            <td class="text-mono">${this.fmt(c.net_margin, 4)}</td>
+            <td class="text-mono">${this.fmt(c.altman_z, 2)}</td>
+            <td class="text-mono">${this.fmt(c.net_margin, 2)}</td>
         </tr>`;
     },
 
@@ -105,17 +105,18 @@ const Components = {
     ratioCards(ratios) {
         if (!ratios) return '';
         const items = [
-            { key: 'altman_z', label: 'Altman Z-Score', sub: ratios.altman_z_label },
-            { key: 'altman_z_adjusted', label: 'Altman Z (Adj)', sub: 'Sector-adjusted' },
+            { key: 'altman_z', label: 'Altman Z-Score', sub: ratios.altman_z_label, fmt: 2 },
+            { key: 'altman_z_adjusted', label: 'Altman Z (Adj)', sub: 'Sector-adjusted', fmt: 2 },
             { key: 'piotroski_f', label: 'Piotroski F', sub: ratios.piotroski_label, fmt: 0 },
-            { key: 'current_ratio', label: 'Current Ratio', sub: 'Liquidity' },
-            { key: 'interest_coverage', label: 'Interest Coverage', sub: 'Debt service' },
-            { key: 'debt_to_equity', label: 'Debt / Equity', sub: 'Leverage' },
-            { key: 'net_margin', label: 'Net Margin', sub: 'Profitability', fmt: 4 },
-            { key: 'cf_divergence', label: 'CF Divergence', sub: 'Earnings quality', fmt: 4 },
+            { key: 'current_ratio', label: 'Current Ratio', sub: 'Liquidity', fmt: 2 },
+            { key: 'interest_coverage', label: 'Interest Coverage', sub: 'Debt service', fmt: 2 },
+            { key: 'debt_to_equity', label: 'Debt / Equity', sub: 'Leverage', fmt: 2 },
+            { key: 'net_margin', label: 'Net Margin', sub: 'Profitability', fmt: 2 },
+            { key: 'cf_divergence', label: 'CF Divergence', sub: 'Earnings quality', fmt: 2 },
         ];
         return `<div class="ratio-grid">${items.map(it => {
             const v = ratios[it.key];
+            const isEmpty = (v == null || v === '');
             let colorClass = '';
             if (it.key === 'altman_z' && v != null) {
                 colorClass = v > 3 ? 'text-success' : v > 1.81 ? 'text-warning' : 'text-danger';
@@ -124,9 +125,9 @@ const Components = {
                 colorClass = v >= 7 ? 'text-success' : v >= 4 ? 'text-warning' : 'text-danger';
             }
             return `
-            <div class="ratio-card">
+            <div class="ratio-card ${isEmpty ? 'ratio-card--empty' : ''}">
                 <div class="ratio-card__label">${it.label}</div>
-                <div class="ratio-card__value ${colorClass}">${this.fmt(v, it.fmt != null ? it.fmt : 2)}</div>
+                <div class="ratio-card__value ${colorClass}">${this.fmt(v, it.fmt)}</div>
                 ${it.sub ? `<div class="ratio-card__sub">${it.sub}</div>` : ''}
             </div>`;
         }).join('')}</div>`;
@@ -150,7 +151,7 @@ const Components = {
                 <div class="model-bar__track">
                     <div class="model-bar__fill" style="width:${Math.min(score, 100)}%;background:${color}"></div>
                 </div>
-                <div class="model-bar__value">${this.fmt(score, 1)}</div>
+                <div class="model-bar__value">${this.fmt(score, 2)}</div>
             </div>`;
         }).join('');
     },
@@ -168,7 +169,7 @@ const Components = {
                     <tr onclick="App.showCompany('${c.ticker}')" style="cursor:pointer">
                         <td class="ticker-cell">${c.ticker}</td>
                         <td>${(c.sector || '').replace('_', ' ')}</td>
-                        <td class="score-cell">${this.fmt(c.stress_score, 1)}</td>
+                        <td class="score-cell">${this.fmt(c.stress_score, 2)}</td>
                         <td>${this.badge(c.stress_score)}</td>
                         <td>${c.n_red_flags || 0}</td>
                     </tr>`).join('')}</tbody>
@@ -184,11 +185,11 @@ const Components = {
                 <div class="sector-card__name">${(s.sector || '').replace('_', ' ')}</div>
                 <div class="sector-card__stats">
                     <div class="sector-card__stat"><span class="sector-card__stat-label">Companies</span><span class="sector-card__stat-value">${s.count || 0}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Avg Stress</span><span class="sector-card__stat-value">${this.fmt(s.avg_stress, 1)}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Altman Z (med)</span><span class="sector-card__stat-value">${this.fmt(s.altman_z_median)}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Net Margin</span><span class="sector-card__stat-value">${this.fmt(s.net_margin_median, 3)}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Current Ratio</span><span class="sector-card__stat-value">${this.fmt(s.current_ratio_median)}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">D/E (med)</span><span class="sector-card__stat-value">${this.fmt(s.debt_to_equity_median)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Avg Stress</span><span class="sector-card__stat-value">${this.fmt(s.avg_stress, 2)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Altman Z (med)</span><span class="sector-card__stat-value">${this.fmt(s.altman_z_median, 2)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Net Margin</span><span class="sector-card__stat-value">${this.fmt(s.net_margin_median, 2)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">Current Ratio</span><span class="sector-card__stat-value">${this.fmt(s.current_ratio_median, 2)}</span></div>
+                    <div class="sector-card__stat"><span class="sector-card__stat-label">D/E (med)</span><span class="sector-card__stat-value">${this.fmt(s.debt_to_equity_median, 2)}</span></div>
                 </div>
             </div>`).join('')}</div>`;
     },

@@ -39,7 +39,7 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 2px 7px;
+    padding: 3px 8px;
     border-radius: 2px;
     font-size: 8px;
     font-weight: 400;
@@ -73,6 +73,12 @@
     background: transparent;
     color: var(--text-label);
     border-color: var(--divider);
+}
+
+.badge--large {
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 500;
 }
 
 .badge__dot {
@@ -293,6 +299,10 @@
     background: var(--bg-row-hover);
 }
 
+.ratio-card--empty {
+    opacity: 0.4;
+}
+
 /* Remove borders on last in each row — handled via nth-child if needed */
 .ratio-card:nth-child(4n) {
     border-right: none;
@@ -322,11 +332,13 @@
 }
 
 .ratio-card__sub {
-    font-size: 8px;
+    font-size: 9px;
     color: var(--text-dim);
-    margin-top: 3px;
-    font-weight: 400;
-    font-family: var(--font-mono);
+    margin-top: 4px;
+    font-weight: 500;
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 /* ── Sector Cards → Sector Rows ─────────────────────────────────── */

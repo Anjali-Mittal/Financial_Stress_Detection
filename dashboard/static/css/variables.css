@@ -2,16 +2,16 @@
    variables.css — Fintellix Risk Suite
    ═══════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=Fragment+Mono:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Fragment+Mono:ital@0;1&display=swap');
 
 :root {
     /* ── Backgrounds ─────────────────────────────────────────────── */
     --bg-base: #0c0c0e;
-    --bg-nav: #0f0f12;
-    --bg-row-hover: rgba(255, 255, 255, 0.018);
+    --bg-nav: #121216;
+    --bg-row-hover: rgba(255, 255, 255, 0.02);
     --bg-elevated: #141418;
-    --bg-input: #0f0f12;
-    --bg-subtle: rgba(255, 255, 255, 0.012);
+    --bg-input: #121216;
+    --bg-subtle: rgba(255, 255, 255, 0.015);
 
     /* ── Risk Colors ─────────────────────────────────────────────── */
     --rose: #c47a8a;
@@ -31,9 +31,9 @@
 
     /* ── Text ────────────────────────────────────────────────────── */
     --text-primary: #e8e8ec;
-    --text-secondary: #707070;
-    --text-label: #333333;
-    --text-dim: #1e1e22;
+    --text-secondary: #a1a1aa;
+    --text-label: #8e8e99;
+    --text-dim: #70707a;
 
     /* ── Borders / Dividers ──────────────────────────────────────── */
     --divider: rgba(255, 255, 255, 0.05);
@@ -41,7 +41,7 @@
     --divider-subtle: rgba(255, 255, 255, 0.025);
 
     /* ── Typography ──────────────────────────────────────────────── */
-    --font-sans: 'Bricolage Grotesque', system-ui, sans-serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
     --font-mono: 'Fragment Mono', monospace;
 
     --text-xs: 0.6875rem;
@@ -105,7 +105,7 @@
     --orange-bg: var(--sand-bg);
     --info: var(--rose);
     --text-muted: var(--text-label);
-    --text-dim: #1e1e22;
+    --text-dim: #70707a;
     --bg-input: var(--bg-input);
     --ease: 150ms cubic-bezier(0.4, 0, 0.2, 1);
     --ease-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);

@@ -206,7 +206,7 @@ const App = {
                         <h1 class="section-header__title">${report.ticker} <span style="color:var(--text-muted);font-weight:400">${(report.sector || '').replace('_', ' ')}</span></h1>
                         <div class="section-header__subtitle">Stress Report · Year ${report.year || ''}</div>
                     </div>
-                    <div>${Components.badge(report.stress_score)}</div>
+                    <div style="padding-right: 16px; padding-top: 4px;">${Components.badge(report.stress_score, true)}</div>
                 </div>`;
         }
 
@@ -270,7 +270,7 @@ const App = {
                                 <h2 class="section-header__title">${report.ticker} <span style="color:var(--text-muted);font-weight:400">${(report.sector || '').replace('_', ' ')}</span></h2>
                                 <div class="section-header__subtitle">${report.live ? 'Live fetch from SEC EDGAR' : 'From dataset'} · Year ${report.year || ''}</div>
                             </div>
-                            <div>${Components.badge(report.stress_score)}</div>
+                            <div style="padding-right: 16px; padding-top: 4px;">${Components.badge(report.stress_score, true)}</div>
                         </div>
                     </div>
                     <div class="charts-grid mt-6">

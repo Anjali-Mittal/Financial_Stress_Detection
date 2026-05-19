@@ -354,7 +354,7 @@ const Charts = {
                           fill="${color}"
                           font-size="26"
                           font-weight="600"
-                          font-family="${mono}">${s}</text>
+                          font-family="${mono}">${s.toFixed(2)}</text>
                     <text x="110" y="116"
                           text-anchor="middle"
                           fill="${textLabel}"
