@@ -28,11 +28,10 @@
             </div>
 
             <div class="header__left">
-                <div class="header__breadcrumb">
-                    <span class="breadcrumb__root">Dashboard</span>
-                    <span class="breadcrumb__separator">›</span>
-                    <span id="breadcrumb-page" class="breadcrumb__current">Overview</span>
-                </div>
+                <button class="nav-item active" data-view="overview">Overview</button>
+                <button class="nav-item" data-view="companies">Companies</button>
+                <button class="nav-item" data-view="sectors">Sectors</button>
+                <button class="nav-item" data-view="live">Live</button>
             </div>
 
             <div class="header__right">
@@ -54,71 +53,7 @@
             </div>
         </header>
 
-        <!-- ═══ Sidebar ═══ -->
-        <aside class="sidebar">
-            <div class="sidebar__brand"></div>
 
-            <nav class="sidebar__nav">
-                <div class="sidebar__section-label">Monitor</div>
-
-                <button class="nav-item active" data-view="overview">
-                    <span class="nav-item__icon">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="7" rx="1" />
-                            <rect x="14" y="3" width="7" height="7" rx="1" />
-                            <rect x="14" y="14" width="7" height="7" rx="1" />
-                            <rect x="3" y="14" width="7" height="7" rx="1" />
-                        </svg>
-                    </span>
-                    Overview
-                </button>
-
-                <button class="nav-item" data-view="companies">
-                    <span class="nav-item__icon">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 21h18" />
-                            <path d="M5 21V7l8-4v18" />
-                            <path d="M19 21V11l-6-4" />
-                            <path d="M9 9h1" />
-                            <path d="M9 13h1" />
-                            <path d="M9 17h1" />
-                        </svg>
-                    </span>
-                    All Companies
-                </button>
-
-                <button class="nav-item" data-view="sectors">
-                    <span class="nav-item__icon">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="20" x2="18" y2="10" />
-                            <line x1="12" y1="20" x2="12" y2="4" />
-                            <line x1="6" y1="20" x2="6" y2="14" />
-                        </svg>
-                    </span>
-                    Sectors
-                </button>
-
-                <div class="sidebar__section-label">Tools</div>
-
-                <button class="nav-item" data-view="live">
-                    <span class="nav-item__icon">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                        </svg>
-                    </span>
-                    Live Scorer
-                </button>
-            </nav>
-
-            <div class="sidebar__footer">
-                <div class="sidebar__version">v1.0 · 173 companies · 5 sectors</div>
-            </div>
-        </aside>
 
         <!-- ═══ Main ═══ -->
         <main class="main">
@@ -126,47 +61,20 @@
 
                 <!-- Overview -->
                 <div class="view active" id="view-overview">
-                    <div class="section-header">
-                        <div>
-                            <h1 class="section-header__title">System Overview</h1>
-                            <div class="section-header__subtitle">Real-time risk monitoring across all tracked companies
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="kpi-grid" id="overview-kpis"></div>
-
-                    <div class="charts-grid">
-                        <div class="card">
-                            <div class="card-label">Score Distribution</div>
-                            <div class="chart-container"><canvas id="chart-score-dist"></canvas></div>
-                        </div>
-                        <div class="card">
-                            <div class="card-label">Risk Breakdown</div>
-                            <div class="chart-container"><canvas id="chart-risk-donut"></canvas></div>
-                        </div>
-                    </div>
-
-                    <div class="charts-grid">
-                        <div class="card">
-                            <div class="card-label">Sector Average Stress</div>
-                            <div class="chart-container"><canvas id="chart-sector-bars"></canvas></div>
-                        </div>
-                        <div class="card">
-                            <div class="card-label">Top 10 Most Stressed</div>
-                            <div id="overview-top-stressed"></div>
-                        </div>
+                    <div id="overview-top-stressed"></div>
+                    <div class="divider"></div>
+                    <div style="display:flex; flex-direction:column; gap:24px;">
+                        <div class="chart-container"><canvas id="chart-score-dist"></canvas></div>
+                        <div class="divider"></div>
+                        <div class="chart-container"><canvas id="chart-risk-donut"></canvas></div>
+                        <div class="divider"></div>
+                        <div class="chart-container"><canvas id="chart-sector-bars"></canvas></div>
                     </div>
                 </div>
 
                 <!-- Companies -->
                 <div class="view" id="view-companies">
-                    <div class="section-header">
-                        <div>
-                            <h1 class="section-header__title">All Companies</h1>
-                            <div class="section-header__subtitle" id="companies-count">Loading…</div>
-                        </div>
-                    </div>
 
                     <div class="filter-bar">
                         <select id="filter-sector" class="filter-select">

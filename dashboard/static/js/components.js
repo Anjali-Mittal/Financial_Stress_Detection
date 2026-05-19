@@ -15,10 +15,10 @@ const Components = {
     /** Get risk level from score */
     riskLevel(score) {
         if (score == null) return { level: 'unknown', label: 'N/A', css: 'info' };
-        if (score >= 75) return { level: 'critical', label: 'Critical', css: 'critical' };
-        if (score >= 50) return { level: 'high', label: 'High', css: 'high' };
-        if (score >= 25) return { level: 'moderate', label: 'Moderate', css: 'moderate' };
-        return { level: 'low', label: 'Low', css: 'low' };
+        if (score >= 75) return { level: 'critical', label: 'CRITICAL', css: 'critical' };
+        if (score >= 50) return { level: 'high', label: 'HIGH', css: 'high' };
+        if (score >= 25) return { level: 'moderate', label: 'MOD', css: 'moderate' };
+        return { level: 'low', label: 'LOW', css: 'low' };
     },
 
     /** Format number safely */
@@ -58,7 +58,6 @@ const Components = {
             <td>${this.badge(c.stress_score)}</td>
             <td>${c.n_red_flags || 0}</td>
             <td class="text-mono">${this.fmt(c.altman_z)}</td>
-            <td class="text-mono">${c.piotroski_f != null ? c.piotroski_f : '—'}</td>
             <td class="text-mono">${this.fmt(c.net_margin, 4)}</td>
         </tr>`;
     },
@@ -75,12 +74,11 @@ const Components = {
                     <tr>
                         <th data-sort="ticker">Ticker <span class="sort-arrow"></span></th>
                         <th data-sort="sector">Sector</th>
-                        <th data-sort="stress_score">Stress Score <span class="sort-arrow">▼</span></th>
-                        <th>Risk Level</th>
+                        <th data-sort="stress_score">Score <span class="sort-arrow">▼</span></th>
+                        <th>Risk</th>
                         <th data-sort="n_red_flags">Flags</th>
                         <th data-sort="altman_z">Altman Z</th>
-                        <th data-sort="piotroski_f">Piotroski F</th>
-                        <th data-sort="net_margin">Net Margin</th>
+                        <th data-sort="net_margin">Margin</th>
                     </tr>
                 </thead>
                 <tbody>${companies.map(c => this.tableRow(c)).join('')}</tbody>
