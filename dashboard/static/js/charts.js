@@ -1,6 +1,5 @@
 /**
  * charts.js — Fintellix Risk Suite
- * Rose / Sand / Green risk palette. Fragment Mono labels.
  */
 
 function cssVar(name) {
@@ -10,84 +9,52 @@ function cssVar(name) {
 const Charts = {
     instances: {},
 
-    get colors() {
-        return {
-            rose: '#c47a8a',
-            sand: '#d4b483',
-            green: '#4ade80',
-            roseDim: 'rgba(196,122,138,0.5)',
-            sandDim: 'rgba(212,180,131,0.45)',
-            greenDim: 'rgba(74,222,128,0.45)',
-            textPrimary: cssVar('--text-primary'),
-            textSecondary: cssVar('--text-secondary'),
-            textLabel: cssVar('--text-label'),
-            divider: cssVar('--divider'),
-            dividerRow: cssVar('--divider-row'),
-            bgBase: cssVar('--bg-base'),
-            bgElevated: cssVar('--bg-elevated'),
-            // multi-series line chart palette
-            line1: '#c47a8a',
-            line2: '#4ade80',
-            line3: '#d4b483',
-            line4: '#7090c8',
-            line5: '#a08cc8',
-            line6: '#70b8b0',
-            line7: '#c8a070',
-        };
-    },
-
-    /**
-     * Score → color
-     * ≥75 rose (high/critical), ≥35 sand (moderate), <35 green (low)
-     */
-    getScoreColor(score) {
-        if (score >= 75) return this.colors.rose;
-        if (score >= 35) return this.colors.sand;
-        return this.colors.green;
-    },
-
-    getScoreColorDim(score) {
-        if (score >= 75) return this.colors.roseDim;
-        if (score >= 35) return this.colors.sandDim;
-        return this.colors.greenDim;
+    colors: {
+        rose: '#e07088',
+        sand: '#e0a060',
+        green: '#50c878',
+        blue: '#4f8ef7',
+        line1: '#4f8ef7',
+        line2: '#e07088',
+        line3: '#e0a060',
+        line4: '#a78bfa',
+        line5: '#34d399',
+        line6: '#f59e0b',
+        line7: '#60a5fa',
     },
 
     _tooltip() {
         return {
-            backgroundColor: 'rgba(12, 12, 14, 0.97)',
-            titleColor: '#e8e8ec',
-            bodyColor: '#707070',
-            borderColor: 'rgba(255,255,255,0.07)',
+            backgroundColor: '#1c2333',
+            titleColor: '#e8eaf0',
+            bodyColor: '#9ba3b8',
+            borderColor: 'rgba(255,255,255,0.08)',
             borderWidth: 1,
-            cornerRadius: 3,
-            padding: 10,
-            titleFont: { family: "'Fragment Mono', monospace", size: 10, weight: '400' },
-            bodyFont: { family: "'Fragment Mono', monospace", size: 10 },
+            cornerRadius: 6,
+            padding: 12,
+            titleFont: { family: "'Inter', sans-serif", size: 12, weight: '500' },
+            bodyFont: { family: "'JetBrains Mono', monospace", size: 11 },
             displayColors: false,
         };
     },
 
-    _tickStyle() {
+    _ticks() {
         return {
-            color: cssVar('--text-label'),
-            font: { family: "'Fragment Mono', monospace", size: 9, weight: '400' },
+            color: '#6b7490',
+            font: { family: "'JetBrains Mono', monospace", size: 11 },
         };
     },
 
     _destroy(id) {
-        if (this.instances[id]) {
-            this.instances[id].destroy();
-            delete this.instances[id];
-        }
+        if (this.instances[id]) { this.instances[id].destroy(); delete this.instances[id]; }
     },
 
-    /** Donut — risk distribution */
+    /* ── Donut ── */
     renderRiskDonut(canvasId, data) {
         this._destroy(canvasId);
         const el = document.getElementById(canvasId);
         if (!el) return;
 
-        const c = this.colors;
         const total = (data.critical || 0) + (data.high || 0) + (data.moderate || 0) + (data.low || 0);
 
         this.instances[canvasId] = new Chart(el, {
@@ -96,12 +63,30 @@ const Charts = {
                 labels: ['Critical', 'High', 'Moderate', 'Low'],
                 datasets: [{
                     data: [data.critical || 0, data.high || 0, data.moderate || 0, data.low || 0],
-                    backgroundColor: [c.rose, c.roseDim, c.sand, c.green],
-                    borderColor: cssVar('--bg-base'),
+                    backgroundColor: ['#e07088', '#a84455', '#e0a060', '#4f8ef7'],
+                    borderColor: '#0f1117',
                     borderWidth: 3,
-                    hoverOffset: 4,
+                    hoverOffset: 6,
                 }]
             },
+            plugins: [{
+                id: 'centerText',
+                afterDraw(chart) {
+                    const { ctx, chartArea: { left, right, top, bottom } } = chart;
+                    const cx = (left + right) / 2;
+                    const cy = (top + bottom) / 2;
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.font = "700 28px 'Inter', sans-serif";
+                    ctx.fillStyle = '#e8eaf0';
+                    ctx.fillText(total, cx, cy - 10);
+                    ctx.font = "400 10px 'JetBrains Mono', monospace";
+                    ctx.fillStyle = '#6b7490';
+                    ctx.fillText('COMPANIES', cx, cy + 12);
+                    ctx.restore();
+                }
+            }],
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -110,29 +95,39 @@ const Charts = {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: c.textLabel,
-                            font: { family: "'Fragment Mono', monospace", size: 9 },
+                            color: '#9ba3b8',
+                            font: { family: "'JetBrains Mono', monospace", size: 11 },
                             padding: 16,
                             usePointStyle: true,
-                            pointStyleWidth: 5,
+                            pointStyleWidth: 8,
                         }
                     },
-                    tooltip: this._tooltip(),
+                    tooltip: {
+                        ...this._tooltip(),
+                        callbacks: {
+                            label: (ctx) => {
+                                const pct = total ? ((ctx.raw / total) * 100).toFixed(1) : '0.0';
+                                return ` ${ctx.raw} companies (${pct}%)`;
+                            }
+                        }
+                    },
                 }
             }
         });
     },
 
-    /** Horizontal bars — sector avg stress */
+    /* ── Sector Bars — blue accent, opacity = relative stress ── */
     renderSectorBars(canvasId, sectors) {
         this._destroy(canvasId);
         const el = document.getElementById(canvasId);
         if (!el) return;
 
-        const labels = Object.keys(sectors);
+        const labels = Object.keys(sectors).map(l => l.replace('_', ' '));
         const values = Object.values(sectors);
-        const barColors = values.map(v => this.getScoreColor(v));
-        const barColorsDim = values.map(v => this.getScoreColorDim(v));
+        const max = Math.max(...values, 1);
+
+        const bg = v => `rgba(79,142,247,${(0.3 + (v / max) * 0.7).toFixed(2)})`;
+        const border = v => `rgba(79,142,247,${(0.5 + (v / max) * 0.5).toFixed(2)})`;
 
         this.instances[canvasId] = new Chart(el, {
             type: 'bar',
@@ -140,12 +135,12 @@ const Charts = {
                 labels,
                 datasets: [{
                     data: values,
-                    backgroundColor: barColorsDim,
-                    borderColor: barColors,
-                    borderWidth: 0,
-                    borderRadius: 2,
+                    backgroundColor: values.map(v => bg(v)),
+                    borderColor: values.map(v => border(v)),
+                    borderWidth: 1,
+                    borderRadius: 4,
                     borderSkipped: false,
-                    barThickness: 16,
+                    barThickness: 18,
                 }]
             },
             options: {
@@ -154,21 +149,24 @@ const Charts = {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
-                    tooltip: this._tooltip(),
+                    tooltip: {
+                        ...this._tooltip(),
+                        callbacks: { label: ctx => ` avg stress: ${Number(ctx.raw).toFixed(1)}` }
+                    },
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(255,255,255,0.025)', drawBorder: false },
-                        ticks: this._tickStyle(),
-                        min: 0,
+                        grid: { color: 'rgba(255,255,255,0.04)' },
                         border: { display: false },
+                        ticks: this._ticks(),
+                        min: 0,
                     },
                     y: {
                         grid: { display: false },
                         border: { display: false },
                         ticks: {
-                            color: cssVar('--text-secondary'),
-                            font: { family: "'Bricolage Grotesque', sans-serif", size: 11, weight: '400' },
+                            color: '#9ba3b8',
+                            font: { family: "'Inter', sans-serif", size: 12, weight: '500' },
                         },
                     }
                 }
@@ -176,7 +174,7 @@ const Charts = {
         });
     },
 
-    /** Bar — score distribution */
+    /* ── Score Distribution ── */
     renderScoreDistribution(canvasId, companies) {
         this._destroy(canvasId);
         const el = document.getElementById(canvasId);
@@ -191,20 +189,23 @@ const Charts = {
             bins[Math.min(Math.floor(s / 10), 9)]++;
         });
 
-        const barColors = binLabels.map((_, i) => this.getScoreColorDim(i * 10 + 5));
-        const borderColors = binLabels.map((_, i) => this.getScoreColor(i * 10 + 5));
+        // Blue → amber → rose as risk increases
+        const color = i => {
+            const mid = i * 10 + 5;
+            if (mid >= 50) return '#e07088';
+            if (mid >= 30) return '#e0a060';
+            return '#4f8ef7';
+        };
 
         this.instances[canvasId] = new Chart(el, {
             type: 'bar',
             data: {
                 labels: binLabels,
                 datasets: [{
-                    label: 'Companies',
                     data: bins,
-                    backgroundColor: barColors,
-                    borderColor: borderColors,
+                    backgroundColor: bins.map((v, i) => v === 0 ? 'rgba(255,255,255,0.04)' : color(i)),
                     borderWidth: 0,
-                    borderRadius: 2,
+                    borderRadius: 4,
                     borderSkipped: false,
                 }]
             },
@@ -213,18 +214,21 @@ const Charts = {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
-                    tooltip: this._tooltip(),
+                    tooltip: {
+                        ...this._tooltip(),
+                        callbacks: { label: ctx => ` ${ctx.raw} companies` },
+                    },
                 },
                 scales: {
                     x: {
                         grid: { display: false },
                         border: { display: false },
-                        ticks: this._tickStyle(),
+                        ticks: this._ticks(),
                     },
                     y: {
-                        grid: { color: 'rgba(255,255,255,0.025)', drawBorder: false },
+                        grid: { color: 'rgba(255,255,255,0.04)' },
                         border: { display: false },
-                        ticks: this._tickStyle(),
+                        ticks: this._ticks(),
                         beginAtZero: true,
                     }
                 }
@@ -232,7 +236,7 @@ const Charts = {
         });
     },
 
-    /** Line — historical trends */
+    /* ── History Line ── */
     renderHistoryChart(canvasId, history, metrics) {
         this._destroy(canvasId);
         const el = document.getElementById(canvasId);
@@ -249,20 +253,19 @@ const Charts = {
             piotroski_f: { label: 'Piotroski F', color: c.line7 },
         };
 
-        const labels = history.map(h => h.year);
         const datasets = (metrics || ['altman_z', 'net_margin', 'current_ratio']).map(m => {
-            const cfg = metricConfig[m] || { label: m, color: c.textLabel };
+            const cfg = metricConfig[m] || { label: m, color: '#6b7490' };
             return {
                 label: cfg.label,
-                data: history.map(h => h[m] != null ? h[m] : null),
+                data: history.map(h => h[m] ?? null),
                 borderColor: cfg.color,
-                backgroundColor: cfg.color + '10',
+                backgroundColor: cfg.color + '18',
                 pointBackgroundColor: cfg.color,
-                pointBorderColor: cssVar('--bg-base'),
-                pointBorderWidth: 1.5,
-                pointRadius: 3,
-                pointHoverRadius: 5,
-                borderWidth: 1.5,
+                pointBorderColor: '#0f1117',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                borderWidth: 2,
                 tension: 0.3,
                 fill: false,
                 spanGaps: true,
@@ -271,99 +274,81 @@ const Charts = {
 
         this.instances[canvasId] = new Chart(el, {
             type: 'line',
-            data: { labels, datasets },
+            data: { labels: history.map(h => h.year), datasets },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 plugins: {
                     legend: {
-                        position: 'top',
-                        align: 'end',
+                        position: 'top', align: 'end',
                         labels: {
-                            color: c.textLabel,
-                            font: { family: "'Fragment Mono', monospace", size: 9 },
-                            usePointStyle: true,
-                            pointStyleWidth: 5,
-                            padding: 14,
+                            color: '#9ba3b8',
+                            font: { family: "'JetBrains Mono', monospace", size: 11 },
+                            usePointStyle: true, pointStyleWidth: 8, padding: 16,
                         }
                     },
                     tooltip: this._tooltip(),
                 },
                 scales: {
-                    x: {
-                        grid: { color: 'rgba(255,255,255,0.025)', drawBorder: false },
-                        border: { display: false },
-                        ticks: this._tickStyle(),
-                    },
-                    y: {
-                        grid: { color: 'rgba(255,255,255,0.025)', drawBorder: false },
-                        border: { display: false },
-                        ticks: this._tickStyle(),
-                    }
+                    x: { grid: { color: 'rgba(255,255,255,0.04)' }, border: { display: false }, ticks: this._ticks() },
+                    y: { grid: { color: 'rgba(255,255,255,0.04)' }, border: { display: false }, ticks: this._ticks() },
                 }
             }
         });
     },
 
-    /** SVG gauge */
+    /* ── Gauge ── */
     renderGauge(containerId, score, verdict) {
         const el = document.getElementById(containerId);
         if (!el) return;
 
-        const s = score != null ? score : 0;
-        const color = this.getScoreColor(s);
+        const s = Math.max(0, Math.min(100, score ?? 0));
+        const color = s >= 50 ? '#e07088' : s >= 35 ? '#e0a060' : '#4f8ef7';
         const angle = (s / 100) * 180;
-        const mono = "'Fragment Mono', monospace";
-        const textLabel = cssVar('--text-label');
-        const bgBase = cssVar('--bg-base');
-
-        const needleX = 110 + 70 * Math.cos((180 - angle) * Math.PI / 180);
-        const needleY = 120 - 70 * Math.sin((180 - angle) * Math.PI / 180);
+        const rad = (180 - angle) * Math.PI / 180;
+        const cx = 150, cy = 150, r = 110;
+        const nx = (cx + r * Math.cos(rad)).toFixed(2);
+        const ny = (cy - r * Math.sin(rad)).toFixed(2);
+        // arc path: radius 110, center 150,150
+        const arcLen = Math.PI * 110; // semicircle = 345.4
+        const filled = ((angle / 180) * arcLen).toFixed(2);
+        const sans = "'Inter', sans-serif";
+        const mono = "'JetBrains Mono', monospace";
 
         el.innerHTML = `
-            <div class="gauge-container">
-                <svg width="220" height="128" viewBox="0 0 220 128">
+            <div class="gauge-container" style="padding: 16px 0 8px;">
+                <svg width="300" height="180" viewBox="0 0 300 180">
                     <defs>
-                        <linearGradient id="gaugeGrad_${containerId}" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%"   stop-color="#4ade80"/>
-                            <stop offset="45%"  stop-color="#d4b483"/>
-                            <stop offset="100%" stop-color="#c47a8a"/>
+                        <linearGradient id="gg_${containerId}" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%"   stop-color="#4f8ef7"/>
+                            <stop offset="50%"  stop-color="#e0a060"/>
+                            <stop offset="100%" stop-color="#e07088"/>
                         </linearGradient>
                     </defs>
-                    <path d="M 22 118 A 88 88 0 0 1 198 118"
-                          fill="none"
-                          stroke="rgba(255,255,255,0.05)"
-                          stroke-width="8"
-                          stroke-linecap="round"/>
-                    <path d="M 22 118 A 88 88 0 0 1 198 118"
-                          fill="none"
-                          stroke="url(#gaugeGrad_${containerId})"
-                          stroke-width="8"
-                          stroke-linecap="round"
-                          stroke-dasharray="${(angle / 180) * 276} 276"
-                          style="transition: stroke-dasharray 1s cubic-bezier(0.4,0,0.2,1)"/>
-                    <line x1="110" y1="118"
-                          x2="${needleX}" y2="${needleY}"
-                          stroke="${color}"
-                          stroke-width="1.5"
-                          stroke-linecap="round"/>
-                    <circle cx="110" cy="118" r="3" fill="${color}"/>
-                    <text x="110" y="98"
-                          text-anchor="middle"
-                          fill="${color}"
-                          font-size="26"
-                          font-weight="600"
-                          font-family="${mono}">${s.toFixed(2)}</text>
-                    <text x="110" y="116"
-                          text-anchor="middle"
-                          fill="${textLabel}"
-                          font-size="7"
-                          font-weight="400"
-                          font-family="${mono}"
-                          letter-spacing="0.1em">SCORE / 100</text>
+                    <!-- track -->
+                    <path d="M 40 150 A 110 110 0 0 1 260 150"
+                          fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12" stroke-linecap="round"/>
+                    <!-- fill -->
+                    <path d="M 40 150 A 110 110 0 0 1 260 150"
+                          fill="none" stroke="url(#gg_${containerId})" stroke-width="12" stroke-linecap="round"
+                          stroke-dasharray="${filled} ${arcLen}"
+                          style="transition:stroke-dasharray 1s cubic-bezier(0.4,0,0.2,1)"/>
+                    <!-- needle -->
+                    <line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}"
+                          stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="${cx}" cy="${cy}" r="6" fill="${color}"/>
+                    <circle cx="${cx}" cy="${cy}" r="3" fill="#0f1117"/>
+                    <!-- score -->
+                    <text x="${cx}" y="${cy - 20}"
+                          text-anchor="middle" fill="${color}"
+                          font-size="42" font-weight="700"
+                          font-family="${sans}" letter-spacing="-0.04em">${s.toFixed(1)}</text>
+                    <text x="${cx}" y="${cy - 2}"
+                          text-anchor="middle" fill="#6b7490"
+                          font-size="10" font-family="${mono}" letter-spacing="0.16em">SCORE / 100</text>
                 </svg>
-                <div class="gauge__label" style="color:${color}">${verdict || ''}</div>
+                <div class="gauge__label" style="color:${color};font-size:12px;letter-spacing:0.2em;font-family:${mono};margin-top:4px">${verdict || ''}</div>
             </div>`;
     },
 };

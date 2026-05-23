@@ -12,7 +12,6 @@ const Components = {
         check: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
     },
 
-    /** Get risk level from score */
     riskLevel(score) {
         if (score == null) return { level: 'unknown', label: 'N/A', css: 'info' };
         if (score >= 75) return { level: 'critical', label: 'CRITICAL', css: 'critical' };
@@ -33,7 +32,6 @@ const Components = {
     kpiCard(label, value, iconClass, colorClass, meta = '') {
         return `
         <div class="kpi-card">
-            <div class="kpi-card__icon kpi-card__icon--${colorClass}">${iconClass}</div>
             <div class="kpi-card__label">${label}</div>
             <div class="kpi-card__value">${value}</div>
             ${meta ? `<div class="kpi-card__meta">${meta}</div>` : ''}
@@ -43,13 +41,13 @@ const Components = {
     /** Badge HTML */
     badge(score, isLarge = false) {
         const r = this.riskLevel(score);
-        return `<span class="badge badge--${r.css} ${isLarge ? 'badge--large' : ''}"><span class="badge__dot"></span>${r.label}</span>`;
+        return `<span class="badge badge--${r.css}${isLarge ? ' badge--large' : ''}"><span class="badge__dot"></span>${r.label}</span>`;
     },
 
     /** Company table row */
     tableRow(c) {
         const r = this.riskLevel(c.stress_score);
-        const scoreColor = r.css === 'critical' ? 'text-danger' : r.css === 'high' ? 'text-warning' : r.css === 'low' ? 'text-success' : '';
+        const scoreColor = r.css === 'critical' || r.css === 'high' ? 'text-danger' : r.css === 'moderate' ? 'text-warning' : 'text-success';
         return `
         <tr data-ticker="${c.ticker}" onclick="App.showCompany('${c.ticker}')">
             <td class="ticker-cell">${c.ticker}</td>
@@ -72,13 +70,13 @@ const Components = {
             <table class="data-table" id="companies-table">
                 <thead>
                     <tr>
-                        <th data-sort="ticker">Ticker <span class="sort-arrow"></span></th>
+                        <th data-sort="ticker">Ticker <span class="sort-arrow">↕</span></th>
                         <th data-sort="sector">Sector</th>
                         <th data-sort="stress_score">Score <span class="sort-arrow">▼</span></th>
                         <th>Risk</th>
-                        <th data-sort="n_red_flags">Flags</th>
-                        <th data-sort="altman_z">Altman Z</th>
-                        <th data-sort="net_margin">Margin</th>
+                        <th data-sort="n_red_flags">Flags <span class="sort-arrow">↕</span></th>
+                        <th data-sort="altman_z">Altman Z <span class="sort-arrow">↕</span></th>
+                        <th data-sort="net_margin">Margin <span class="sort-arrow">↕</span></th>
                     </tr>
                 </thead>
                 <tbody>${companies.map(c => this.tableRow(c)).join('')}</tbody>
@@ -89,25 +87,25 @@ const Components = {
     /** Red flags list */
     flagsList(flags) {
         if (!flags || flags.length === 0) {
-            return `<div style="color:var(--success);font-size:var(--text-sm);display:flex;align-items:center;gap:var(--space-2)">${this.Icons.check} No red flags triggered</div>`;
+            return `<div style="color:var(--green);font-size:12px;display:flex;align-items:center;gap:8px;padding:12px 0;">${this.Icons.check} No red flags triggered</div>`;
         }
         return `<ul class="flag-list">${flags.map(f => `
             <li class="flag-item ${f.severity === 'MODERATE' ? 'flag-item--moderate' : ''}">
                 <span class="flag-item__severity flag-item__severity--${f.severity}">${f.severity}</span>
                 <div>
                     <div class="flag-item__message">${f.message}</div>
-                    <div class="flag-item__value">Value: ${this.fmt(f.value, 3)} | Threshold: ${f.threshold}</div>
+                    <div class="flag-item__value">Value: ${this.fmt(f.value, 3)} · Threshold: ${f.threshold}</div>
                 </div>
             </li>`).join('')}</ul>`;
     },
 
-    /** Ratio cards grid */
+    /** Ratio cards grid — 4 columns */
     ratioCards(ratios) {
         if (!ratios) return '';
         const items = [
-            { key: 'altman_z', label: 'Altman Z-Score', sub: ratios.altman_z_label, fmt: 2 },
+            { key: 'altman_z', label: 'Altman Z-Score', sub: ratios.altman_z_label || 'Bankruptcy risk', fmt: 2 },
             { key: 'altman_z_adjusted', label: 'Altman Z (Adj)', sub: 'Sector-adjusted', fmt: 2 },
-            { key: 'piotroski_f', label: 'Piotroski F', sub: ratios.piotroski_label, fmt: 0 },
+            { key: 'piotroski_f', label: 'Piotroski F', sub: ratios.piotroski_label || 'Financial strength', fmt: 0 },
             { key: 'current_ratio', label: 'Current Ratio', sub: 'Liquidity', fmt: 2 },
             { key: 'interest_coverage', label: 'Interest Coverage', sub: 'Debt service', fmt: 2 },
             { key: 'debt_to_equity', label: 'Debt / Equity', sub: 'Leverage', fmt: 2 },
@@ -133,7 +131,7 @@ const Components = {
         }).join('')}</div>`;
     },
 
-    /** Model component bars */
+    /** Model component bars — fixed color references */
     modelBars(components) {
         if (!components) return '';
         const items = [
@@ -144,10 +142,13 @@ const Components = {
         return items.map(it => {
             const comp = components[it.key] || {};
             const score = comp.score != null ? comp.score : 0;
-            const color = score >= 75 ? Charts.colors.red : score >= 50 ? Charts.colors.orange : score >= 25 ? Charts.colors.yellow : Charts.colors.green;
+            let color;
+            if (score >= 50) color = '#e07088';
+            else if (score >= 35) color = '#e0a060';
+            else color = '#4f8ef7';
             return `
             <div class="model-bar">
-                <div class="model-bar__label">${it.label} (${it.weight})</div>
+                <div class="model-bar__label">${it.label} <span style="color:var(--text-dim);font-size:9px">(${it.weight})</span></div>
                 <div class="model-bar__track">
                     <div class="model-bar__fill" style="width:${Math.min(score, 100)}%;background:${color}"></div>
                 </div>
@@ -163,34 +164,57 @@ const Components = {
         <div class="data-table-wrapper">
             <table class="data-table">
                 <thead><tr>
-                    <th>Ticker</th><th>Sector</th><th>Score</th><th>Risk</th><th>Flags</th>
+                    <th>Ticker</th>
+                    <th>Sector</th>
+                    <th>Score</th>
+                    <th>Risk</th>
+                    <th>Flags</th>
                 </tr></thead>
-                <tbody>${companies.map(c => `
+                <tbody>${companies.map(c => {
+            const r = this.riskLevel(c.stress_score);
+            const scoreColor = r.css === 'critical' || r.css === 'high' ? 'text-danger' : r.css === 'moderate' ? 'text-warning' : 'text-success';
+            return `
                     <tr onclick="App.showCompany('${c.ticker}')" style="cursor:pointer">
                         <td class="ticker-cell">${c.ticker}</td>
                         <td>${(c.sector || '').replace('_', ' ')}</td>
-                        <td class="score-cell">${this.fmt(c.stress_score, 2)}</td>
+                        <td class="score-cell ${scoreColor}">${this.fmt(c.stress_score, 2)}</td>
                         <td>${this.badge(c.stress_score)}</td>
                         <td>${c.n_red_flags || 0}</td>
-                    </tr>`).join('')}</tbody>
+                    </tr>`;
+        }).join('')}</tbody>
             </table>
         </div>`;
     },
 
-    /** Sector cards */
+    /** Sector cards — fixed 7-column grid to match header */
     sectorCards(sectors) {
         if (!sectors || sectors.length === 0) return '';
-        return `<div class="sector-grid">${sectors.map(s => `
+        return `<div class="sector-grid">${sectors.map(s => {
+            const stressColor = s.avg_stress >= 50 ? 'text-danger' : s.avg_stress >= 25 ? 'text-warning' : 'text-success';
+            return `
             <div class="sector-card">
                 <div class="sector-card__name">${(s.sector || '').replace('_', ' ')}</div>
                 <div class="sector-card__stats">
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Companies</span><span class="sector-card__stat-value">${s.count || 0}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Avg Stress</span><span class="sector-card__stat-value">${this.fmt(s.avg_stress, 2)}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Altman Z (med)</span><span class="sector-card__stat-value">${this.fmt(s.altman_z_median, 2)}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Net Margin</span><span class="sector-card__stat-value">${this.fmt(s.net_margin_median, 2)}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">Current Ratio</span><span class="sector-card__stat-value">${this.fmt(s.current_ratio_median, 2)}</span></div>
-                    <div class="sector-card__stat"><span class="sector-card__stat-label">D/E (med)</span><span class="sector-card__stat-value">${this.fmt(s.debt_to_equity_median, 2)}</span></div>
+                    <div class="sector-card__stat">
+                        <div class="sector-card__stat-value">${s.count || 0}</div>
+                    </div>
+                    <div class="sector-card__stat">
+                        <div class="sector-card__stat-value ${stressColor}">${this.fmt(s.avg_stress, 2)}</div>
+                    </div>
+                    <div class="sector-card__stat">
+                        <div class="sector-card__stat-value">${this.fmt(s.altman_z_median, 2)}</div>
+                    </div>
+                    <div class="sector-card__stat">
+                        <div class="sector-card__stat-value">${this.fmt(s.net_margin_median, 2)}</div>
+                    </div>
+                    <div class="sector-card__stat">
+                        <div class="sector-card__stat-value">${this.fmt(s.current_ratio_median, 2)}</div>
+                    </div>
+                    <div class="sector-card__stat">
+                        <div class="sector-card__stat-value">${this.fmt(s.debt_to_equity_median, 2)}</div>
+                    </div>
                 </div>
-            </div>`).join('')}</div>`;
+            </div>`;
+        }).join('')}</div>`;
     },
 };

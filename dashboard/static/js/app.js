@@ -37,10 +37,6 @@ const App = {
         const target = document.getElementById(`view-${view}`);
         if (target) target.classList.add('active');
 
-        const names = { overview: 'Overview', companies: 'All Companies', sectors: 'Sectors', live: 'Live Scorer', detail: 'Company Detail' };
-        const bc = document.getElementById('breadcrumb-page');
-        if (bc) bc.textContent = names[view] || view;
-
         if (view === 'overview') this.loadOverview();
         if (view === 'companies') this.loadCompanies();
         if (view === 'sectors') this.loadSectors();
@@ -97,9 +93,9 @@ const App = {
         if (kpiGrid) {
             kpiGrid.innerHTML = [
                 Components.kpiCard('Total Companies', overview.total_companies, Components.Icons.companies, 'blue', 'Tracked in system'),
-                Components.kpiCard('Avg Stress Score', overview.avg_stress_score, Components.Icons.stress, 'yellow', 'Across all companies'),
-                Components.kpiCard('High / Critical Risk', (overview.risk_distribution.high + overview.risk_distribution.critical), Components.Icons.risk, 'red', `${overview.risk_distribution.critical} critical, ${overview.risk_distribution.high} high`),
-                Components.kpiCard('Companies Flagged', overview.flagged_companies, Components.Icons.flag, 'yellow', 'With red flags'),
+                Components.kpiCard('Avg Stress Score', Components.fmt(overview.avg_stress_score, 1), Components.Icons.stress, 'yellow', 'Across all companies'),
+                Components.kpiCard('High / Critical Risk', (overview.risk_distribution.high + overview.risk_distribution.critical), Components.Icons.risk, 'red', `${overview.risk_distribution.critical} critical · ${overview.risk_distribution.high} high`),
+                Components.kpiCard('Companies Flagged', overview.flagged_companies, Components.Icons.flag, 'yellow', 'With ≥1 red flags'),
             ].join('');
         }
 
@@ -133,9 +129,10 @@ const App = {
         const container = document.getElementById('companies-list');
         if (container) {
             container.innerHTML = Components.companyTable(data.companies);
-            const countEl = document.getElementById('companies-count');
-            if (countEl) countEl.textContent = `${data.count} companies`;
         }
+
+        const countEl = document.getElementById('companies-count');
+        if (countEl) countEl.textContent = `${data.count || (data.companies ? data.companies.length : 0)} companies`;
 
         this.bindTableSort();
         this.bindFilters();
@@ -187,6 +184,7 @@ const App = {
         ]);
 
         this.showLoading(false);
+
         if (report.error) {
             const dc = document.getElementById('detail-content');
             if (dc) dc.innerHTML = `
@@ -201,12 +199,17 @@ const App = {
         if (hdr) {
             hdr.innerHTML = `
                 <button class="back-btn" onclick="App.navigate('companies')">← Back to Companies</button>
-                <div class="section-header">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--divider);">
                     <div>
-                        <h1 class="section-header__title">${report.ticker} <span style="color:var(--text-muted);font-weight:400">${(report.sector || '').replace('_', ' ')}</span></h1>
-                        <div class="section-header__subtitle">Stress Report · Year ${report.year || ''}</div>
+                        <div style="font-size:28px; font-weight:700; color:var(--text-primary); letter-spacing:-0.03em; font-family:var(--font-sans); line-height:1.1;">
+                            ${report.ticker}
+                            <span style="font-size:16px; color:var(--text-label); font-weight:400; margin-left:8px;">${(report.sector || '').replace('_', ' ')}</span>
+                        </div>
+                        <div style="font-size:11px; color:var(--text-dim); margin-top:6px; font-family:var(--font-mono); letter-spacing:0.06em; text-transform:uppercase;">
+                            Stress Report · Year ${report.year || ''}
+                        </div>
                     </div>
-                    <div style="padding-right: 16px; padding-top: 4px;">${Components.badge(report.stress_score, true)}</div>
+                    <div style="padding-top:4px;">${Components.badge(report.stress_score, true)}</div>
                 </div>`;
         }
 
@@ -220,6 +223,10 @@ const App = {
 
         const flagsEl = document.getElementById('detail-flags');
         if (flagsEl) flagsEl.innerHTML = Components.flagsList(report.red_flags);
+
+        // update flags card label with count
+        const flagLabel = document.getElementById('detail-flags-label');
+        if (flagLabel) flagLabel.textContent = `Red Flags (${(report.red_flags || []).length})`;
 
         if (histData && histData.history && histData.history.length > 0) {
             Charts.renderHistoryChart('chart-history', histData.history, ['altman_z', 'net_margin', 'current_ratio']);
@@ -246,61 +253,60 @@ const App = {
         const progress = document.getElementById('live-progress');
         const result = document.getElementById('live-result');
 
-        if (form) {
-            form.onsubmit = async (e) => {
-                e.preventDefault();
-                const ticker = input.value.trim().toUpperCase();
-                if (!ticker) return;
+        if (!form) return;
 
-                progress.classList.remove('hidden');
-                result.innerHTML = '';
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const ticker = input.value.trim().toUpperCase();
+            if (!ticker) return;
 
-                const report = await API.getLive(ticker);
-                progress.classList.add('hidden');
+            progress.classList.remove('hidden');
+            result.innerHTML = '';
 
-                if (report.error) {
-                    result.innerHTML = `<div class="card mt-6"><div class="empty-state"><div class="empty-state__icon">${Components.Icons.error}</div><div class="empty-state__title">${report.error}</div></div></div>`;
-                    return;
-                }
+            const report = await API.getLive(ticker);
+            progress.classList.add('hidden');
 
-                result.innerHTML = `
-                    <div class="card mt-6">
-                        <div class="section-header">
-                            <div>
-                                <h2 class="section-header__title">${report.ticker} <span style="color:var(--text-muted);font-weight:400">${(report.sector || '').replace('_', ' ')}</span></h2>
-                                <div class="section-header__subtitle">${report.live ? 'Live fetch from SEC EDGAR' : 'From dataset'} · Year ${report.year || ''}</div>
-                            </div>
-                            <div style="padding-right: 16px; padding-top: 4px;">${Components.badge(report.stress_score, true)}</div>
+            if (report.error) {
+                result.innerHTML = `<div class="card mt-6"><div class="empty-state"><div class="empty-state__icon">${Components.Icons.error}</div><div class="empty-state__title">${report.error}</div></div></div>`;
+                return;
+            }
+
+            result.innerHTML = `
+                <div class="card mt-6">
+                    <div class="section-header" style="margin-bottom:0;padding-bottom:0;border-bottom:none">
+                        <div>
+                            <h2 class="section-header__title">${report.ticker} <span style="color:var(--text-dim);font-weight:400;font-size:14px">${(report.sector || '').replace('_', ' ')}</span></h2>
+                            <div class="section-header__subtitle">${report.live ? 'Live fetch from SEC EDGAR' : 'From dataset'} · Year ${report.year || ''}</div>
                         </div>
+                        <div style="padding-right:16px;padding-top:4px">${Components.badge(report.stress_score, true)}</div>
                     </div>
-                    <div class="charts-grid mt-6">
-                        <div class="card">
-                            <div class="card-label">Financial Ratios</div>
-                            ${Components.ratioCards(report.ratios)}
-                        </div>
-                        <div class="card">
-                            <div id="live-gauge"></div>
-                            <div class="card-label" style="margin-top:var(--sp7)">Model Components</div>
-                            ${Components.modelBars(report.components)}
-                        </div>
+                </div>
+                <div class="charts-grid mt-6">
+                    <div class="card">
+                        <div class="card-label">Financial Ratios</div>
+                        ${Components.ratioCards(report.ratios)}
                     </div>
-                    ${report.history && report.history.length > 0 ? `
-                    <div class="card mt-6">
-                        <div class="card-label">Historical Trends (Live Fetch)</div>
-                        <div class="chart-container" style="height:300px"><canvas id="live-chart-history"></canvas></div>
+                    <div class="card">
+                        <div id="live-gauge"></div>
+                        <div class="card-label" style="margin-top:var(--sp7)">Model Components</div>
+                        ${Components.modelBars(report.components)}
                     </div>
-                    ` : ''}
-                    <div class="card mt-6">
-                        <div class="card-label">Red Flags (${report.n_red_flags || 0})</div>
-                        ${Components.flagsList(report.red_flags)}
-                    </div>`;
+                </div>
+                ${report.history && report.history.length > 0 ? `
+                <div class="card mt-6">
+                    <div class="card-label">Historical Trends (Live Fetch)</div>
+                    <div class="chart-container" style="height:280px"><canvas id="live-chart-history"></canvas></div>
+                </div>` : ''}
+                <div class="card mt-6">
+                    <div class="card-label">Red Flags (${report.n_red_flags || 0})</div>
+                    ${Components.flagsList(report.red_flags)}
+                </div>`;
 
-                Charts.renderGauge('live-gauge', report.stress_score, report.verdict?.replace(/\[.*?\]\s*/, ''));
-                if (report.history && report.history.length > 0) {
-                    Charts.renderHistoryChart('live-chart-history', report.history, ['altman_z', 'net_margin', 'current_ratio']);
-                }
-            };
-        }
+            Charts.renderGauge('live-gauge', report.stress_score, report.verdict?.replace(/\[.*?\]\s*/, ''));
+            if (report.history && report.history.length > 0) {
+                Charts.renderHistoryChart('live-chart-history', report.history, ['altman_z', 'net_margin', 'current_ratio']);
+            }
+        };
     },
 };
 
